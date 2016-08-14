@@ -8,5 +8,5 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @CrossOrigin
-public class ChildController {
+public class ChoreController {
 }

@@ -1,6 +1,7 @@
 package com.theironyard.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.theironyard.utilities.LocalDateTimeConverter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -11,12 +12,14 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Created by Nigel on 8/13/16.
  */
 @Entity
 @Table(name = "children")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Child {
 
     public static final int TOKEN_EXPIRATION = 1;
@@ -59,6 +62,12 @@ public class Child {
     @OneToMany
     @JsonIgnore
     private Parent parent;
+
+    @Column
+    Point childPoint;
+
+    @JsonIgnore
+    Map<String, Point> pointLog;
 
     @ManyToMany
     private Collection<Chore> choreCollection;
@@ -199,6 +208,14 @@ public class Child {
 
     public void setExpiration(LocalDateTime expiration) {
         this.expiration = expiration;
+    }
+
+    public Point getChildPoint() {
+        return childPoint;
+    }
+
+    public void setChildPoint(Point childPoint) {
+        this.childPoint = childPoint;
     }
 
     public String generateToken() {
