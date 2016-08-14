@@ -13,13 +13,13 @@ public class Chore {
     @GeneratedValue
     private int id;
 
-    @Column
+    @ManyToOne
     private Parent creator;
 
     @Column
     private String description;
 
-    @Column
+    @OneToOne
     private Point value;
 
     public Chore() {

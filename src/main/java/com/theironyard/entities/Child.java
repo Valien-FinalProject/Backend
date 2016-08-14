@@ -59,15 +59,16 @@ public class Child {
     @JsonIgnore
     private File childPicture;
 
-    @OneToMany
+    @ManyToOne
     @JsonIgnore
     private Parent parent;
 
-    @Column
-    private Point childPoint;
+    @OneToMany
+    private Collection<Point> childPoint;
 
-    @JsonIgnore
-    Map<String, Point> pointLog;
+//    @Column
+//    @JsonIgnore
+//    Map<String, Point> pointLog;
 
     @ManyToMany
     private Collection<Chore> choreCollection;
@@ -210,11 +211,11 @@ public class Child {
         this.expiration = expiration;
     }
 
-    public Point getChildPoint() {
+    public Collection<Point> getChildPoint() {
         return childPoint;
     }
 
-    public void setChildPoint(Point childPoint) {
+    public void setChildPoint(Collection<Point> childPoint) {
         this.childPoint = childPoint;
     }
 
@@ -233,11 +234,11 @@ public class Child {
         return token;
     }
 
-    public Map<String, Point> getPointLog() {
-        return pointLog;
-    }
-
-    public void setPointLog(Map<String, Point> pointLog) {
-        this.pointLog = pointLog;
-    }
+//    public Map<String, Point> getPointLog() {
+//        return pointLog;
+//    }
+//
+//    public void setPointLog(Map<String, Point> pointLog) {
+//        this.pointLog = pointLog;
+//    }
 }
