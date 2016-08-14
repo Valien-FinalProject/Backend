@@ -64,7 +64,7 @@ public class Child {
     private Parent parent;
 
     @Column
-    Point childPoint;
+    private Point childPoint;
 
     @JsonIgnore
     Map<String, Point> pointLog;
@@ -233,4 +233,11 @@ public class Child {
         return token;
     }
 
+    public Map<String, Point> getPointLog() {
+        return pointLog;
+    }
+
+    public void setPointLog(Map<String, Point> pointLog) {
+        this.pointLog = pointLog;
+    }
 }
