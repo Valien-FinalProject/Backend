@@ -2,5 +2,9 @@ language: java
 jdk:
 - oraclejdk8
 before_install:
- - chmod +x gradlew
- 
+- chmod +x gradlew
+deploy:
+  provider: heroku
+  api_key:
+    secure: L8lAZIq450uBJXEiRRdzu2e+AMT6ChBQdW31VS7kZLVRrl+7JtCNQnkhbWZ8TthHHgJZp+wol4VBIzaqRxhVlKiXgEPCaG4jQyK8X5LzmMK4lNt75URBMUE8801fSBQfrEsMAWBdpCVDGRC+nOrRvxFIWiydOtlEZ2ePXElE01nmv3SbMPOXihYZblxrx1xgfaB/kPKSrjktV5HvcqGbFyPihLcEISfukU6BWQP3TLqvecDQBeAvAhvBO1NoEG729HyRYlMhcfqUZMKeRj4X8DSoVptjhy408dv7AVEFszEjfxAc5DDF34agKhN3GCBWE+vSXHbx5qIOP+x2vArcmuquvC4I3+0Zja3zEIHY+GQ1txHe0dmatgAgSElnM8Lff4iAGRvsljfuQoOxJe3uS3nAwEBBH+pLzZ/oi8dSxDbtlvtDJ7MwYxrejIYnAOq5LzrLJdj+VfzJ1sd7wfjyoEa//g90l/pa6jOpKS8aWFB3AfF/3jaqjoqWo1SbwD5RYfUSmJH5EF0qI4KZiZRcMTu/mnxzeB6DYFSygizbqYm2Q+XNqdYo8kjD7h7MiLaN3jmtNUOyF4ggbwMP8srVpPpZV6Z73JEMoW9dCYARuthD74MEsXC/vwQxjHZwICkrj50gK9YPUsBfU6O/z0UReeT2XdUFB90AHTKkG1QGxJA=
+  app: vast-fortress-99365
