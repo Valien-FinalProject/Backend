@@ -1,17 +1,24 @@
 package com.theironyard.command;
 
 /**
- * Created by Nigel on 8/13/16.
+ * Created by EddyJ on 8/13/16.
  */
-public class ParentCommand {
+public class ChildCommand {
+
+    private String name;
 
     private String username;
 
     private String password;
 
-    public ParentCommand(String username, String password) {
-        this.username = username;
-        this.password = password;
+    private int age;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsername() {
@@ -28,5 +35,13 @@ public class ParentCommand {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
