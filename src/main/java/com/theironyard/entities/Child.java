@@ -90,7 +90,7 @@ public class Child {
         setTokenAndExpiration();
     }
 
-    public Child(String name, String username,String password ,int age, Parent parent) {
+    public Child(String name, String username, String password ,int age, Parent parent) {
         this.name = name;
         this.username = username;
         this.password = password;
@@ -209,6 +209,10 @@ public class Child {
 
     public void setExpiration(LocalDateTime expiration) {
         this.expiration = expiration;
+    }
+
+    public boolean isTokenValid(){
+        return expiration.isAfter(LocalDateTime.now());
     }
 
     public Collection<Point> getChildPoint() {

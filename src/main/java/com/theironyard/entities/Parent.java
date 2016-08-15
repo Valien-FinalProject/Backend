@@ -133,6 +133,9 @@ public class Parent {
         this.expiration = expiration;
     }
 
+    public boolean isTokenValid(){
+        return expiration.isAfter(LocalDateTime.now());
+    }
 
     public String generateToken() {
         SecureRandom random = new SecureRandom();
