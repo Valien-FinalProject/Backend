@@ -18,6 +18,8 @@ public class Chore {
     @ManyToOne
     private Parent creator;
 
+    //Add name of description
+
     @Column
     private String description;
 

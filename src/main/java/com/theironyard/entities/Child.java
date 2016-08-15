@@ -63,8 +63,8 @@ public class Child {
     @JsonIgnore
     private Parent parent;
 
-    @OneToMany
-    private Collection<Point> childPoint;
+    @OneToOne
+    private Point childPoint;
 
 //    @Column
 //    @JsonIgnore
@@ -219,11 +219,11 @@ public class Child {
         return expiration.isAfter(LocalDateTime.now());
     }
 
-    public Collection<Point> getChildPoint() {
+    public Point getChildPoint() {
         return childPoint;
     }
 
-    public void setChildPoint(Collection<Point> childPoint) {
+    public void setChildPoint(Point childPoint) {
         this.childPoint = childPoint;
     }
 

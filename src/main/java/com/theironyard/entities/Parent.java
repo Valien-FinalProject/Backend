@@ -44,6 +44,16 @@ public class Parent {
     @OneToMany
     private Collection<Child> childCollection;
 
+    //Add total point of all children
+
+    @Column
+    @ColumnDefault("false")
+    boolean emailOptIn;
+
+    @Column
+    @ColumnDefault("false")
+    boolean phoneOptIn;
+
     @Column(nullable = false, unique = true)
     @ColumnDefault("'NO-TOKEN-HERE'")
     @JsonIgnore
