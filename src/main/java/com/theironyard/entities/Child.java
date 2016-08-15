@@ -63,7 +63,7 @@ public class Child {
     @JsonIgnore
     private Parent parent;
 
-    @OneToMany
+    @OneToOne
     private Point childPoint;
 
 //    @Column
