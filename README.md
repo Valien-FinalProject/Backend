@@ -16,6 +16,7 @@ This project will be a culmination of skills from 3 Junior Back End Developers. 
 	* Parents can and remove points/task, once completed, will add points for the child.
 
 ## Heroku website
+[We are deployed!](vast-fortress-99365.herokuapp.com)
 
 ##Swagger URL
-*
+[See the Endpoints!](vast-fortress-99365.herokuapp.com/swagger-ui.thml)

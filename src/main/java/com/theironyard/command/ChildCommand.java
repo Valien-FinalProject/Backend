@@ -12,13 +12,10 @@ public class ChildCommand {
     private String password;
 
     private int age;
-
-<<<<<<< HEAD
+    
     public ChildCommand() {
     }
 
-=======
->>>>>>> donis
     public String getName() {
         return name;
     }
