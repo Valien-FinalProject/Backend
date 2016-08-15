@@ -32,7 +32,7 @@ public class Child {
     @JsonIgnore
     private String name;
 
-    @Column
+    @Column(nullable = false)
     private String username;
 
     @Column(nullable = false)
@@ -74,7 +74,7 @@ public class Child {
     private Collection<Chore> choreCollection;
 
     @ManyToMany
-    private Collection<Reward> rewardCollection;
+    private Collection<Reward> wishlist;
 
     @Column(nullable = false, unique = true)
     @ColumnDefault("'abcabcabcabcabc'")
@@ -191,12 +191,12 @@ public class Child {
         this.choreCollection.add(chore);
     }
 
-    public Collection<Reward> getRewardCollection() {
-        return rewardCollection;
+    public Collection<Reward> getWishlist() {
+        return wishlist;
     }
 
-    public void setRewardCollection(Collection<Reward> rewardCollection) {
-        this.rewardCollection = rewardCollection;
+    public void setWishlist(Collection<Reward> wishlist) {
+        this.wishlist = wishlist;
     }
 
     public String getToken() {

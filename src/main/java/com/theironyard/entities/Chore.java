@@ -1,5 +1,7 @@
 package com.theironyard.entities;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 
 /**
@@ -22,6 +24,10 @@ public class Chore {
     @OneToOne
     private Point value;
 
+    @Column
+    @ColumnDefault("false")
+    private boolean completed;
+
     public Chore() {
     }
 
@@ -33,6 +39,10 @@ public class Chore {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Parent getCreator() {
@@ -57,5 +67,13 @@ public class Chore {
 
     public void setValue(Point value) {
         this.value = value;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }
