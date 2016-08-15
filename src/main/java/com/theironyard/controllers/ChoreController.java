@@ -1,5 +1,8 @@
 package com.theironyard.controllers;
 
+import com.theironyard.services.ChildRepository;
+import com.theironyard.services.ParentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,4 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 public class ChoreController {
+
+    @Autowired
+    ParentRepository parentRepository;
+
+    @Autowired
+    ChildRepository childRepository;
+
 }

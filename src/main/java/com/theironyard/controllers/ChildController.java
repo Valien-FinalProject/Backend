@@ -28,7 +28,8 @@ public class ChildController {
     ChildRepository childRepository;
 
     @RequestMapping(path = "/children",method = RequestMethod.GET)
-    public List<Child> getAllChildren(){
+    public List<Child> getAllChildren(@RequestHeader(value = "Authorization") String parentToken){
+        getParentFromAuth(parentToken);
         return childRepository.findAll();
     }
 
