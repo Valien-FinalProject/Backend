@@ -90,7 +90,7 @@ public class Child {
         setTokenAndExpiration();
     }
 
-    public Child(String name, String username, String password ,int age, Parent parent) {
+    public Child(String name, String username,String password ,int age, Parent parent) {
         this.name = name;
         this.username = username;
         this.password = password;
@@ -187,6 +187,10 @@ public class Child {
         this.choreCollection = choreCollection;
     }
 
+    public void addChore(Chore chore){
+        this.choreCollection.add(chore);
+    }
+
     public Collection<Reward> getRewardCollection() {
         return rewardCollection;
     }
@@ -245,4 +249,5 @@ public class Child {
 //    public void setPointLog(Map<String, Point> pointLog) {
 //        this.pointLog = pointLog;
 //    }
+
 }
