@@ -13,9 +13,12 @@ public class ChildCommand {
 
     private int age;
 
+<<<<<<< HEAD
     public ChildCommand() {
     }
 
+=======
+>>>>>>> donis
     public String getName() {
         return name;
     }

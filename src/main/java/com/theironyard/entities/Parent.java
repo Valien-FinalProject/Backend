@@ -113,8 +113,13 @@ public class Parent {
         return childCollection;
     }
 
+
     public void setChildCollection(Collection<Child> childCollection) {
         this.childCollection = childCollection;
+    }
+    public void addChild(Child child) {
+        childCollection.add(child);
+
     }
 
     public String getToken() {
@@ -125,6 +130,10 @@ public class Parent {
         this.token = token;
     }
 
+    public boolean isTokenValid(){
+        return expiration.isAfter(LocalDateTime.now());
+    }
+
     public LocalDateTime getExpiration() {
         return expiration;
     }
@@ -133,9 +142,6 @@ public class Parent {
         this.expiration = expiration;
     }
 
-    public boolean isTokenValid(){
-        return expiration.isAfter(LocalDateTime.now());
-    }
 
     public String generateToken() {
         SecureRandom random = new SecureRandom();
