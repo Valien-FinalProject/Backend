@@ -1,5 +1,6 @@
 package com.theironyard.services;
 
+import com.theironyard.command.ChildCommand;
 import com.theironyard.command.ParentCommand;
 import com.theironyard.entities.Child;
 import com.theironyard.entities.Parent;
@@ -28,13 +29,13 @@ public class Auth {
         return parent;
     }
 
-//    public Child getChildFromAuth(String auth) {
-//        Child child = children.findFirstByToken(auth.split(" ")[1]);
-//        if (!child.isTokenValid()) {
-//            throw new TokenExpiredException();
-//        }
-//        return child;
-//    }
+    public Child getChildFromAuth(String auth) {
+        Child child = children.findFirstByToken(auth.split(" ")[1]);
+        if (!child.isTokenValid()) {
+            throw new TokenExpiredException();
+        }
+        return child;
+    }
 
     /**
      * Checks if user is logged in
@@ -57,6 +58,26 @@ public class Auth {
         }
 
         return user;
+    }
+
+    /**
+     * Checks if child is logged in
+     * @param childCommand holds child's info to be checked
+     * @return a child
+     * @throws Exception
+     */
+    public Child checkChildLogin(ChildCommand childCommand) throws Exception{
+        Child child  = children.findByUsername(childCommand.getUsername());
+        if (child == null){
+            throw new UserNotFoundException();
+        }
+        if (!PasswordStorage.verifyPassword(childCommand.getPassword(), child.getPassword())){
+            throw new LoginFailedException();
+        }
+        if (!child.isTokenValid()){
+            throw new TokenExpiredException();
+        }
+        return child;
     }
 
 }
