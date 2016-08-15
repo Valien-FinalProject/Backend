@@ -217,7 +217,9 @@ public class ParentController {
 
         //Get the child from the parent
         Collection<Child> parentChildren = parent.getChildCollection();
-        Child child = parentChildren.getClass()
+        //Child child = parentChildren.getClass();
+
+        return "";
     }
 
 
