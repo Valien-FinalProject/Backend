@@ -45,6 +45,7 @@ public abstract class User {
     @ManyToMany
     protected Collection<Reward> wishlistCollection;
 
+
     public Collection<Chore> getChoreCollection() {
         return choreCollection;
     }

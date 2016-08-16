@@ -1,15 +1,8 @@
 package com.theironyard.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.theironyard.utilities.LocalDateTimeConverter;
 import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 
 /**
@@ -35,8 +28,6 @@ public class Parent extends User{
     @Column
     @ColumnDefault("false")
     boolean phoneOptIn;
-
-
 
     public Parent() {
     }
@@ -68,7 +59,6 @@ public class Parent extends User{
     }
     public void addChild(Child child) {
         childCollection.add(child);
-
     }
 
     public boolean isEmailOptIn() {

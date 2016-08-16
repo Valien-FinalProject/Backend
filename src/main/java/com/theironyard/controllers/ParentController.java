@@ -116,6 +116,8 @@ public class ParentController {
         Parent parent = getAuth.getParentFromAuth(auth);
 
         Chore chore = new Chore(command.getDescription(), command.getValue());
+
+        chore.setChildAssigned(child);
         chores.save(chore);
 
         child.addChore(chore);
@@ -132,10 +134,15 @@ public class ParentController {
      */
     @RequestMapping(path = "/parent/chore/", method = RequestMethod.POST)
     public Chore createChore(@RequestHeader(value = "Authorization") String auth, @RequestBody ChoreCommand command){
+
+        //Find the parent via their token
         Auth getAuth = new Auth();
         getAuth.getParentFromAuth(auth);
 
+        //Make new chore object
         Chore chore = new Chore(command.getDescription(), command.getValue());
+
+        //Save the chore object to the Repository
         chores.save(chore);
         return chore;
     }
@@ -288,7 +295,7 @@ public class ParentController {
     @RequestMapping(path = "/parent/reward/{id}", method = RequestMethod.DELETE)
     public Collection<Reward> deleteReward(@PathVariable int id, @RequestHeader(value = "Authorization") String auth){
 
-        //Find the parent via their token
+        //Find the parent via token
         Auth getAuth = new Auth();
         Parent parent = getAuth.getParentFromAuth(auth);
 

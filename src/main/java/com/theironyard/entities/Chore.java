@@ -16,15 +16,12 @@ public class Chore {
     @GeneratedValue
     private int id;
 
-    //name
     @Column
     String name;
 
-    //start date
     @Column
     LocalDateTime startDate;
 
-    //end date
     @Column
     LocalDateTime endDate;
 
