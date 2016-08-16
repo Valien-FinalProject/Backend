@@ -51,11 +51,11 @@ public class ParentController {
      * @param command - allows parent info to be passed without making a new parent object.
      * @return newly saved parent object.
      */
-    @RequestMapping(path = "/register/", method = RequestMethod.POST)
-    public Parent registerParent(@RequestBody ParentCommand command){
+    @RequestMapping(path = "/register", method = RequestMethod.POST)
+    public Parent registerParent(@RequestBody ParentCommand command) throws PasswordStorage.CannotPerformOperationException {
 
         //Create the new Parent.
-        Parent parent = new Parent(command.getName(), command.getEmail(), command.getUsername(), command.getPassword());
+        Parent parent = new Parent(command.getName(), command.getEmail(), command.getPhone() , command.getUsername(), PasswordStorage.createHash(command.getPassword()));
 
         //Save parent to the 'parents' repository.
         parents.save(parent);

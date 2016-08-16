@@ -32,9 +32,10 @@ public class Parent extends User{
     public Parent() {
     }
 
-    public Parent(String name, String email, String username, String password) {
+    public Parent(String name, String email, String parentPhone ,String username, String password) {
         this.name = name;
         this.email = email;
+        this.parentPhone = parentPhone;
         this.username = username;
         this.password = password;
         setTokenAndExpiration();
