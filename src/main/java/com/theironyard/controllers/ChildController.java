@@ -2,10 +2,7 @@ package com.theironyard.controllers;
 
 import com.theironyard.command.ChildCommand;
 import com.theironyard.command.RewardCommand;
-import com.theironyard.entities.Child;
-import com.theironyard.entities.Chore;
-import com.theironyard.entities.Parent;
-import com.theironyard.entities.Reward;
+import com.theironyard.entities.*;
 import com.theironyard.exceptions.LoginFailedException;
 import com.theironyard.exceptions.TokenExpiredException;
 import com.theironyard.exceptions.UserNotFoundException;
@@ -79,6 +76,18 @@ public class ChildController {
         Auth auth = new Auth();
         Child child = auth.getChildFromAuth(childToken);
         return child.getChoreCollection();
+    }
+
+    /**
+     * Endpoint that gets and returns a child's points
+     * @param childToken child's token to be authorized
+     * @return a child's points
+     */
+    @RequestMapping(path = "/child/points", method = RequestMethod.GET)
+    public Point getPoints(@RequestHeader (value = "Authorization") String childToken){
+        Auth auth = new Auth();
+        Child child =  auth.getChildFromAuth(childToken);
+        return child.getChildPoint();
     }
 
     /***************************
