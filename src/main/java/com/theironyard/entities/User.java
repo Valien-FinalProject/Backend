@@ -29,7 +29,7 @@ public abstract class User {
     @Column
     protected String email;
 
-    @Column
+    @Column(nullable = false, unique = true)
     protected String username;
 
     @Column(nullable = false)
