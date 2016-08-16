@@ -3,6 +3,7 @@ package com.theironyard.entities;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * Created by EddyJ on 8/13/16.
@@ -15,17 +16,31 @@ public class Chore {
     @GeneratedValue
     private int id;
 
-    //Do we need to a creator? We definitely need a child this assigned to, right?
+    //Do we need to a creator? We definitely need a child, right?
     @ManyToOne
     private Parent creator;
 
     //name
+    @Column
+    String name;
+
     //start date
+    @Column
+    LocalDateTime startDate;
+
     //end date
+    @Column
+    LocalDateTime endDate;
+
     //frequency
-    //assign
-    //complete boolean
-    //pending boolean
+    /*I think this is going to be an enum of the days of the week.*/
+
+    @ManyToOne
+    private Child childAssigned;
+
+    @Column
+    @ColumnDefault("false")
+    private boolean complete;
 
     @Column
     private String description;
@@ -96,5 +111,45 @@ public class Chore {
 
     public void setPending(boolean pending) {
         this.pending = pending;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public Child getChildAssigned() {
+        return childAssigned;
+    }
+
+    public void setChildAssigned(Child childAssigned) {
+        this.childAssigned = childAssigned;
+    }
+
+    public boolean isComplete() {
+        return complete;
+    }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
     }
 }

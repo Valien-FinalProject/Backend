@@ -9,5 +9,5 @@ import java.util.List;
  * Created by Nigel on 8/15/16.
  */
 public interface ChoreRepository extends JpaRepository<Chore, Integer>{
-//    List<Chore> findByPendingEqualsTrue();
+    List<Chore> findAllByPendingTrue();
 }
