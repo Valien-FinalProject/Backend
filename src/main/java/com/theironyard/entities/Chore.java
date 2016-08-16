@@ -17,13 +17,13 @@ public class Chore {
     private int id;
 
     @Column
-    String name;
+    private String name;
 
     @Column
-    LocalDateTime startDate;
+    private LocalDateTime startDate;
 
     @Column
-    LocalDateTime endDate;
+    private LocalDateTime endDate;
 
     //frequency
     /*I think this is going to be an enum of the days of the week.*/
@@ -38,8 +38,8 @@ public class Chore {
     @Column
     private String description;
 
-    @OneToOne
-    private Point value;
+    @Column
+    private int value;
 
     @Column
     @ColumnDefault("false")
@@ -52,7 +52,7 @@ public class Chore {
     public Chore() {
     }
 
-    public Chore(String description, Point value) {
+    public Chore(String description, int value) {
         this.description = description;
         this.value = value;
     }
@@ -73,11 +73,11 @@ public class Chore {
         this.description = description;
     }
 
-    public Point getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(Point value) {
+    public void setValue(int value) {
         this.value = value;
     }
 

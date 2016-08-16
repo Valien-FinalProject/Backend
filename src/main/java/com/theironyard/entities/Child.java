@@ -34,8 +34,8 @@ public class Child extends User{
     @JsonIgnore
     private Parent parent;
 
-    @OneToOne
-    private Point childPoint;
+    @Column
+    private int childPoint;
 
 //    @Column
 //    @JsonIgnore
@@ -117,15 +117,15 @@ public class Child extends User{
         return expiration.isAfter(LocalDateTime.now());
     }
 
-    public Point getChildPoint() {
+    public int getChildPoint() {
         return childPoint;
     }
 
-    public void setChildPoint(Point childPoint) {
+    public void setChildPoint(int childPoint) {
         this.childPoint = childPoint;
     }
 
-//    public Collect<Log> getPointLog() {
+    //    public Collect<Log> getPointLog() {
 //        return pointLog;
 //    }
 //

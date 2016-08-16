@@ -23,6 +23,7 @@ import java.util.Map;
  */
 @RestController
 @CrossOrigin
+@RequestMapping(path = "/child")
 public class ChildController {
 
     @Autowired
@@ -47,7 +48,7 @@ public class ChildController {
      * @param id child's id is passed to find certain child
      * @return a child's info
      */
-    @RequestMapping(path = "/child/{id}",method = RequestMethod.GET)
+    @RequestMapping(path = "/{id}",method = RequestMethod.GET)
     public Child getOneChild(@RequestHeader(value = "Authorization") String parentToken, @PathVariable int id){
         Auth auth = new Auth();
         auth.getParentFromAuth(parentToken);
@@ -59,7 +60,7 @@ public class ChildController {
      * @param childToken child's token to be authorized for that account signed in
      * @return all rewards in the child's wishlist
      */
-    @RequestMapping(path = "/child/wishlist",method = RequestMethod.GET)
+    @RequestMapping(path = "/wishlist",method = RequestMethod.GET)
     public Collection<Reward> showWishlist(@RequestHeader (value = "Authorization") String childToken){
         Auth auth = new Auth();
         Child child = auth.getChildFromAuth(childToken);
@@ -71,7 +72,7 @@ public class ChildController {
      * @param childToken child's token to be authorized for the account signed in
      * @return all chores for that child logged in
      */
-    @RequestMapping(path = "/child/chores",method = RequestMethod.GET)
+    @RequestMapping(path = "/chores",method = RequestMethod.GET)
     public Collection<Chore> showAllChores(@RequestHeader (value = "Authorization") String childToken){
         Auth auth = new Auth();
         Child child = auth.getChildFromAuth(childToken);
@@ -83,8 +84,8 @@ public class ChildController {
      * @param childToken child's token to be authorized
      * @return a child's points
      */
-    @RequestMapping(path = "/child/points", method = RequestMethod.GET)
-    public Point getPoints(@RequestHeader (value = "Authorization") String childToken){
+    @RequestMapping(path = "/points", method = RequestMethod.GET)
+    public int getPoints(@RequestHeader (value = "Authorization") String childToken){
         Auth auth = new Auth();
         Child child =  auth.getChildFromAuth(childToken);
         return child.getChildPoint();
@@ -95,7 +96,7 @@ public class ChildController {
      * @param childToken child's token to be authorized
      * @return a collection of the child's rewards
      */
-    @RequestMapping(path = "/child/rewards",method = RequestMethod.GET)
+    @RequestMapping(path = "/rewards",method = RequestMethod.GET)
     public Collection<Reward> getChildRewards(@RequestHeader (value = "Authorization") String childToken){
         Auth auth = new Auth();
         Child child = auth.getChildFromAuth(childToken);
@@ -113,7 +114,7 @@ public class ChildController {
      * @throws PasswordStorage.InvalidHashException
      * @throws PasswordStorage.CannotPerformOperationException
      */
-    @RequestMapping(path = "/child/login",method = RequestMethod.POST)
+    @RequestMapping(path = "/login",method = RequestMethod.POST)
     public Child childLogin(@RequestBody ChildCommand childCommand) throws PasswordStorage.InvalidHashException, PasswordStorage.CannotPerformOperationException {
         Child child = childRepository.findByUsername(childCommand.getUsername());
         if(child == null){
@@ -130,7 +131,7 @@ public class ChildController {
      * @param childToken child's token to be authorized for that account signed in
      * @param session current session of the child's account to be invalidated
      */
-    @RequestMapping(path = "/child/logout",method = RequestMethod.POST)
+    @RequestMapping(path = "/logout",method = RequestMethod.POST)
     public void childLogout(@RequestHeader (value = "Authorization") String childToken, HttpSession session){
         Auth auth = new Auth();
         auth.getChildFromAuth(childToken);
@@ -144,7 +145,7 @@ public class ChildController {
      * @param id the id of a certain chore that the child is currently marking for completion
      * @return the chore that was completed or marked for completion is returned
      */
-    @RequestMapping(path = "/child/chore/{id}",method = RequestMethod.POST)
+    @RequestMapping(path = "/chore/{id}",method = RequestMethod.POST)
     public Chore completeChore(@RequestHeader (value = "Authorization") String childToken, @PathVariable int id){
         Auth auth = new Auth();
         Child child =  auth.getChildFromAuth(childToken);
@@ -161,12 +162,13 @@ public class ChildController {
      * @param rewardCommand grab the reward's info the child types in since it is needed to create a new reward
      * @return the new collection of the child's wishlist with the new reward that was added to the collection
      */
-    @RequestMapping(path = "/child/wishlist",method = RequestMethod.POST)
+    @RequestMapping(path = "/wishlist",method = RequestMethod.POST)
     public Collection<Reward> createWishlistItem(@RequestHeader (value = "Authorization") String childToken, RewardCommand rewardCommand){
         Auth auth = new Auth();
         Child child = auth.getChildFromAuth(childToken);
 
         Reward reward = new Reward(rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPointvalue());
+        rewardRepository.save(reward);
         child.addReward(reward);
         return child.getRewardCollection();
     }
@@ -175,7 +177,7 @@ public class ChildController {
         Update/PUT Endpoints
      ***************************/
 
-    @RequestMapping(path = "/child/profile",method = RequestMethod.PUT)
+    @RequestMapping(path = "/profile",method = RequestMethod.PUT)
     public Child updateProfile(@RequestHeader (value = "Authorization") String childToken, ChildCommand childCommand){
         Auth auth = new Auth();
         Child child = auth.getChildFromAuth(childToken);
@@ -184,6 +186,27 @@ public class ChildController {
         child.setChildPhone(childCommand.getChildPhone());
 
         return child;
+    }
+
+    /**
+     * Endpoint that allows child to set a chore to a pending status so the parent may review the chore and judge
+     * it the chore is approved and completed and denied and returned back to the chores to do
+     * @param childToken child's token that is required for authorization
+     * @param choreId id of the chore the child is changing the pending status of
+     * @return the chore that is now pending to be completed
+     */
+    @RequestMapping(path = "/chore/{id}/pending",method = RequestMethod.PUT)
+    public Chore setPendingChore(@RequestHeader (value = "Authorization") String childToken, @PathVariable int choreId){
+        Auth auth = new Auth();
+        Child child = auth.getChildFromAuth(childToken);
+
+        Collection<Chore> childChores = child.getChoreCollection();
+
+        Chore pendingChore = choreRepository.findOne(choreId);
+        pendingChore.setPending(true);
+        choreRepository.save(pendingChore);
+        childChores.add(pendingChore);
+        return pendingChore;
     }
 
     /***************************
@@ -196,7 +219,7 @@ public class ChildController {
      * @param itemId id of the item/reward that the child is going to delete from their wishlist
      * @return a new collection of the child's updated wishlist
      */
-    @RequestMapping(path = "/child/delete/wishlist/{id}",method = RequestMethod.DELETE)
+    @RequestMapping(path = "/delete/wishlist/{id}",method = RequestMethod.DELETE)
     public Collection<Reward> deleteWishlistItem (@RequestHeader (value = "Authorization") String childToken, @PathVariable int itemId){
         Auth auth = new Auth();
         Child child = auth.getChildFromAuth(childToken);
@@ -217,7 +240,7 @@ public class ChildController {
      * @return the token for the child's account that is logged in
      * @throws Exception
      */
-    @RequestMapping(path = "/child/token",method = RequestMethod.GET)
+    @RequestMapping(path = "/token",method = RequestMethod.GET)
     public Map getChildToken(@RequestBody ChildCommand childCommand) throws Exception{
         Auth auth = new Auth();
         Child child = auth.checkChildLogin(childCommand);
@@ -233,7 +256,7 @@ public class ChildController {
      * @return a new token for the child's account
      * @throws Exception
      */
-    @RequestMapping(path = "/child/token/regenerate", method = RequestMethod.PUT)
+    @RequestMapping(path = "/token/regenerate", method = RequestMethod.PUT)
     public String regenerateChildToken(@RequestBody ChildCommand childCommand) throws Exception {
         Auth auth = new Auth();
         Child child = auth.checkChildLogin(childCommand);
