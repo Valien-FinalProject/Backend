@@ -23,11 +23,11 @@ public class Parent extends User{
 
     @Column
     @ColumnDefault("false")
-    boolean emailOptIn;
+    private boolean emailOptIn;
 
     @Column
     @ColumnDefault("false")
-    boolean phoneOptIn;
+    private boolean phoneOptIn;
 
     public Parent() {
     }

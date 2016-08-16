@@ -1,6 +1,7 @@
 package com.theironyard.entities;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -27,6 +28,9 @@ public class Chore {
 
     //frequency
     /*I think this is going to be an enum of the days of the week.*/
+
+    @ManyToOne
+    private Parent creator;
 
     @ManyToOne
     private Child childAssigned;
@@ -135,5 +139,13 @@ public class Chore {
 
     public void setComplete(boolean complete) {
         this.complete = complete;
+    }
+
+    public Parent getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Parent creator) {
+        this.creator = creator;
     }
 }
