@@ -42,7 +42,7 @@ public class Chore {
     @Column
     private String description;
 
-    @OneToOne
+    @Column
     private int value;
 
     @Column

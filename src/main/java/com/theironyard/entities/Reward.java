@@ -23,7 +23,7 @@ public class Reward {
     @Column
     private File url;
 
-    @OneToOne
+    @Column
     private int rewardValue;
 
     public Reward() {

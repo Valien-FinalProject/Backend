@@ -34,7 +34,7 @@ public class Child extends User{
     @JsonIgnore
     private Parent parent;
 
-    @OneToOne
+    @Column
     private int childPoint;
 
 //    @Column
