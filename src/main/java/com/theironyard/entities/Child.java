@@ -4,15 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.theironyard.utilities.LocalDateTimeConverter;
 import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.io.File;
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * Created by Nigel on 8/13/16.
@@ -20,36 +15,11 @@ import java.util.Map;
 @Entity
 @Table(name = "children")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Child {
-
-    public static final int TOKEN_EXPIRATION = 1;
-
-    @Id
-    @GeneratedValue
-    private int id;
-
-    @Column(nullable = false)
-    @JsonIgnore
-    private String name;
-
-    @Column
-    private String username;
-
-    @Column(nullable = false)
-    @JsonIgnore
-    private String password;
-
-    @Column
-    @JsonIgnore
-    private int age;
+public class Child extends User{
 
     @Column
     @JsonIgnore
     private String childPhone;
-
-    @Column
-    @JsonIgnore
-    private String email;
 
     @Column
     @JsonIgnore
@@ -68,13 +38,7 @@ public class Child {
 
 //    @Column
 //    @JsonIgnore
-//    Map<String, Point> pointLog;
-
-    @ManyToMany
-    private Collection<Chore> choreCollection;
-
-    @ManyToMany
-    private Collection<Reward> rewardCollection;
+//    Collection<Log> pointLog;
 
     @Column(nullable = false, unique = true)
     @ColumnDefault("'abcabcabcabcabc'")
@@ -90,53 +54,12 @@ public class Child {
         setTokenAndExpiration();
     }
 
-    public Child(String name, String username,String password ,int age, Parent parent) {
+    public Child(String name, String username,String password, Parent parent) {
         this.name = name;
         this.username = username;
         this.password = password;
-        this.age = age;
         this.parent = parent;
         setTokenAndExpiration();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public String getChildPhone() {
@@ -147,13 +70,6 @@ public class Child {
         this.childPhone = childPhone;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getLocation() {
         return location;
@@ -179,46 +95,6 @@ public class Child {
         this.parent = parent;
     }
 
-    public Collection<Chore> getChoreCollection() {
-        return choreCollection;
-    }
-
-    public void setChoreCollection(Collection<Chore> choreCollection) {
-        this.choreCollection = choreCollection;
-    }
-
-    public void addChore(Chore chore){
-        this.choreCollection.add(chore);
-    }
-
-    public Collection<Reward> getRewardCollection() {
-        return rewardCollection;
-    }
-
-    public void setRewardCollection(Collection<Reward> rewardCollection) {
-        this.rewardCollection = rewardCollection;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public LocalDateTime getExpiration() {
-        return expiration;
-    }
-
-    public void setExpiration(LocalDateTime expiration) {
-        this.expiration = expiration;
-    }
-
-    public boolean isTokenValid(){
-        return expiration.isAfter(LocalDateTime.now());
-    }
-
     public Point getChildPoint() {
         return childPoint;
     }
@@ -227,26 +103,11 @@ public class Child {
         this.childPoint = childPoint;
     }
 
-    public String generateToken() {
-        SecureRandom random = new SecureRandom();
-        return new BigInteger(130, random).toString(32);
-    }
-
-    public void setTokenAndExpiration() {
-        token = generateToken();
-        expiration = LocalDateTime.now().plus(TOKEN_EXPIRATION, ChronoUnit.YEARS);
-    }
-
-    public String regenerate(){
-        setTokenAndExpiration();
-        return token;
-    }
-
-//    public Map<String, Point> getPointLog() {
+//    public Collect<Log> getPointLog() {
 //        return pointLog;
 //    }
 //
-//    public void setPointLog(Map<String, Point> pointLog) {
+//    public void setPointLog(Collect<Log> pointLog) {
 //        this.pointLog = pointLog;
 //    }
 

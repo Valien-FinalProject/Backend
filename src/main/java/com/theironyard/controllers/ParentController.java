@@ -1,21 +1,15 @@
 package com.theironyard.controllers;
 
-import com.theironyard.entities.Point;
-import com.theironyard.services.ChoreRepository;
+import com.theironyard.entities.*;
+import com.theironyard.services.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.theironyard.command.ChildCommand;
 import com.theironyard.command.ChoreCommand;
 import com.theironyard.command.ParentCommand;
-import com.theironyard.entities.Child;
-import com.theironyard.entities.Chore;
-import com.theironyard.entities.Parent;
 import com.theironyard.exceptions.LoginFailedException;
 import com.theironyard.exceptions.TokenExpiredException;
-import com.theironyard.services.Auth;
-import com.theironyard.services.ChildRepository;
-import com.theironyard.services.ParentRepository;
 import com.theironyard.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +34,9 @@ public class ParentController {
 
     @Autowired
     ChoreRepository chores;
+
+    @Autowired
+    RewardRepository rewards;
 
 
     /*==================================================
@@ -84,8 +81,7 @@ public class ParentController {
 
         Parent parent = parents.findOne(id);
 
-        Child child = new Child(command.getName(), command.getUsername(), command.getPassword(), command.getAge(), parent);
-
+        Child child = new Child(command.getName(), command.getUsername(), command.getPassword(), parent);
         parent.addChild(child);
         children.save(child);
 
@@ -155,6 +151,8 @@ public class ParentController {
         return parent.getChildCollection() ;
     }
 
+    //get all chores that are pending
+
     /**
      * Gets the token of the Parent that is currently logged in.
      * @param command
@@ -208,7 +206,7 @@ public class ParentController {
         return success;
     }
 
-    @RequestMapping(path = "/parent/deduct/child/{id}")
+    @RequestMapping(path = "/parent/deduct/child/{id}", method = RequestMethod.PUT)
     public String deductPoints(@PathVariable int id, @RequestHeader(value = "Authorization") String auth){
 
         //Find the parent via their token
@@ -222,5 +220,61 @@ public class ParentController {
         return "";
     }
 
+    /*==================================================
+    ***************** 'DELETE' ENDPOINTS ***************
+    ===================================================*/
 
+    @RequestMapping(path = "/parent/reward/{id}", method = RequestMethod.DELETE)
+    public Collection<Reward> deleteReward(@PathVariable int id, @RequestHeader(value = "Authorization") String auth){
+
+        //Find the parent via their token
+        Auth getAuth = new Auth();
+        Parent parent = getAuth.getParentFromAuth(auth);
+
+        //Get the Collection of Rewards from the parent
+        Collection<Reward> parentRewardCollection = parent.getRewardCollection();
+
+        //Find the award and delete it from the Collection and Repository.
+        parentRewardCollection.remove(rewards.findOne(id));
+        rewards.delete(id);
+
+        //Return the new collection
+        return parent.getRewardCollection();
+    }
+
+    @RequestMapping(path = "/parent/chore/{id}", method = RequestMethod.DELETE)
+    public Collection<Chore> deleteChore(@PathVariable int id, @RequestHeader(value = "Authorization") String auth){
+
+        //Find the parent via their token
+        Auth getAuth = new Auth();
+        Parent parent = getAuth.getParentFromAuth(auth);
+
+        //Get the Collection of Chores from the parent
+        Collection<Chore> parentChoreCollection = parent.getChoreCollection();
+
+        //Find the chore and delete it from the Collection and Repository.
+        parentChoreCollection.remove(chores.findOne(id));
+        chores.delete(id);
+
+        //Return the new Collection
+        return parent.getChoreCollection();
+    }
+
+    @RequestMapping(path = "/parent/child/{id}", method = RequestMethod.DELETE)
+    public Collection<Child> deleteChild(@PathVariable int id, @RequestHeader(value = "Authorization") String auth){
+
+        //Find the parent via their token
+        Auth getAuth = new Auth();
+        Parent parent = getAuth.getParentFromAuth(auth);
+
+        //Get the Collection of Children from the parent
+        Collection<Child> parentChildCollection = parent.getChildCollection();
+
+        //Find the child and delete it fromt he Collection and Repository.
+        parentChildCollection.remove(children.findOne(id));
+        children.delete(id);
+
+        //Return the new Collection
+        return parent.getChildCollection();
+    }
 }

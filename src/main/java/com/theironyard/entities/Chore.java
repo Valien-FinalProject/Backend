@@ -13,10 +13,17 @@ public class Chore {
     @GeneratedValue
     private int id;
 
+    //Do we need to a creator? We definitely need a child this assigned to, right?
     @ManyToOne
     private Parent creator;
 
-    //Add name of description
+    //name
+    //start date
+    //end date
+    //frequency
+    //assign
+    //complete boolean
+    //pending boolean
 
     @Column
     private String description;
