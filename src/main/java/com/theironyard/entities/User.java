@@ -42,6 +42,9 @@ public abstract class User {
     @ManyToMany
     protected Collection<Reward> rewardCollection;
 
+    @ManyToMany
+    protected Collection<Reward> wishlistCollection;
+
     public Collection<Chore> getChoreCollection() {
         return choreCollection;
     }
@@ -132,6 +135,17 @@ public abstract class User {
         this.expiration = expiration;
     }
 
+    public Collection<Reward> getWishlistCollection() {
+        return wishlistCollection;
+    }
+
+    public void setWishlistCollection(Collection<Reward> wishlistCollection) {
+        this.wishlistCollection = wishlistCollection;
+    }
+
+    public void addWishlistItem(Reward reward){
+        this.wishlistCollection.add(reward);
+    }
 
     public String generateToken() {
         SecureRandom random = new SecureRandom();

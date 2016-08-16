@@ -1,5 +1,7 @@
 package com.theironyard.command;
 
+import java.io.File;
+
 /**
  * Created by EddyJ on 8/13/16.
  */
@@ -11,8 +13,12 @@ public class ChildCommand {
 
     private String password;
 
-    private int age;
-    
+    private String childPhone;
+
+    private File childPicture;
+
+    private String email;
+
     public ChildCommand() {
     }
 
@@ -40,11 +46,27 @@ public class ChildCommand {
         this.password = password;
     }
 
-    public int getAge() {
-        return age;
+    public String getChildPhone() {
+        return childPhone;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setChildPhone(String childPhone) {
+        this.childPhone = childPhone;
+    }
+
+    public File getChildPicture() {
+        return childPicture;
+    }
+
+    public void setChildPicture(File childPicture) {
+        this.childPicture = childPicture;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

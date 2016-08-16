@@ -6,10 +6,7 @@ import com.theironyard.entities.*;
 import com.theironyard.exceptions.LoginFailedException;
 import com.theironyard.exceptions.TokenExpiredException;
 import com.theironyard.exceptions.UserNotFoundException;
-import com.theironyard.services.Auth;
-import com.theironyard.services.ChildRepository;
-import com.theironyard.services.ChoreRepository;
-import com.theironyard.services.ParentRepository;
+import com.theironyard.services.*;
 import com.theironyard.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +33,9 @@ public class ChildController {
 
     @Autowired
     ChoreRepository choreRepository;
+
+    @Autowired
+    RewardRepository rewardRepository;
 
     /***************************
         Read/Get Endpoints
@@ -88,6 +88,18 @@ public class ChildController {
         Auth auth = new Auth();
         Child child =  auth.getChildFromAuth(childToken);
         return child.getChildPoint();
+    }
+
+    /**
+     * Endpoint that gets all rewards for child currently logged in
+     * @param childToken child's token to be authorized
+     * @return a collection of the child's rewards
+     */
+    @RequestMapping(path = "/child/rewards",method = RequestMethod.GET)
+    public Collection<Reward> getChildRewards(@RequestHeader (value = "Authorization") String childToken){
+        Auth auth = new Auth();
+        Child child = auth.getChildFromAuth(childToken);
+        return child.getRewardCollection();
     }
 
     /***************************
@@ -157,6 +169,42 @@ public class ChildController {
         Reward reward = new Reward(rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPointvalue());
         child.addReward(reward);
         return child.getRewardCollection();
+    }
+
+    /***************************
+        Update/PUT Endpoints
+     ***************************/
+
+    @RequestMapping(path = "/child/profile",method = RequestMethod.PUT)
+    public Child updateProfile(@RequestHeader (value = "Authorization") String childToken, ChildCommand childCommand){
+        Auth auth = new Auth();
+        Child child = auth.getChildFromAuth(childToken);
+
+        child.setEmail(childCommand.getEmail());
+        child.setChildPhone(childCommand.getChildPhone());
+
+        return child;
+    }
+
+    /***************************
+        Delete Endpoints
+     ***************************/
+
+    /**
+     * Delete endpoint that allows a child to delete an item in their wishlist
+     * @param childToken child's token to be authoized for that child's account signed in
+     * @param itemId id of the item/reward that the child is going to delete from their wishlist
+     * @return a new collection of the child's updated wishlist
+     */
+    @RequestMapping(path = "/child/delete/wishlist/{id}",method = RequestMethod.DELETE)
+    public Collection<Reward> deleteWishlistItem (@RequestHeader (value = "Authorization") String childToken, @PathVariable int itemId){
+        Auth auth = new Auth();
+        Child child = auth.getChildFromAuth(childToken);
+
+        Reward reward = rewardRepository.findOne(itemId);
+        Collection<Reward> wishlist = child.getWishlistCollection();
+        wishlist.remove(reward);
+        return wishlist;
     }
 
     /***************************

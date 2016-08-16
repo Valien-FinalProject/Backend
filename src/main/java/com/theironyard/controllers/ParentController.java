@@ -115,7 +115,7 @@ public class ParentController {
         Child child = children.findOne(id);
         Parent parent = getAuth.getParentFromAuth(auth);
 
-        Chore chore = new Chore(parent, command.getDescription(), command.getValue());
+        Chore chore = new Chore(command.getDescription(), command.getValue());
         chores.save(chore);
 
         child.addChore(chore);
@@ -133,9 +133,9 @@ public class ParentController {
     @RequestMapping(path = "/parent/chore/", method = RequestMethod.POST)
     public Chore createChore(@RequestHeader(value = "Authorization") String auth, @RequestBody ChoreCommand command){
         Auth getAuth = new Auth();
-        Parent parent = getAuth.getParentFromAuth(auth);
+        getAuth.getParentFromAuth(auth);
 
-        Chore chore = new Chore(parent, command.getDescription(), command.getValue());
+        Chore chore = new Chore(command.getDescription(), command.getValue());
         chores.save(chore);
         return chore;
     }
