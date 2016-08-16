@@ -22,11 +22,9 @@ public class Parent extends User{
     //Add total point of all children
 
     @Column
-    @ColumnDefault("false")
     private boolean emailOptIn;
 
     @Column
-    @ColumnDefault("false")
     private boolean phoneOptIn;
 
     public Parent() {
