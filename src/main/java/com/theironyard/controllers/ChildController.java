@@ -84,7 +84,7 @@ public class ChildController {
      * @return a child's points
      */
     @RequestMapping(path = "/child/points", method = RequestMethod.GET)
-    public Point getPoints(@RequestHeader (value = "Authorization") String childToken){
+    public int getPoints(@RequestHeader (value = "Authorization") String childToken){
         Auth auth = new Auth();
         Child child =  auth.getChildFromAuth(childToken);
         return child.getChildPoint();

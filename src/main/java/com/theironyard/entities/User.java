@@ -19,7 +19,6 @@ public abstract class User {
 
     public static final int TOKEN_EXPIRATION = 1;
 
-
     @Id
     @GeneratedValue
     private int id;

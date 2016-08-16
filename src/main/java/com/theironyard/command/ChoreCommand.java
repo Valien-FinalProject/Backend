@@ -1,17 +1,20 @@
 package com.theironyard.command;
-
-import com.theironyard.entities.Point;
+import java.time.LocalDateTime;
 
 /**
  * Created by chocodonis on 8/14/16.
  */
 public class ChoreCommand {
 
+    LocalDateTime startDate;
+
+    LocalDateTime endDate;
+
     private String description;
 
-    private Point value;
+    private int value;
 
-    public ChoreCommand(String description, Point value) {
+    public ChoreCommand(String description, int value) {
         this.description = description;
         this.value = value;
     }
@@ -24,11 +27,27 @@ public class ChoreCommand {
         this.description = description;
     }
 
-    public Point getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(Point value) {
+    public void setValue(int value) {
         this.value = value;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
     }
 }

@@ -1,6 +1,7 @@
 package com.theironyard.entities;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -29,6 +30,9 @@ public class Chore {
     /*I think this is going to be an enum of the days of the week.*/
 
     @ManyToOne
+    private Parent creator;
+
+    @ManyToOne
     private Child childAssigned;
 
     @Column
@@ -39,7 +43,7 @@ public class Chore {
     private String description;
 
     @OneToOne
-    private Point value;
+    private int value;
 
     @Column
     @ColumnDefault("false")
@@ -52,7 +56,7 @@ public class Chore {
     public Chore() {
     }
 
-    public Chore(String description, Point value) {
+    public Chore(String description, int value) {
         this.description = description;
         this.value = value;
     }
@@ -73,11 +77,11 @@ public class Chore {
         this.description = description;
     }
 
-    public Point getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(Point value) {
+    public void setValue(int value) {
         this.value = value;
     }
 
@@ -135,5 +139,13 @@ public class Chore {
 
     public void setComplete(boolean complete) {
         this.complete = complete;
+    }
+
+    public Parent getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Parent creator) {
+        this.creator = creator;
     }
 }

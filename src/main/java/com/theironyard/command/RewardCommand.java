@@ -1,7 +1,5 @@
 package com.theironyard.command;
 
-import com.theironyard.entities.Point;
-
 import java.io.File;
 
 /**
@@ -13,7 +11,7 @@ public class RewardCommand {
 
     private File url;
 
-    private Point pointvalue;
+    private int pointvalue;
 
     public RewardCommand() {
     }
@@ -34,11 +32,11 @@ public class RewardCommand {
         this.url = url;
     }
 
-    public Point getPointvalue() {
+    public int getPointvalue() {
         return pointvalue;
     }
 
-    public void setPointvalue(Point pointvalue) {
+    public void setPointvalue(int pointvalue) {
         this.pointvalue = pointvalue;
     }
 }

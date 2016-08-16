@@ -24,12 +24,12 @@ public class Reward {
     private File url;
 
     @OneToOne
-    private Point rewardValue;
+    private int rewardValue;
 
     public Reward() {
     }
 
-    public Reward(String description, File url, Point rewardValue) {
+    public Reward(String description, File url, int rewardValue) {
         this.description = description;
         this.url = url;
         this.rewardValue = rewardValue;
@@ -59,11 +59,11 @@ public class Reward {
         this.url = url;
     }
 
-    public Point getRewardValue() {
+    public int getRewardValue() {
         return rewardValue;
     }
 
-    public void setRewardValue(Point rewardValue) {
+    public void setRewardValue(int rewardValue) {
         this.rewardValue = rewardValue;
     }
 }
