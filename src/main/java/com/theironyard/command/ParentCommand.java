@@ -13,6 +13,8 @@ public class ParentCommand {
 
     private String email;
 
+    private String phone;
+
     private String username;
 
     private String password;
@@ -40,6 +42,14 @@ public class ParentCommand {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getUsername() {
