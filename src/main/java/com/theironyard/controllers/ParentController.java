@@ -206,13 +206,13 @@ public class ParentController {
         return child.getChoreCollection();
     }
 
-//    @RequestMapping(path = "/parent/chores/pending", method = RequestMethod.GET)
-//    public List<Chore> getPendingChores(@RequestHeader (value = "Authorization") String parentToken){
-//        Auth auth = new Auth();
-//        auth.getParentFromAuth(parentToken);
-//
-//        return chores.findByPendingEqualsTrue();
-//    }
+    @RequestMapping(path = "/parent/chores/pending", method = RequestMethod.GET)
+    public List<Chore> getPendingChores(@RequestHeader (value = "Authorization") String parentToken){
+        Auth auth = new Auth();
+        auth.getParentFromAuth(parentToken);
+
+        return chores.findAllByPendingTrue();
+    }
 
     /**
      * Gets the token of the Parent that is currently logged in.
