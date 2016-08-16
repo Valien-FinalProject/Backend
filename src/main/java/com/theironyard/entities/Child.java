@@ -15,6 +15,7 @@ import java.util.Collection;
 @Entity
 @Table(name = "children")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class Child extends User{
 
     @Column
@@ -38,6 +39,7 @@ public class Child extends User{
 
 //    @Column
 //    @JsonIgnore
+
 //    Collection<Log> pointLog;
 
     @Column(nullable = false, unique = true)
@@ -93,6 +95,27 @@ public class Child extends User{
 
     public void setParent(Parent parent) {
         this.parent = parent;
+    }
+
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public LocalDateTime getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(LocalDateTime expiration) {
+        this.expiration = expiration;
+    }
+
+    public boolean isTokenValid(){
+        return expiration.isAfter(LocalDateTime.now());
     }
 
     public Point getChildPoint() {
