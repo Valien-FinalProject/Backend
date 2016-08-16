@@ -37,6 +37,10 @@ public class Chore {
     @ColumnDefault("false")
     private boolean completed;
 
+    @Column
+    @ColumnDefault("false")
+    private boolean pending;
+
     public Chore() {
     }
 
@@ -84,5 +88,13 @@ public class Chore {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public boolean isPending() {
+        return pending;
+    }
+
+    public void setPending(boolean pending) {
+        this.pending = pending;
     }
 }

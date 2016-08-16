@@ -70,4 +70,20 @@ public class Parent extends User{
         childCollection.add(child);
 
     }
+
+    public boolean isEmailOptIn() {
+        return emailOptIn;
+    }
+
+    public void setEmailOptIn(boolean emailOptIn) {
+        this.emailOptIn = emailOptIn;
+    }
+
+    public boolean isPhoneOptIn() {
+        return phoneOptIn;
+    }
+
+    public void setPhoneOptIn(boolean phoneOptIn) {
+        this.phoneOptIn = phoneOptIn;
+    }
 }

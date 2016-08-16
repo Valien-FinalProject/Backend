@@ -1,6 +1,7 @@
 package com.theironyard.controllers;
 
 import com.theironyard.command.ChildCommand;
+import com.theironyard.command.RewardCommand;
 import com.theironyard.entities.Child;
 import com.theironyard.entities.Chore;
 import com.theironyard.entities.Parent;
@@ -57,29 +58,28 @@ public class ChildController {
     }
 
     /**
-     * Endpoint for when a child is logging out of the account
+     * Endpoint that will return a collection of rewards in the childs wishlist for that child's account
      * @param childToken child's token to be authorized for that account signed in
-     * @param session current session of the child's account to be invalidated
+     * @return all rewards in the child's wishlist
      */
-    @RequestMapping(path = "/child/logout",method = RequestMethod.GET)
-    public void childLogout(@RequestHeader (value = "Authorization") String childToken, HttpSession session){
+    @RequestMapping(path = "/child/wishlist",method = RequestMethod.GET)
+    public Collection<Reward> showWishlist(@RequestHeader (value = "Authorization") String childToken){
         Auth auth = new Auth();
-        auth.getChildFromAuth(childToken);
-        session.invalidate();
+        Child child = auth.getChildFromAuth(childToken);
+        return child.getRewardCollection();
     }
 
     /**
-     * Endpoint that will return a list for a child's account
-     * @param childToken child's token to be authorized for that account signed in
-     * @return a child's wishlist
+     * Endpoint that is going to return a collection of chores for that child's account
+     * @param childToken child's token to be authorized for the account signed in
+     * @return all chores for that child logged in
      */
-//    @RequestMapping(path = "/child/wishlist",method = RequestMethod.GET)
-//    public Collection<Reward> showWishlist(@RequestHeader (value = "Auhorization") String childToken){
-//        Auth auth = new Auth();
-//        Child child = auth.getChildFromAuth(childToken);
-//
-//        return child.getWishlist();
-//    }
+    @RequestMapping(path = "/child/chores",method = RequestMethod.GET)
+    public Collection<Chore> showAllChores(@RequestHeader (value = "Authorization") String childToken){
+        Auth auth = new Auth();
+        Child child = auth.getChildFromAuth(childToken);
+        return child.getChoreCollection();
+    }
 
     /***************************
         Create/Post Endpoints
@@ -105,6 +105,18 @@ public class ChildController {
     }
 
     /**
+     * Endpoint for when a child is logging out of the account
+     * @param childToken child's token to be authorized for that account signed in
+     * @param session current session of the child's account to be invalidated
+     */
+    @RequestMapping(path = "/child/logout",method = RequestMethod.POST)
+    public void childLogout(@RequestHeader (value = "Authorization") String childToken, HttpSession session){
+        Auth auth = new Auth();
+        auth.getChildFromAuth(childToken);
+        session.invalidate();
+    }
+
+    /**
      * A child must be authorized to complete a chore/task and await for the parent to approve chore/task before
      * points are rewarded
      * @param childToken child's token to be authorized for that account signed in
@@ -122,11 +134,21 @@ public class ChildController {
         return chore;
     }
 
-//    @RequestMapping(path = "/child/wishlist",method = RequestMethod.POST)
-//    public Collection<Reward> createWishlistItem(@RequestHeader (value = "Authorization") String childToken){
-//        Auth auth = new Auth();
-//        Child child = auth.getChildFromAuth(childToken);
-//    }
+    /**
+     *
+     * @param childToken child's token to be authorized for that child's account signed in
+     * @param rewardCommand grab the reward's info the child types in since it is needed to create a new reward
+     * @return the new collection of the child's wishlist with the new reward that was added to the collection
+     */
+    @RequestMapping(path = "/child/wishlist",method = RequestMethod.POST)
+    public Collection<Reward> createWishlistItem(@RequestHeader (value = "Authorization") String childToken, RewardCommand rewardCommand){
+        Auth auth = new Auth();
+        Child child = auth.getChildFromAuth(childToken);
+
+        Reward reward = new Reward(rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPointvalue());
+        child.addReward(reward);
+        return child.getRewardCollection();
+    }
 
     /***************************
         Token Endpoints

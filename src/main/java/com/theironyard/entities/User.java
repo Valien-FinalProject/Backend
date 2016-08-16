@@ -37,10 +37,10 @@ public abstract class User {
     protected String password;
 
     @ManyToMany
-    private Collection<Chore> choreCollection;
+    protected Collection<Chore> choreCollection;
 
     @ManyToMany
-    private Collection<Reward> rewardCollection;
+    protected Collection<Reward> rewardCollection;
 
     public Collection<Chore> getChoreCollection() {
         return choreCollection;
@@ -60,6 +60,10 @@ public abstract class User {
 
     public void setRewardCollection(Collection<Reward> rewardCollection) {
         this.rewardCollection = rewardCollection;
+    }
+
+    public void addReward(Reward reward){
+        this.rewardCollection.add(reward);
     }
 
     @Column(nullable = false, unique = true)

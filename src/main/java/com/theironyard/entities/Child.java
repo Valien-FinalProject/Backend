@@ -39,7 +39,6 @@ public class Child extends User{
 
 //    @Column
 //    @JsonIgnore
-
 //    Collection<Log> pointLog;
 
     @Column(nullable = false, unique = true)
