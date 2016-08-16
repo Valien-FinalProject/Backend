@@ -23,6 +23,9 @@ public class ParentCommand {
 
     private boolean phoneOptIn;
 
+    public ParentCommand() {
+    }
+
     public ParentCommand(String username, String password) {
         this.username = username;
         this.password = password;
