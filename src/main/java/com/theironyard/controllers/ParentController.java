@@ -55,14 +55,18 @@ public class ParentController {
      */
     @RequestMapping(path = "/parent/login", method = RequestMethod.POST)
     public Parent parentLogin(@RequestBody ParentCommand command) throws PasswordStorage.InvalidHashException, PasswordStorage.CannotPerformOperationException {
+
+        //Does the parent exist?
         Parent parent = parents.findFirstByUsername(command.getUsername());
 
+        //If parent does not then throw an Exception. Soon we will need to integrate REGISTRATION.
         if (parent == null){
-            //registerParent();
+            throw new LoginFailedException();
         } else if (!PasswordStorage.verifyPassword(command.getPassword(), parent.getPassword())){
             throw new LoginFailedException();
         }
 
+        //Send the parent
         return parent;
     }
 
@@ -73,8 +77,12 @@ public class ParentController {
      */
     @RequestMapping(path = "/parent/logout",method = RequestMethod.POST)
     public void parentLogout(@RequestHeader (value = "Authorization") String parentToken, HttpSession session){
+
+        //Parent is logged in?
         Auth auth = new Auth();
         auth.getParentFromAuth(parentToken);
+
+        //kill session
         session.invalidate();
     }
 
@@ -109,19 +117,31 @@ public class ParentController {
      * @param auth - the parent's token.
      * @return
      */
-    @RequestMapping(path = "/parent/child/{id}/chore/", method = RequestMethod.POST)
-    public Chore assignChore(@PathVariable int id, @RequestBody ChoreCommand command, @RequestHeader(value = "Authorization") String auth){
+    @RequestMapping(path = "/parent/child/{id}/chore/{choreId}", method = RequestMethod.POST)
+    public Chore assignChore(@PathVariable int id, @PathVariable int choreId, @RequestBody ChoreCommand command, @RequestHeader(value = "Authorization") String auth){
+        //Find the parent via their token
         Auth getAuth = new Auth();
-        Child child = children.findOne(id);
         Parent parent = getAuth.getParentFromAuth(auth);
 
-        Chore chore = new Chore(command.getDescription(), command.getValue());
+        //Find child via id
+        Child child = children.findOne(id);
+
+        //Find chore via id
+        Chore chore = chores.findOne(choreId);
+
+        //Assign chore to child
         chore.setChildAssigned(child);
+
+        //Save chore to 'chores' repository
         chores.save(chore);
 
+        //Add chore to the child's chore Collection
         child.addChore(chore);
+
+        //Update the child
         children.save(child);
 
+        //Send the assigned chore object
         return chore;
     }
 
@@ -154,11 +174,18 @@ public class ParentController {
      */
     @RequestMapping(path = "/parent/reward",method = RequestMethod.POST)
     public Reward createReward(@RequestHeader (value = "Authorization") String parentToken, RewardCommand rewardCommand){
-        Auth auth = new Auth();
-        auth.getParentFromAuth(parentToken);
 
+        //Find parent via token
+        Auth auth = new Auth();
+        Parent parent = auth.getParentFromAuth(parentToken);
+
+        //Create a new Reward
         Reward reward = new Reward(rewardCommand.getDescription(), rewardCommand.getUrl(), rewardCommand.getPointvalue());
+
+        //Save Reward to the Collections in Parent & Child. Also to the 'rewards' repository.
+        parent.addReward(reward);
         rewards.save(reward);
+
         return reward;
     }
 
