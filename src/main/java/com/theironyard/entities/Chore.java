@@ -18,13 +18,13 @@ public class Chore {
     private int id;
 
     @Column
-    String name;
+    private String name;
 
     @Column
-    LocalDateTime startDate;
+    private LocalDateTime startDate;
 
     @Column
-    LocalDateTime endDate;
+    private LocalDateTime endDate;
 
     //frequency
     /*I think this is going to be an enum of the days of the week.*/

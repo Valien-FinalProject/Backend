@@ -125,7 +125,7 @@ public class Child extends User{
         this.childPoint = childPoint;
     }
 
-//    public Collect<Log> getPointLog() {
+    //    public Collect<Log> getPointLog() {
 //        return pointLog;
 //    }
 //

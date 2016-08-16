@@ -274,6 +274,7 @@ public class ParentController {
         return child.getChoreCollection();
     }
 
+
     /**
      * Finds all chores that are pending in the parent's repository
      * @param parentToken
@@ -374,7 +375,7 @@ public class ParentController {
      * @param choreId id of the chore to be approved
      * @return a string stating that we have removed the chore and added points to the child.
      */
-    @RequestMapping(path = "/chore/{childId}/approve/{choreId}", method = RequestMethod.POST)
+    @RequestMapping(path = "/child/{childId}/approve/{choreId}", method = RequestMethod.POST)
     public String approveChore(@PathVariable int childId, @PathVariable int choreId, @RequestHeader(value = "Authorization") String auth){
 
         //Find the parent via their token
