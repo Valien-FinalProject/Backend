@@ -16,19 +16,12 @@ public class Chore {
     @GeneratedValue
     private int id;
 
-    //Do we need to a creator? We definitely need a child, right?
-    @ManyToOne
-    private Parent creator;
-
-    //name
     @Column
     String name;
 
-    //start date
     @Column
     LocalDateTime startDate;
 
-    //end date
     @Column
     LocalDateTime endDate;
 
@@ -59,8 +52,7 @@ public class Chore {
     public Chore() {
     }
 
-    public Chore(Parent creator, String description, Point value) {
-        this.creator = creator;
+    public Chore(String description, Point value) {
         this.description = description;
         this.value = value;
     }
@@ -71,14 +63,6 @@ public class Chore {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Parent getCreator() {
-        return creator;
-    }
-
-    public void setCreator(Parent creator) {
-        this.creator = creator;
     }
 
     public String getDescription() {
