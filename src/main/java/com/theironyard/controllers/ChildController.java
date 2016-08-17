@@ -103,6 +103,28 @@ public class ChildController {
         return child.getRewardCollection();
     }
 
+    /**
+     * Gets the child's email for when the child wishes to change his/her email but requires them to be signed in
+     * @param childToken holds the child's token to be authorized
+     * @return the child's email for the signed in account
+     */
+    @RequestMapping(path = "/email", method = RequestMethod.GET)
+    public String getChildEmail(@RequestHeader (value = "Authorization") String childToken){
+        Child child = authService.getChildFromAuth(childToken);
+        return child.getEmail();
+    }
+
+    /**
+     * Gets the child's phone for when the child wishes to change his/her phone but requires them to be signed in
+     * @param childToken holds the child's token to be authorized
+     * @return the child's phone for the signed in account
+     */
+    @RequestMapping(path = "/phone", method = RequestMethod.GET)
+    public String getChildPhone(@RequestHeader (value = "Authorization") String childToken){
+        Child child = authService.getChildFromAuth(childToken);
+        return child.getPhone();
+    }
+
     /***************************
         Create/Post Endpoints
      ***************************/
