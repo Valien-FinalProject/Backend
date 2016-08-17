@@ -13,11 +13,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
+
 /**
  * Created by chocodonis on 8/14/16.
  */
+
 @Service
-public class Auth {
+public class AuthService {
 
     @Autowired
     ParentRepository parents;
@@ -42,26 +45,26 @@ public class Auth {
     }
 
     /**
-     * Checks if user is logged in
+     * Checks if parent is logged in
      * @param command
      * @return user, found by username
      * @throws Exception
      */
     public Parent checkParentLogin(ParentCommand command) throws Exception{
-        Parent user = parents.findFirstByUsername(command.getUsername());
-        if(user == null){
+        Parent parent = parents.findFirstByUsername(command.getUsername());
+        if(parent == null){
             throw new UserNotFoundException();
         }
 
-        if(!PasswordStorage.verifyPassword(command.getPassword(), user.getPassword())){
+        if(!PasswordStorage.verifyPassword(command.getPassword(), parent.getPassword())){
             throw new LoginFailedException();
         }
 
-        if(!user.isTokenValid()){
+        if(!parent.isTokenValid()){
             throw new TokenExpiredException();
         }
 
-        return user;
+        return parent;
     }
 
     /**
@@ -83,5 +86,4 @@ public class Auth {
         }
         return child;
     }
-
 }

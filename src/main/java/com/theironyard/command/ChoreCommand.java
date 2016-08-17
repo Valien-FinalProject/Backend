@@ -21,6 +21,7 @@ public class ChoreCommand {
     }
 
     public ChoreCommand(String name, String description, int value) {
+        this.name = name;
         this.description = description;
         this.value = value;
     }

@@ -32,6 +32,7 @@ public abstract class User {
 
     @Column
     @JsonIgnore
+
     protected  String phone;
 
     @Column(nullable = false, unique = true)
@@ -179,5 +180,4 @@ public abstract class User {
         setTokenAndExpiration();
         return token;
     }
-
 }
