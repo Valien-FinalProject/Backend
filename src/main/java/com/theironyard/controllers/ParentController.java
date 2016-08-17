@@ -65,30 +65,6 @@ public class ParentController {
     }
 
     /**
-     * Allows the parent to login
-     * @param command - get info for parent object.
-     * @return return the parent that matches the credentials provided.
-     * @throws PasswordStorage.InvalidHashException
-     * @throws PasswordStorage.CannotPerformOperationException
-     */
-    @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public Parent parentLogin(@RequestBody ParentCommand command) throws PasswordStorage.InvalidHashException, PasswordStorage.CannotPerformOperationException {
-
-        //Does the parent exist?
-        Parent parent = parents.findFirstByUsername(command.getUsername());
-
-        //If parent does not then throw an Exception. Soon we will need to integrate REGISTRATION.
-        if (parent == null){
-            throw new LoginFailedException();
-        } else if (!PasswordStorage.verifyPassword(command.getPassword(), parent.getPassword())){
-            throw new LoginFailedException();
-        }
-
-        //Send the parent
-        return parent;
-    }
-
-    /**
      * Allows the parent to logout
      * @param parentToken a token for the parent's account that is currently signed in
      * @param session allows the session to be ended and the parent to be logged out
@@ -175,7 +151,7 @@ public class ParentController {
      * @param auth - the parent's token.
      * @return the new chore created
      */
-    @RequestMapping(path = "/chore/", method = RequestMethod.POST)
+    @RequestMapping(path = "/chore", method = RequestMethod.POST)
     public Chore createChore(@RequestHeader(value = "Authorization") String auth, @RequestBody ChoreCommand command){
 
         //Find the parent via their token

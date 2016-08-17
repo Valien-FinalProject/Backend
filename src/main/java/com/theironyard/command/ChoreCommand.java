@@ -11,6 +11,8 @@ public class ChoreCommand {
 
     LocalDateTime endDate;
 
+    private String name;
+
     private String description;
 
     private int value;
