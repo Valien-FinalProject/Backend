@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.theironyard.command.ChildCommand;
 import com.theironyard.command.ChoreCommand;
 import com.theironyard.command.ParentCommand;
-import com.theironyard.exceptions.LoginFailedException;
 import com.theironyard.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -177,17 +176,18 @@ public class ParentController {
      * @return the new reward created
      */
     @RequestMapping(path = "/reward", method = RequestMethod.POST)
-    public Reward createReward(@RequestHeader (value = "Authorization") String parentToken, RewardCommand rewardCommand){
+    public Reward createReward(@RequestHeader (value = "Authorization") String parentToken, @RequestBody RewardCommand rewardCommand){
 
         //Find parent via token
         Parent parent = authService.getParentFromAuth(parentToken);
 
         //Create a new Reward
-        Reward reward = new Reward(rewardCommand.getDescription(), rewardCommand.getUrl(), rewardCommand.getPointvalue());
+        Reward reward = new Reward(rewardCommand.getDescription(), rewardCommand.getUrl(), rewardCommand.getPoints());
 
         //Save Reward to the Collections in Parent & Child. Also to the 'rewards' repository.
-        parent.addReward(reward);
         rewards.save(reward);
+        parent.addReward(reward);
+        parents.save(parent);
 
         return reward;
     }
@@ -472,7 +472,7 @@ public class ParentController {
 
         //modify the reward
         reward.setDescription(command.getDescription());
-        reward.setRewardValue(command.getPointvalue());
+        reward.setPoints(command.getPoints());
 
         //save the reward
         rewards.save(reward);
@@ -497,7 +497,7 @@ public class ParentController {
 
         //modify the reward
         reward.setDescription(command.getDescription());
-        reward.setRewardValue(command.getPointvalue());
+        reward.setPoints(command.getPoints());
 
         //remove from child wishlist
         child.getWishlistCollection().remove(reward);

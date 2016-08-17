@@ -11,9 +11,15 @@ public class RewardCommand {
 
     private File url;
 
-    private int pointvalue;
+    private int points;
 
     public RewardCommand() {
+    }
+
+    public RewardCommand(String description, File url, int points) {
+        this.description = description;
+        this.url = url;
+        this.points = points;
     }
 
     public String getDescription() {
@@ -32,11 +38,11 @@ public class RewardCommand {
         this.url = url;
     }
 
-    public int getPointvalue() {
-        return pointvalue;
+    public int getPoints() {
+        return points;
     }
 
-    public void setPointvalue(int pointvalue) {
-        this.pointvalue = pointvalue;
+    public void setPoints(int points) {
+        this.points = points;
     }
 }

@@ -162,7 +162,7 @@ public class ChildController {
     public Collection<Reward> createWishlistItem(@RequestHeader (value = "Authorization") String childToken, RewardCommand rewardCommand){
         Child child = authService.getChildFromAuth(childToken);
 
-        Reward reward = new Reward(rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPointvalue());
+        Reward reward = new Reward(rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPoints());
         rewardRepository.save(reward);
         child.addReward(reward);
         return child.getRewardCollection();
