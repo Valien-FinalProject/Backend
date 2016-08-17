@@ -42,12 +42,15 @@ public abstract class User {
     protected String password;
 
     @ManyToMany
+    @JsonIgnore
     protected Collection<Chore> choreCollection;
 
     @ManyToMany
+    @JsonIgnore
     protected Collection<Reward> rewardCollection;
 
     @ManyToMany
+    @JsonIgnore
     protected Collection<Reward> wishlistCollection;
 
 

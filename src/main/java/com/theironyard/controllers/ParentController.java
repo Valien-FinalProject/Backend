@@ -113,12 +113,11 @@ public class ParentController {
     /**
      * Allows a parent to assign a chore to a child.
      * @param id - the child's id.
-     * @param command - hold the info for the chore command.
      * @param auth - the parent's token.
      * @return
      */
     @RequestMapping(path = "/child/{id}/chore/{choreId}", method = RequestMethod.POST)
-    public Chore assignChore(@PathVariable int id, @PathVariable int choreId, @RequestBody ChoreCommand command, @RequestHeader(value = "Authorization") String auth){
+    public Chore assignChore(@PathVariable int id, @PathVariable int choreId, @RequestHeader(value = "Authorization") String auth){
         //Find the parent via their token
         Parent parent = authService.getParentFromAuth(auth);
 
@@ -129,16 +128,19 @@ public class ParentController {
         Chore chore = chores.findOne(choreId);
 
         //Assign chore to child
-        chore.setChildAssigned(child);
+        if (!child.getChoreCollection().contains(chore)) {
+            chore.setChildAssigned(child);
 
-        //Save chore to 'chores' repository
-        chores.save(chore);
+            //Save chore to 'chores' repository
+            chores.save(chore);
 
-        //Add chore to the child's chore Collection
-        child.addChore(chore);
+            //Add chore to the child's chore Collection
+            child.addChore(chore);
 
-        //Update the child
-        children.save(child);
+            //Update the child
+            children.save(child);
+
+        }
 
         //Send the assigned chore object
         return chore;
@@ -157,7 +159,7 @@ public class ParentController {
         Parent parent = authService.getParentFromAuth(auth);
 
         //Make new chore object
-        Chore chore = new Chore(command.getDescription(), command.getValue());
+        Chore chore = new Chore(command.getName(), command.getDescription(), command.getValue());
         chore.setStartDate(command.getStartDate());
         chore.setEndDate(command.getEndDate());
         
@@ -230,17 +232,17 @@ public class ParentController {
     /**
      * Gets the collection of chores assigned to a child's account by their id.
      * @param parentToken verifies the parent's token
-     * @param childId returns a collection of chores from a child's account
+     * @param id returns a collection of chores from a child's account
      * @return
      */
     @RequestMapping(path = "/child/{id}/chores", method = RequestMethod.GET)
-    public Collection<Chore> getAChildsChores(@RequestHeader (value = "Authorization") String parentToken,  @PathVariable int childId){
+    public Collection<Chore> getAChildsChores(@RequestHeader (value = "Authorization") String parentToken,  @PathVariable int id){
 
         //Find parent via token
        authService.getParentFromAuth(parentToken);
 
         //Get child via id
-        Child child = children.findOne(childId);
+        Child child = children.findOne(id);
 
         //give the Child's Collection of chores.
         return child.getChoreCollection();

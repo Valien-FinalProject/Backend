@@ -147,7 +147,7 @@ public class ChildController {
         Child child = authService.getChildFromAuth(childToken);
 
         Chore chore = choreRepository.findOne(id);
-        chore.setCompleted(true);
+        chore.setComplete(true);
         choreRepository.save(chore);
         return chore;
     }
@@ -232,7 +232,7 @@ public class ChildController {
      * @return the token for the child's account that is logged in
      * @throws Exception
      */
-    @RequestMapping(path = "/token", method = RequestMethod.GET)
+    @RequestMapping(path = "/token", method = RequestMethod.POST)
     public Map getChildToken(@RequestBody ChildCommand childCommand) throws Exception{
         Child child = authService.checkChildLogin(childCommand);
 

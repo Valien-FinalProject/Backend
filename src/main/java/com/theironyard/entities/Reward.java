@@ -17,7 +17,7 @@ public class Reward {
     @GeneratedValue
     private int id;
 
-    @Column
+    @Column(nullable = false)
     private String description;
 
     @Column

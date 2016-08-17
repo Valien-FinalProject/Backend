@@ -17,7 +17,7 @@ public class Chore {
     @GeneratedValue
     private int id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
     @Column
@@ -47,16 +47,13 @@ public class Chore {
 
     @Column
     @ColumnDefault("false")
-    private boolean completed;
-
-    @Column
-    @ColumnDefault("false")
     private boolean pending;
 
     public Chore() {
     }
 
-    public Chore(String description, int value) {
+    public Chore(String name, String description, int value) {
+        this.name = name;
         this.description = description;
         this.value = value;
     }
@@ -83,14 +80,6 @@ public class Chore {
 
     public void setValue(int value) {
         this.value = value;
-    }
-
-    public boolean isCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
     }
 
     public boolean isPending() {
