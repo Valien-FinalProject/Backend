@@ -101,7 +101,7 @@ public class ParentController {
         Parent parent = authService.getParentFromAuth(auth);
 
         //Create new Child object.
-        Child child = new Child(command.getName(), command.getUsername(), command.getPassword(), parent);
+        Child child = new Child(command.getName(), command.getUsername(), command.getPassword());
 
         //Add child to Parent's child Collection & Save the child to 'children' repository.
         parent.addChild(child);

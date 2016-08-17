@@ -41,25 +41,14 @@ public class Child extends User{
 //    @JsonIgnore
 //    Collection<Log> pointLog;
 
-    @Column(nullable = false, unique = true)
-    @ColumnDefault("'abcabcabcabcabc'")
-    @JsonIgnore
-    private String token;
-
-    @Column(nullable = false)
-    @Convert(converter = LocalDateTimeConverter.class)
-    @ColumnDefault("'1992-01-01'")
-    private LocalDateTime expiration;
-
     public Child() {
         setTokenAndExpiration();
     }
 
-    public Child(String name, String username,String password, Parent parent) {
+    public Child(String name, String username,String password) {
         this.name = name;
         this.username = username;
         this.password = password;
-        this.parent = parent;
         setTokenAndExpiration();
     }
 
