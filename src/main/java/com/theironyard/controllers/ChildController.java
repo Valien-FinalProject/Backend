@@ -144,13 +144,14 @@ public class ChildController {
      * @return the new collection of the child's wishlist with the new reward that was added to the collection
      */
     @RequestMapping(path = "/wishlist", method = RequestMethod.POST)
-    public Collection<Reward> createWishlistItem(@RequestHeader (value = "Authorization") String childToken, RewardCommand rewardCommand){
+    public Collection<Reward> createWishlistItem(@RequestHeader (value = "Authorization") String childToken, @RequestBody RewardCommand rewardCommand){
 
         Child child = authService.getChildFromAuth(childToken);
 
         Reward reward = new Reward(rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPoints());
         rewardRepository.save(reward);
         child.addReward(reward);
+        childRepository.save(child);
         return child.getRewardCollection();
     }
 
