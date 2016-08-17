@@ -108,25 +108,6 @@ public class ChildController {
      ***************************/
 
     /**
-     * Endpoint for when a child is logging into the system
-     * @param childCommand holds the child's info to be checked for login
-     * @return a child's account that has logged in
-     * @throws PasswordStorage.InvalidHashException
-     * @throws PasswordStorage.CannotPerformOperationException
-     */
-    @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public Child childLogin(@RequestBody ChildCommand childCommand) throws PasswordStorage.InvalidHashException, PasswordStorage.CannotPerformOperationException {
-        Child child = childRepository.findByUsername(childCommand.getUsername());
-        if(child == null){
-            throw new UserNotFoundException();
-        }
-        if(!PasswordStorage.verifyPassword(childCommand.getPassword(), child.getPassword())){
-            throw new LoginFailedException();
-        }
-        return child;
-    }
-
-    /**
      * Endpoint for when a child is logging out of the account
      * @param childToken child's token to be authorized for that account signed in
      * @param session current session of the child's account to be invalidated
