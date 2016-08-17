@@ -247,6 +247,7 @@ public class ChildController {
 
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("token", child.getToken());
+        tokenMap.put("username", childCommand.getUsername());
         return tokenMap;
     }
 

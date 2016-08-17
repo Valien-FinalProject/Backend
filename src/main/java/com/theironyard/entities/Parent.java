@@ -28,6 +28,7 @@ public class Parent extends User{
     private boolean phoneOptIn;
 
     public Parent() {
+        setTokenAndExpiration();
     }
 
     public Parent(String name, String email, String parentPhone ,String username, String password) {

@@ -338,7 +338,7 @@ public class ParentController {
 
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("token", parent.getToken());
-
+        tokenMap.put("username", command.getUsername());
         return tokenMap;
     }
 
