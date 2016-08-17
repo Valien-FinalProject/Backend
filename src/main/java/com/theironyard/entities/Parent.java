@@ -39,7 +39,6 @@ public class Parent extends User{
         setTokenAndExpiration();
     }
 
-
     public String getParentPhone() {
         return parentPhone;
     }
