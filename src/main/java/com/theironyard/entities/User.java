@@ -27,12 +27,18 @@ public abstract class User {
     protected String name;
 
     @Column
+    @JsonIgnore
     protected String email;
+
+    @Column
+    @JsonIgnore
+    protected String phone;
 
     @Column(nullable = false, unique = true)
     protected String username;
 
     @Column(nullable = false)
+    @JsonIgnore
     protected String password;
 
     @ManyToMany
@@ -160,6 +166,14 @@ public abstract class User {
     public String regenerate(){
         setTokenAndExpiration();
         return token;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
 }
