@@ -167,7 +167,7 @@ public class ChildController {
 
         Child child = authService.getChildFromAuth(childToken);
 
-        Reward reward = new Reward(rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPointvalue());
+        Reward reward = new Reward(rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPoints());
         rewardRepository.save(reward);
         child.addReward(reward);
         return child.getRewardCollection();
@@ -183,7 +183,7 @@ public class ChildController {
         Child child = authService.getChildFromAuth(childToken);
 
         child.setEmail(childCommand.getEmail());
-        child.setChildPhone(childCommand.getChildPhone());
+        child.setPhone(childCommand.getPhone());
 
         return child;
     }

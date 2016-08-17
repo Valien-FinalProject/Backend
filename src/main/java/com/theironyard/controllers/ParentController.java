@@ -98,13 +98,14 @@ public class ParentController {
      * @return
      */
     @RequestMapping(path = "/child", method = RequestMethod.POST)
-    public Child createChild(@RequestBody ChildCommand command, @RequestHeader(value = "Authorization") String auth) {
+    public Child createChild(@RequestBody ChildCommand command,@RequestHeader(value = "Authorization") String auth) throws PasswordStorage.CannotPerformOperationException {
+
 
         //Find parent via token
         Parent parent = authService.getParentFromAuth(auth);
 
         //Create new Child object.
-        Child child = new Child(command.getName(), command.getUsername(), command.getPassword());
+        Child child = new Child(command.getName(), command.getUsername(), PasswordStorage.createHash(command.getPassword()), command.getEmail(), command.getPhone());
 
         //Add child to Parent's child Collection & Save the child to 'children' repository.
         parent.addChild(child);
@@ -179,21 +180,22 @@ public class ParentController {
      * Allows a parent to create a new reward.
      *
      * @param parentToken   the parent's token to be authorized
-     * @param rewardCommand holds info for the reward that is going to be created
+     * @param command holds info for the reward that is going to be created
      * @return the new reward created
      */
     @RequestMapping(path = "/reward", method = RequestMethod.POST)
-    public Reward createReward(@RequestHeader(value = "Authorization") String parentToken, RewardCommand rewardCommand) {
+    public Reward createReward(@RequestHeader(value = "Authorization") String parentToken, RewardCommand command) {
 
         //Find parent via token
         Parent parent = authService.getParentFromAuth(parentToken);
 
         //Create a new Reward
-        Reward reward = new Reward(rewardCommand.getDescription(), rewardCommand.getUrl(), rewardCommand.getPointvalue());
+        Reward reward = new Reward(command.getDescription(), command.getUrl(), command.getPoints());
 
         //Save Reward to the Collections in Parent & Child. Also to the 'rewards' repository.
-        parent.addReward(reward);
         rewards.save(reward);
+        parent.addReward(reward);
+        parents.save(parent);
 
         return reward;
     }
@@ -469,7 +471,7 @@ public class ParentController {
 
         //Modify the child
         child.setName(command.getName());
-        child.setChildPhone(command.getChildPhone());
+        child.setPhone(command.getPhone());
         child.setChildPicture(command.getChildPicture());
 
         //save child
@@ -496,7 +498,7 @@ public class ParentController {
 
         //modify the reward
         reward.setDescription(command.getDescription());
-        reward.setRewardValue(command.getPointvalue());
+        reward.setPoints(command.getPoints());
 
         //save the reward
         rewards.save(reward);
@@ -522,7 +524,7 @@ public class ParentController {
 
         //modify the reward
         reward.setDescription(command.getDescription());
-        reward.setRewardValue(command.getPointvalue());
+        reward.setPoints(command.getPoints());
 
         //remove from child wishlist
         child.getWishlistCollection().remove(reward);

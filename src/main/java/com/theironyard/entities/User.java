@@ -27,12 +27,18 @@ public abstract class User {
     protected String name;
 
     @Column
+    @JsonIgnore
     protected String email;
+
+    @Column
+    @JsonIgnore
+    protected  String phone;
 
     @Column(nullable = false, unique = true)
     protected String username;
 
     @Column(nullable = false)
+    @JsonIgnore
     protected String password;
 
     @ManyToMany
@@ -77,6 +83,7 @@ public abstract class User {
     @Column(nullable = false)
     @Convert(converter = LocalDateTimeConverter.class)
     @ColumnDefault("'1992-01-01'")
+    @JsonIgnore
     protected LocalDateTime expiration;
 
     public int getId() {
@@ -97,6 +104,14 @@ public abstract class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getUsername() {

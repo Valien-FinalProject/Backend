@@ -13,13 +13,18 @@ public class ChildCommand {
 
     private String password;
 
-    private String childPhone;
+    private String phone;
 
     private File childPicture;
 
     private String email;
 
     public ChildCommand() {
+    }
+
+    public ChildCommand(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public String getName() {
@@ -46,12 +51,12 @@ public class ChildCommand {
         this.password = password;
     }
 
-    public String getChildPhone() {
-        return childPhone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setChildPhone(String childPhone) {
-        this.childPhone = childPhone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public File getChildPicture() {

@@ -24,15 +24,15 @@ public class Reward {
     private File url;
 
     @Column
-    private int rewardValue;
+    private int points;
 
     public Reward() {
     }
 
-    public Reward(String description, File url, int rewardValue) {
+    public Reward(String description, File url, int points) {
         this.description = description;
         this.url = url;
-        this.rewardValue = rewardValue;
+        this.points = points;
     }
 
     public int getId() {
@@ -59,11 +59,11 @@ public class Reward {
         this.url = url;
     }
 
-    public int getRewardValue() {
-        return rewardValue;
+    public int getPoints() {
+        return points;
     }
 
-    public void setRewardValue(int rewardValue) {
-        this.rewardValue = rewardValue;
+    public void setPoints(int points) {
+        this.points = points;
     }
 }
