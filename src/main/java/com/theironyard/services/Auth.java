@@ -9,10 +9,14 @@ import com.theironyard.exceptions.TokenExpiredException;
 import com.theironyard.exceptions.UserNotFoundException;
 import com.theironyard.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by chocodonis on 8/14/16.
  */
+@Service
 public class Auth {
 
     @Autowired

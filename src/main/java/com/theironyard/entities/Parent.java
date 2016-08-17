@@ -52,10 +52,10 @@ public class Parent extends User{
         return childCollection;
     }
 
-
     public void setChildCollection(Collection<Child> childCollection) {
         this.childCollection = childCollection;
     }
+
     public void addChild(Child child) {
         childCollection.add(child);
     }
