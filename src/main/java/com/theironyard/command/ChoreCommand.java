@@ -17,6 +17,9 @@ public class ChoreCommand {
 
     private int value;
 
+    public ChoreCommand() {
+    }
+
     public ChoreCommand(String description, int value) {
         this.description = description;
         this.value = value;
@@ -52,5 +55,13 @@ public class ChoreCommand {
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

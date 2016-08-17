@@ -151,7 +151,7 @@ public class ChildController {
         Child child = authService.getChildFromAuth(childToken);
 
         Chore chore = choreRepository.findOne(id);
-        chore.setCompleted(true);
+        chore.setComplete(true);
         choreRepository.save(chore);
         return chore;
     }

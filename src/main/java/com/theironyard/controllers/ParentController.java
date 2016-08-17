@@ -13,6 +13,7 @@ import com.theironyard.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.PreUpdate;
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
 import java.util.HashMap;
@@ -185,7 +186,7 @@ public class ParentController {
      */
     @RequestMapping(path = "/reward", method = RequestMethod.POST)
 
-    public Reward createReward(@RequestHeader(value = "Authorization") String parentToken, RewardCommand command) {
+    public Reward createReward(@RequestHeader(value = "Authorization") String parentToken, @RequestBody RewardCommand command) {
 
         //Find parent via token
         Parent parent = authService.getParentFromAuth(parentToken);
@@ -242,11 +243,11 @@ public class ParentController {
      * Gets the collection of chores assigned to a child's account by their id.
      *
      * @param parentToken verifies the parent's token
-     * @param childId     returns a collection of chores from a child's account
+     * @param id returns a collection of chores from a child's account
      * @return
      */
     @RequestMapping(path = "/child/{id}/chores", method = RequestMethod.GET)
-    public Collection<Chore> getAChildsChores(@RequestHeader(value = "Authorization") String parentToken, @PathVariable int childId) {
+    public Collection<Chore> getAChildsChores(@RequestHeader(value = "Authorization") String parentToken, @PathVariable int id) {
 
         //Find parent via token
         authService.getParentFromAuth(parentToken);
@@ -254,16 +255,30 @@ public class ParentController {
         Parent parent = authService.getParentFromAuth(parentToken);
 
         //Get child via id
-        Child child = children.findOne(childId);
+        Child child = children.findOne(id);
 
         //give the Child's Collection of chores.
         return child.getChoreCollection();
     }
 
+    /**
+     * Find all chores created by the parent.
+     * @param parentToken parent's unique token.
+     * @return a Collection of Chore.
+     */
+    @RequestMapping(path = "/chores", method = RequestMethod.GET)
+    public Collection<Chore> getAllChores(@RequestHeader(value = "Authorization") String parentToken){
+
+        //Find parent via token
+        Parent parent = authService.getParentFromAuth(parentToken);
+
+        //give the chore collection
+        return parent.getChoreCollection();
+    }
+
 
     /**
      * Finds all chores that are pending in the parent's repository
-     *
      * @param parentToken
      * @return
      */
@@ -278,8 +293,22 @@ public class ParentController {
     }
 
     /**
+     * Sends all rewards created by the parent, that's logged in.
+     * @param parentToken
+     * @return Collection of Reward Collection.
+     */
+    @RequestMapping(path = "/rewards", method = RequestMethod.GET)
+    public Collection<Reward> getParentRerwards(@RequestHeader(value = "Authorization") String parentToken){
+
+        //Find parent via token
+        Parent parent = authService.getParentFromAuth(parentToken);
+
+        //Send all rewards created by parent
+        return parent.getRewardCollection();
+    }
+
+    /**
      * Get reward from repository via Id.
-     *
      * @param id          - the reward id
      * @param parentToken parent's unique token
      * @return

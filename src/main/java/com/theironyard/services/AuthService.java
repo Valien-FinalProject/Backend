@@ -28,13 +28,6 @@ public class AuthService {
     @Autowired
     ChildRepository children;
 
-    @PostConstruct
-    public void temp(){
-        String foo = "bar";
-
-        System.out.println("FOO");
-    }
-
     public Parent getParentFromAuth(String auth) {
         Parent parent = parents.findFirstByToken(auth.split(" ")[1]);
         if (!parent.isTokenValid()) {
