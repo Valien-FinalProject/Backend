@@ -13,9 +13,6 @@ import java.util.Collection;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Parent extends User{
 
-    @Column
-    private String parentPhone;
-
     @OneToMany
     private Collection<Child> childCollection;
 
@@ -31,21 +28,13 @@ public class Parent extends User{
         setTokenAndExpiration();
     }
 
-    public Parent(String name, String email, String parentPhone ,String username, String password) {
+    public Parent(String name, String email, String phone ,String username, String password) {
         this.name = name;
         this.email = email;
-        this.parentPhone = parentPhone;
+        this.phone = phone;
         this.username = username;
         this.password = password;
         setTokenAndExpiration();
-    }
-
-    public String getParentPhone() {
-        return parentPhone;
-    }
-
-    public void setParentPhone(String parentPhone) {
-        this.parentPhone = parentPhone;
     }
 
     public Collection<Child> getChildCollection() {

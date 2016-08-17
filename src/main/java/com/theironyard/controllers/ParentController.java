@@ -95,13 +95,13 @@ public class ParentController {
      * @return
      */
     @RequestMapping(path = "/child", method = RequestMethod.POST)
-    public Child createChild(@RequestBody ChildCommand command,@RequestHeader(value = "Authorization") String auth){
+    public Child createChild(@RequestBody ChildCommand command,@RequestHeader(value = "Authorization") String auth) throws PasswordStorage.CannotPerformOperationException {
 
         //Find parent via token
         Parent parent = authService.getParentFromAuth(auth);
 
         //Create new Child object.
-        Child child = new Child(command.getName(), command.getUsername(), command.getPassword());
+        Child child = new Child(command.getName(), command.getUsername(), PasswordStorage.createHash(command.getPassword()), command.getEmail(), command.getPhone());
 
         //Add child to Parent's child Collection & Save the child to 'children' repository.
         parent.addChild(child);
@@ -448,7 +448,7 @@ public class ParentController {
 
         //Modify the child
         child.setName(command.getName());
-        child.setChildPhone(command.getChildPhone());
+        child.setPhone(command.getPhone());
         child.setChildPicture(command.getChildPicture());
 
         //save child

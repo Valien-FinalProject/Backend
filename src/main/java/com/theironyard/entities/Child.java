@@ -20,10 +20,6 @@ public class Child extends User{
 
     @Column
     @JsonIgnore
-    private String childPhone;
-
-    @Column
-    @JsonIgnore
     private String location;
 
     @Column
@@ -45,21 +41,14 @@ public class Child extends User{
         setTokenAndExpiration();
     }
 
-    public Child(String name, String username,String password) {
+    public Child(String name, String username,String password, String email, String phone) {
         this.name = name;
         this.username = username;
         this.password = password;
+        this.email = email;
+        this.phone = phone;
         setTokenAndExpiration();
     }
-
-    public String getChildPhone() {
-        return childPhone;
-    }
-
-    public void setChildPhone(String childPhone) {
-        this.childPhone = childPhone;
-    }
-
 
     public String getLocation() {
         return location;
