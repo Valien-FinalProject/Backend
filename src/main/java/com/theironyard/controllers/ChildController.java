@@ -183,7 +183,7 @@ public class ChildController {
         Child child = authService.getChildFromAuth(childToken);
 
         child.setEmail(childCommand.getEmail());
-        child.setChildPhone(childCommand.getChildPhone());
+        child.setPhone(childCommand.getPhone());
 
         return child;
     }

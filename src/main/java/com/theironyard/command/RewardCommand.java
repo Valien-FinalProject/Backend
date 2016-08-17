@@ -42,7 +42,7 @@ public class RewardCommand {
         return points;
     }
 
-    public void setPointvalue(int points) {
+    public void setPoints(int points) {
         this.points = points;
     }
 }

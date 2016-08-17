@@ -59,11 +59,11 @@ public class Reward {
         this.url = url;
     }
 
-    public int getPointValue() {
+    public int getPoints() {
         return points;
     }
 
-    public void setPointValue(int pointValue) {
-        this.points = pointValue;
+    public void setPoints(int points) {
+        this.points = points;
     }
 }

@@ -28,16 +28,14 @@ public class Parent extends User{
         setTokenAndExpiration();
     }
 
-    public Parent(String name, String email, String parentPhone ,String username, String password) {
+    public Parent(String name, String email, String phone ,String username, String password) {
         this.name = name;
         this.email = email;
-        this.phone = parentPhone;
+        this.phone = phone;
         this.username = username;
         this.password = password;
         setTokenAndExpiration();
     }
-
-
 
     public Collection<Child> getChildCollection() {
         return childCollection;
