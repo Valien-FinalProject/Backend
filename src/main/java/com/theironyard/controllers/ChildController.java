@@ -64,7 +64,7 @@ public class ChildController {
     public Collection<Reward> showWishlist(@RequestHeader (value = "Authorization") String childToken){
 
         Child child = authService.getChildFromAuth(childToken);
-        return child.getRewardCollection();
+        return child.getWishlistCollection();
     }
 
     /**
@@ -150,7 +150,7 @@ public class ChildController {
 
         Reward reward = new Reward(rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPoints());
         rewardRepository.save(reward);
-        child.addReward(reward);
+        child.addWishlistItem(reward);
         childRepository.save(child);
         return child.getRewardCollection();
     }
@@ -160,12 +160,13 @@ public class ChildController {
      ***************************/
 
     @RequestMapping(path = "/profile", method = RequestMethod.PUT)
-    public Child updateProfile(@RequestHeader (value = "Authorization") String childToken, ChildCommand childCommand){
+    public Child updateProfile(@RequestHeader (value = "Authorization") String childToken, @RequestBody ChildCommand childCommand){
 
         Child child = authService.getChildFromAuth(childToken);
 
         child.setEmail(childCommand.getEmail());
         child.setPhone(childCommand.getPhone());
+        childRepository.save(child);
 
         return child;
     }
