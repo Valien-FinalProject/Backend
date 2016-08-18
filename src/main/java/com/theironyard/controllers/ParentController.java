@@ -113,7 +113,9 @@ public class ParentController {
 
         //Add child to Parent's child Collection & Save the child to 'children' repository.
         parent.addChild(child);
+        child.setParent(parent);
         children.save(child);
+        parents.save(parent);
 
         //return saved object
         return child;
