@@ -1,8 +1,10 @@
 package com.theironyard.services;
 
 import com.sendgrid.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 /**
@@ -12,14 +14,24 @@ import java.io.IOException;
 @Service
 public class EmailService {
 
+    @Value("${sendgrid.key}")
+    private String sendgridKey;
+
+    private SendGrid sendGrid;
+
+    @PostConstruct
+    public void setup(){
+        sendGrid = new SendGrid(sendgridKey);
+    }
+
     public void sendEmail(String name, String email) throws IOException {
-        Email from = new Email("test@example.com");
-        String subject = "New Notification from Iron Chores!";
+        Email from = new Email("Valien.webapp@gmail.com");
+        String subject = "New Notification from Valien Inc.";
         Email to = new Email(email);
-        Content content = new Content("text/plain", "Hello, " + name);
+        Content content = new Content("text/plain", "Valien salutes you, " + name);
         Mail mail = new Mail(from, subject, to, content);
 
-        SendGrid sendGrid = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+        //System.out.println(System.getenv())
         Request request = new Request();
         try {
             request.method = Method.POST;

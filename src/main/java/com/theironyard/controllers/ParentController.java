@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.PreUpdate;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +45,9 @@ public class ParentController {
     @Autowired
     AuthService authService;
 
+    @Autowired
+    EmailService emailService;
+
 
     /*==========================================================
     ***************** 'LOGIN & LOGOUT' ENDPOINTS ***************
@@ -56,7 +60,7 @@ public class ParentController {
      * @return newly saved parent object.
      */
     @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public Parent registerParent(@RequestBody ParentCommand command) throws PasswordStorage.CannotPerformOperationException {
+    public Parent registerParent(@RequestBody ParentCommand command) throws PasswordStorage.CannotPerformOperationException, IOException {
 
         //Create the new Parent.
         Parent parent = new Parent(command.getName(), command.getEmail(), command.getPhone(), command.getUsername(), PasswordStorage.createHash(command.getPassword()));
