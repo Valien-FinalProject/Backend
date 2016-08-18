@@ -74,27 +74,6 @@ public class Child extends User{
         this.parent = parent;
     }
 
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public LocalDateTime getExpiration() {
-        return expiration;
-    }
-
-    public void setExpiration(LocalDateTime expiration) {
-        this.expiration = expiration;
-    }
-
-    public boolean isTokenValid(){
-        return expiration.isAfter(LocalDateTime.now());
-    }
-
     public int getChildPoint() {
         return childPoint;
     }

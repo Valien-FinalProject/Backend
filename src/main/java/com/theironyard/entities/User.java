@@ -32,7 +32,6 @@ public abstract class User {
 
     @Column
     @JsonIgnore
-
     protected  String phone;
 
     @Column(nullable = false, unique = true)

@@ -344,6 +344,28 @@ public class ParentController {
     }
 
     /**
+     * Gets the parent's email for when the parent wishes to change his/her email but requires them to be signed in
+     * @param parentToken holds the parent's token to be authorized
+     * @return the parent's email for the signed in account
+     */
+    @RequestMapping(path = "/email", method = RequestMethod.GET)
+    public String getParentEmail(@RequestHeader (value = "Authorization") String parentToken){
+        Parent parent = authService.getParentFromAuth(parentToken);
+        return parent.getEmail();
+    }
+
+    /**
+     * Gets the parent's phone for when the parent wishes to change his/her phone but requires them to be signed in
+     * @param parentToken holds the parent's token to be authorized
+     * @return the parent's phone for the signed in account
+     */
+    @RequestMapping(path = "/phone", method = RequestMethod.GET)
+    public String getParentPhone(@RequestHeader (value = "Authorization") String parentToken){
+        Parent parent = authService.getParentFromAuth(parentToken);
+        return parent.getPhone();
+    }
+
+    /**
      * Gets the token of the Parent that is currently logged in.
      *
      * @param command
