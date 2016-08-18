@@ -1,6 +1,5 @@
-package com.theironyard.utilities;
+package com.theironyard.services;
 
-import com.theironyard.entities.Child;
 import com.theironyard.entities.Parent;
 import com.theironyard.services.ChildRepository;
 import com.theironyard.services.ParentRepository;
