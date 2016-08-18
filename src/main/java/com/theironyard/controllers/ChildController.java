@@ -50,7 +50,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public Child getOneChild(@RequestHeader(value = "Authorization") String childToken, @PathVariable int id){
-
         Child child = authService.getChildFromAuth(childToken);
         return childRepository.findOne(id);
     }
@@ -62,7 +61,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/wishlist", method = RequestMethod.GET)
     public Collection<Reward> showWishlist(@RequestHeader (value = "Authorization") String childToken){
-
         Child child = authService.getChildFromAuth(childToken);
         return child.getWishlistCollection();
     }
@@ -74,7 +72,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/chores", method = RequestMethod.GET)
     public Collection<Chore> showAllChores(@RequestHeader (value = "Authorization") String childToken){
-
         Child child = authService.getChildFromAuth(childToken);
         return child.getChoreCollection();
     }
@@ -86,7 +83,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/points", method = RequestMethod.GET)
     public int getPoints(@RequestHeader (value = "Authorization") String childToken){
-
         Child child =  authService.getChildFromAuth(childToken);
         return child.getChildPoint();
     }
@@ -98,7 +94,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/rewards", method = RequestMethod.GET)
     public Collection<Reward> getChildRewards(@RequestHeader (value = "Authorization") String childToken){
-
         Child child = authService.getChildFromAuth(childToken);
         return child.getRewardCollection();
     }
@@ -136,8 +131,7 @@ public class ChildController {
      */
     @RequestMapping(path = "/logout", method = RequestMethod.POST)
     public void childLogout(@RequestHeader (value = "Authorization") String childToken, HttpSession session){
-
-        Child child = authService.getChildFromAuth(childToken);
+        authService.getChildFromAuth(childToken);
         session.invalidate();
     }
 
@@ -150,11 +144,10 @@ public class ChildController {
      */
     @RequestMapping(path = "/chore/{id}", method = RequestMethod.POST)
     public Chore completeChore(@RequestHeader (value = "Authorization") String childToken, @PathVariable int id){
-
-        Child child = authService.getChildFromAuth(childToken);
+        authService.getChildFromAuth(childToken);
 
         Chore chore = choreRepository.findOne(id);
-        chore.setComplete(true);
+        chore.setPending(true);
         choreRepository.save(chore);
         return chore;
     }
@@ -167,7 +160,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/wishlist", method = RequestMethod.POST)
     public Collection<Reward> createWishlistItem(@RequestHeader (value = "Authorization") String childToken, @RequestBody RewardCommand rewardCommand){
-
         Child child = authService.getChildFromAuth(childToken);
 
         Reward reward = new Reward(rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPoints());
@@ -183,7 +175,6 @@ public class ChildController {
 
     @RequestMapping(path = "/profile", method = RequestMethod.PUT)
     public Child updateProfile(@RequestHeader (value = "Authorization") String childToken, @RequestBody ChildCommand childCommand){
-
         Child child = authService.getChildFromAuth(childToken);
 
         child.setEmail(childCommand.getEmail());
@@ -226,7 +217,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/delete/wishlist/{id}", method = RequestMethod.DELETE)
     public Collection<Reward> deleteWishlistItem (@RequestHeader (value = "Authorization") String childToken, @PathVariable int id){
-
         Child child = authService.getChildFromAuth(childToken);
         Reward reward = rewardRepository.findOne(id);
         Collection<Reward> wishlist = child.getWishlistCollection();
@@ -247,7 +237,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/token", method = RequestMethod.POST)
     public Map getChildToken(@RequestBody ChildCommand childCommand) throws Exception{
-
         Child child = authService.checkChildLogin(childCommand);
 
         Map<String, String> tokenMap = new HashMap<>();
@@ -264,7 +253,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/token/regenerate", method = RequestMethod.PUT)
     public String regenerateChildToken(@RequestBody ChildCommand childCommand) throws Exception {
-
         Child child = authService.checkChildLogin(childCommand);
         return child.regenerate();
     }

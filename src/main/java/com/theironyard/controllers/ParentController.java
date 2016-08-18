@@ -376,9 +376,11 @@ public class ParentController {
     public Map getToken(@RequestBody ParentCommand command) throws Exception {
         Parent parent = authService.checkParentLogin(command);
 
+
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("token", parent.getToken());
         tokenMap.put("username", command.getUsername());
+        tokenMap.put("id", String.valueOf(parent.getId()));
         return tokenMap;
     }
 
