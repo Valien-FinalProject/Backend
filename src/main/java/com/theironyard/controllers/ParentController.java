@@ -61,6 +61,9 @@ public class ParentController {
         //Create the new Parent.
         Parent parent = new Parent(command.getName(), command.getEmail(), command.getPhone(), command.getUsername(), PasswordStorage.createHash(command.getPassword()));
 
+        parent.setEmailOptIn(command.isEmailOptin());
+        parent.setPhoneOptIn(command.isPhoneOptIn());
+        
         //Save parent to the 'parents' repository.
         parents.save(parent);
 

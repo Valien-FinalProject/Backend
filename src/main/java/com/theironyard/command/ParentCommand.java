@@ -86,4 +86,6 @@ public class ParentCommand {
     public void setPhoneOptIn(boolean phoneOptIn) {
         this.phoneOptIn = phoneOptIn;
     }
+
+
 }
