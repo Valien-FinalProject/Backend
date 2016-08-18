@@ -174,7 +174,7 @@ public class ChildController {
         rewardRepository.save(reward);
         child.addWishlistItem(reward);
         childRepository.save(child);
-        return child.getRewardCollection();
+        return child.getWishlistCollection();
     }
 
     /***************************

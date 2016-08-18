@@ -278,7 +278,6 @@ public class ParentController {
         return parent.getChoreCollection();
     }
 
-
     /**
      * Finds all chores that are pending in the parent's repository
      * @param parentToken
@@ -337,10 +336,8 @@ public class ParentController {
         Child child = children.findOne(id);
 
         //Get wish list from child
-        Collection<Reward> childWishes = child.getWishlistCollection();
-
         //Send wishlist
-        return childWishes;
+        return child.getWishlistCollection();
     }
 
     /**
