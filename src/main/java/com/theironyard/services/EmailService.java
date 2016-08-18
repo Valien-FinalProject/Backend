@@ -29,10 +29,6 @@ public class EmailService {
             System.out.println(response.statusCode);
             System.out.println(response.body);
             System.out.println(response.headers);
-        } catch (IOException ex) {
-            throw ex;
-
+        } catch (IOException ex) {throw ex;}
     }
-
-
 }
