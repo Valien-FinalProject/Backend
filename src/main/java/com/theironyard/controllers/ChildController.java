@@ -7,6 +7,8 @@ import com.theironyard.exceptions.LoginFailedException;
 import com.theironyard.exceptions.UserNotFoundException;
 import com.theironyard.services.*;
 import com.theironyard.utilities.PasswordStorage;
+import com.theironyard.utilities.TwilioNotifications;
+import com.twilio.sdk.TwilioRestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +39,9 @@ public class ChildController {
 
     @Autowired
     AuthService authService;
+
+    @Autowired
+    TwilioNotifications twilioNotifications;
 
     /***************************
         Read/Get Endpoints
@@ -136,23 +141,6 @@ public class ChildController {
     }
 
     /**
-     * A child must be authorized to complete a chore/task and await for the parent to approve chore/task before
-     * points are rewarded
-     * @param childToken child's token to be authorized for that account signed in
-     * @param id the id of a certain chore that the child is currently marking for completion
-     * @return the chore that was completed or marked for completion is returned
-     */
-    @RequestMapping(path = "/chore/{id}", method = RequestMethod.POST)
-    public Chore completeChore(@RequestHeader (value = "Authorization") String childToken, @PathVariable int id){
-        authService.getChildFromAuth(childToken);
-
-        Chore chore = choreRepository.findOne(id);
-        chore.setPending(true);
-        choreRepository.save(chore);
-        return chore;
-    }
-
-    /**
      *
      * @param childToken child's token to be authorized for that child's account signed in
      * @param rewardCommand grab the reward's info the child types in since it is needed to create a new reward
@@ -188,20 +176,21 @@ public class ChildController {
      * Endpoint that allows child to set a chore to a pending status so the parent may review the chore and judge
      * it the chore is approved and completed and denied and returned back to the chores to do
      * @param childToken child's token that is required for authorization
-     * @param choreId id of the chore the child is changing the pending status of
+     * @param id id of the chore the child is changing the pending status of
      * @return the chore that is now pending to be completed
      */
     @RequestMapping(path = "/chore/{id}/pending", method = RequestMethod.PUT)
-    public Chore setPendingChore(@RequestHeader (value = "Authorization") String childToken, @PathVariable int choreId){
+    public Chore setPendingChore(@RequestHeader (value = "Authorization") String childToken, @PathVariable int id) throws TwilioRestException {
 
         Child child = authService.getChildFromAuth(childToken);
 
         Collection<Chore> childChores = child.getChoreCollection();
 
-        Chore pendingChore = choreRepository.findOne(choreId);
+        Chore pendingChore = choreRepository.findOne(id);
         pendingChore.setPending(true);
         choreRepository.save(pendingChore);
         childChores.add(pendingChore);
+        twilioNotifications.chorePending(child.getParent());
         return pendingChore;
     }
 

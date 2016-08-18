@@ -125,7 +125,7 @@ public class ParentController {
      * @param auth - the parent's token.
      * @return
      */
-    @RequestMapping(path = "/child/{id}/chore/", method = RequestMethod.POST)
+    @RequestMapping(path = "/child/{id}/chore", method = RequestMethod.POST)
     public Chore assignChore(@PathVariable int id, @RequestBody ChoreCommand command, @RequestHeader(value = "Authorization") String auth){
 
         //Find the parent via their token

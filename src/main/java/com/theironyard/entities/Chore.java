@@ -1,5 +1,6 @@
 package com.theironyard.entities;
 
+import com.theironyard.utilities.LocalDateTimeConverter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.ManyToAny;
 
@@ -21,9 +22,11 @@ public class Chore {
     private String name;
 
     @Column
+    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime startDate;
 
     @Column
+    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime endDate;
 
     //frequency
