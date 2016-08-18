@@ -231,6 +231,7 @@ public class ChildController {
         Reward reward = rewardRepository.findOne(id);
         Collection<Reward> wishlist = child.getWishlistCollection();
         wishlist.remove(reward);
+        rewardRepository.delete(reward);
         return wishlist;
     }
 
