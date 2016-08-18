@@ -45,9 +45,9 @@ public class ParentController {
     AuthService authService;
 
 
-    /*==================================================
+    /*==========================================================
     ***************** 'LOGIN & LOGOUT' ENDPOINTS ***************
-    ===================================================*/
+    ============================================================*/
 
     /**
      * Allows the parent to register.
@@ -61,6 +61,9 @@ public class ParentController {
         //Create the new Parent.
         Parent parent = new Parent(command.getName(), command.getEmail(), command.getPhone(), command.getUsername(), PasswordStorage.createHash(command.getPassword()));
 
+        parent.setEmailOptIn(command.isEmailOptin());
+        parent.setPhoneOptIn(command.isPhoneOptIn());
+        
         //Save parent to the 'parents' repository.
         parents.save(parent);
 
@@ -122,8 +125,8 @@ public class ParentController {
      * @param auth - the parent's token.
      * @return
      */
-    @RequestMapping(path = "/child/{id}/chore/{choreId}", method = RequestMethod.POST)
-    public Chore assignChore(@PathVariable int id, @PathVariable int choreId, @RequestHeader(value = "Authorization") String auth){
+    @RequestMapping(path = "/child/{id}/chore/", method = RequestMethod.POST)
+    public Chore assignChore(@PathVariable int id, @RequestBody ChoreCommand command, @RequestHeader(value = "Authorization") String auth){
 
         //Find the parent via their token
         Parent parent = authService.getParentFromAuth(auth);
@@ -131,8 +134,8 @@ public class ParentController {
         //Find child via id
         Child child = children.findOne(id);
 
-        //Find chore via id
-        Chore chore = chores.findOne(choreId);
+        //Create chore
+        Chore chore = new Chore(command.getName(), command.getDescription(), command.getValue());
 
         //Assign chore to child
         if (!child.getChoreCollection().contains(chore)) {
@@ -299,7 +302,7 @@ public class ParentController {
      * @return Collection of Reward Collection.
      */
     @RequestMapping(path = "/rewards", method = RequestMethod.GET)
-    public Collection<Reward> getParentRerwards(@RequestHeader(value = "Authorization") String parentToken){
+    public Collection<Reward> getParentRewards(@RequestHeader(value = "Authorization") String parentToken){
 
         //Find parent via token
         Parent parent = authService.getParentFromAuth(parentToken);
@@ -589,6 +592,7 @@ public class ParentController {
     /*==================================================
     ***************** 'DELETE' ENDPOINTS ***************
     ===================================================*/
+
 
     @RequestMapping(path = "/reward/{id}", method = RequestMethod.DELETE)
     public Collection<Reward> deleteReward(@PathVariable int id, @RequestHeader(value = "Authorization") String auth) {

@@ -37,6 +37,7 @@ dependencies {
 	runtime('com.h2database:h2')
 	runtime('org.postgresql:postgresql')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile 'com.sendgrid:sendgrid-java:3.0.8'
 }
 
 task stage{
