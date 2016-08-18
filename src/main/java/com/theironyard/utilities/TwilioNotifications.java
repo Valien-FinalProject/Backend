@@ -1,5 +1,7 @@
 package com.theironyard.utilities;
 
+import com.theironyard.entities.Child;
+import com.theironyard.entities.Parent;
 import com.theironyard.services.ChildRepository;
 import com.theironyard.services.ParentRepository;
 import com.twilio.sdk.TwilioRestException;
@@ -38,16 +40,15 @@ public class TwilioNotifications {
         smsFactory = twilioAccount.getSmsFactory();
     }
 
-    public void chorePending() throws TwilioRestException {
-        String phone = "";
+    public void chorePending(Parent parent) throws TwilioRestException {
+//        String phone = parent.getPhone();
+        String phone = "7023434471";
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("From", TWILIO_NUMBER));
+        params.add(new BasicNameValuePair("From", "7026080979"));
         params.add(new BasicNameValuePair("To", phone));
-        params.add(new BasicNameValuePair("Body", ""));
+        params.add(new BasicNameValuePair("Body", "You have have a chore pending that is waiting for your approval!"));
         System.out.println("Pending chore notification sent!");
 
         smsFactory.create(params);
     }
-
-
 }

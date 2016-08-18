@@ -7,6 +7,8 @@ import com.theironyard.exceptions.LoginFailedException;
 import com.theironyard.exceptions.UserNotFoundException;
 import com.theironyard.services.*;
 import com.theironyard.utilities.PasswordStorage;
+import com.theironyard.utilities.TwilioNotifications;
+import com.twilio.sdk.TwilioRestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +40,9 @@ public class ChildController {
     @Autowired
     AuthService authService;
 
+    @Autowired
+    TwilioNotifications twilioNotifications;
+
     /***************************
         Read/Get Endpoints
      **************************/
@@ -50,7 +55,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public Child getOneChild(@RequestHeader(value = "Authorization") String childToken, @PathVariable int id){
-
         Child child = authService.getChildFromAuth(childToken);
         return childRepository.findOne(id);
     }
@@ -62,7 +66,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/wishlist", method = RequestMethod.GET)
     public Collection<Reward> showWishlist(@RequestHeader (value = "Authorization") String childToken){
-
         Child child = authService.getChildFromAuth(childToken);
         return child.getWishlistCollection();
     }
@@ -74,7 +77,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/chores", method = RequestMethod.GET)
     public Collection<Chore> showAllChores(@RequestHeader (value = "Authorization") String childToken){
-
         Child child = authService.getChildFromAuth(childToken);
         return child.getChoreCollection();
     }
@@ -86,7 +88,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/points", method = RequestMethod.GET)
     public int getPoints(@RequestHeader (value = "Authorization") String childToken){
-
         Child child =  authService.getChildFromAuth(childToken);
         return child.getChildPoint();
     }
@@ -98,7 +99,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/rewards", method = RequestMethod.GET)
     public Collection<Reward> getChildRewards(@RequestHeader (value = "Authorization") String childToken){
-
         Child child = authService.getChildFromAuth(childToken);
         return child.getRewardCollection();
     }
@@ -136,27 +136,8 @@ public class ChildController {
      */
     @RequestMapping(path = "/logout", method = RequestMethod.POST)
     public void childLogout(@RequestHeader (value = "Authorization") String childToken, HttpSession session){
-
-        Child child = authService.getChildFromAuth(childToken);
+        authService.getChildFromAuth(childToken);
         session.invalidate();
-    }
-
-    /**
-     * A child must be authorized to complete a chore/task and await for the parent to approve chore/task before
-     * points are rewarded
-     * @param childToken child's token to be authorized for that account signed in
-     * @param id the id of a certain chore that the child is currently marking for completion
-     * @return the chore that was completed or marked for completion is returned
-     */
-    @RequestMapping(path = "/chore/{id}", method = RequestMethod.POST)
-    public Chore completeChore(@RequestHeader (value = "Authorization") String childToken, @PathVariable int id){
-
-        Child child = authService.getChildFromAuth(childToken);
-
-        Chore chore = choreRepository.findOne(id);
-        chore.setComplete(true);
-        choreRepository.save(chore);
-        return chore;
     }
 
     /**
@@ -167,7 +148,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/wishlist", method = RequestMethod.POST)
     public Collection<Reward> createWishlistItem(@RequestHeader (value = "Authorization") String childToken, @RequestBody RewardCommand rewardCommand){
-
         Child child = authService.getChildFromAuth(childToken);
 
         Reward reward = new Reward(rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPoints());
@@ -183,7 +163,6 @@ public class ChildController {
 
     @RequestMapping(path = "/profile", method = RequestMethod.PUT)
     public Child updateProfile(@RequestHeader (value = "Authorization") String childToken, @RequestBody ChildCommand childCommand){
-
         Child child = authService.getChildFromAuth(childToken);
 
         child.setEmail(childCommand.getEmail());
@@ -197,20 +176,21 @@ public class ChildController {
      * Endpoint that allows child to set a chore to a pending status so the parent may review the chore and judge
      * it the chore is approved and completed and denied and returned back to the chores to do
      * @param childToken child's token that is required for authorization
-     * @param choreId id of the chore the child is changing the pending status of
+     * @param id id of the chore the child is changing the pending status of
      * @return the chore that is now pending to be completed
      */
     @RequestMapping(path = "/chore/{id}/pending", method = RequestMethod.PUT)
-    public Chore setPendingChore(@RequestHeader (value = "Authorization") String childToken, @PathVariable int choreId){
+    public Chore setPendingChore(@RequestHeader (value = "Authorization") String childToken, @PathVariable int id) throws TwilioRestException {
 
         Child child = authService.getChildFromAuth(childToken);
 
         Collection<Chore> childChores = child.getChoreCollection();
 
-        Chore pendingChore = choreRepository.findOne(choreId);
+        Chore pendingChore = choreRepository.findOne(id);
         pendingChore.setPending(true);
         choreRepository.save(pendingChore);
         childChores.add(pendingChore);
+        twilioNotifications.chorePending(child.getParent());
         return pendingChore;
     }
 
@@ -226,7 +206,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/delete/wishlist/{id}", method = RequestMethod.DELETE)
     public Collection<Reward> deleteWishlistItem (@RequestHeader (value = "Authorization") String childToken, @PathVariable int id){
-
         Child child = authService.getChildFromAuth(childToken);
         Reward reward = rewardRepository.findOne(id);
         Collection<Reward> wishlist = child.getWishlistCollection();
@@ -247,7 +226,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/token", method = RequestMethod.POST)
     public Map getChildToken(@RequestBody ChildCommand childCommand) throws Exception{
-
         Child child = authService.checkChildLogin(childCommand);
 
         Map<String, String> tokenMap = new HashMap<>();
@@ -264,7 +242,6 @@ public class ChildController {
      */
     @RequestMapping(path = "/token/regenerate", method = RequestMethod.PUT)
     public String regenerateChildToken(@RequestBody ChildCommand childCommand) throws Exception {
-
         Child child = authService.checkChildLogin(childCommand);
         return child.regenerate();
     }
