@@ -63,7 +63,7 @@ public class ParentController {
 
         parent.setEmailOptIn(command.isEmailOptin());
         parent.setPhoneOptIn(command.isPhoneOptIn());
-        
+
         //Save parent to the 'parents' repository.
         parents.save(parent);
 
@@ -377,6 +377,7 @@ public class ParentController {
         Parent parent = authService.checkParentLogin(command);
 
         Map<String, String> tokenMap = new HashMap<>();
+        tokenMap.put("id", String.valueOf(parent.getId()));
         tokenMap.put("token", parent.getToken());
         tokenMap.put("username", command.getUsername());
         return tokenMap;
