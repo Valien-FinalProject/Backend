@@ -51,6 +51,4 @@ public class TwilioNotifications {
 
         smsFactory.create(params);
     }
-
-
 }
