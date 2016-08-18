@@ -45,9 +45,9 @@ public class ParentController {
     AuthService authService;
 
 
-    /*==================================================
+    /*==========================================================
     ***************** 'LOGIN & LOGOUT' ENDPOINTS ***************
-    ===================================================*/
+    ============================================================*/
 
     /**
      * Allows the parent to register.
@@ -589,6 +589,7 @@ public class ParentController {
     /*==================================================
     ***************** 'DELETE' ENDPOINTS ***************
     ===================================================*/
+
 
     @RequestMapping(path = "/reward/{id}", method = RequestMethod.DELETE)
     public Collection<Reward> deleteReward(@PathVariable int id, @RequestHeader(value = "Authorization") String auth) {
