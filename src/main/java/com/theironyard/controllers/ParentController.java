@@ -107,11 +107,11 @@ public class ParentController {
         //Create new Child object.
 
         Child child = new Child(command.getName(), command.getUsername(), PasswordStorage.createHash(command.getPassword()), command.getEmail(), command.getPhone());
-
+        child.setParent(parent);
         //Add child to Parent's child Collection & Save the child to 'children' repository.
         parent.addChild(child);
         children.save(child);
-
+        parents.save(parent);
         //return saved object
         return child;
     }
