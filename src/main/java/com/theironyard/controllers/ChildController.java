@@ -221,14 +221,14 @@ public class ChildController {
     /**
      * Delete endpoint that allows a child to delete an item in their wishlist
      * @param childToken child's token to be authoized for that child's account signed in
-     * @param itemId id of the item/reward that the child is going to delete from their wishlist
+     * @param id id of the item/reward that the child is going to delete from their wishlist
      * @return a new collection of the child's updated wishlist
      */
     @RequestMapping(path = "/delete/wishlist/{id}", method = RequestMethod.DELETE)
-    public Collection<Reward> deleteWishlistItem (@RequestHeader (value = "Authorization") String childToken, @PathVariable int itemId){
+    public Collection<Reward> deleteWishlistItem (@RequestHeader (value = "Authorization") String childToken, @PathVariable int id){
 
         Child child = authService.getChildFromAuth(childToken);
-        Reward reward = rewardRepository.findOne(itemId);
+        Reward reward = rewardRepository.findOne(id);
         Collection<Reward> wishlist = child.getWishlistCollection();
         wishlist.remove(reward);
         return wishlist;
