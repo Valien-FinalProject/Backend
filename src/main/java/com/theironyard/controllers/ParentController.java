@@ -89,7 +89,6 @@ public class ParentController {
         //Parent is logged in?
         Parent parent = authService.getParentFromAuth(parentToken);
 
-
         //kill session
         session.invalidate();
     }
@@ -287,6 +286,25 @@ public class ParentController {
 
         //give the chore collection
         return parent.getChoreCollection();
+    }
+
+    /**
+     * Get all chores that are not assigned to a child.
+     * @param parentToken - token of the parent that is signed in
+     * @return - collection of chores that are not assigned to a child.
+     */
+    @RequestMapping(path = "/chores/pool", method = RequestMethod.GET)
+    public Collection<Chore> getChoresPool(@RequestHeader(value = "Authorization") String parentToken){
+
+        //Find parent via token
+        Parent parent = authService.getParentFromAuth(parentToken);
+
+        //
+        Collection<Chore> uaChore = null;
+        parent.getChoreCollection().stream().filter(c -> c.getChildAssigned() == null).forEach(c -> uaChore.add(c));
+
+        //give the chore collection
+        return uaChore;
     }
 
     /**
