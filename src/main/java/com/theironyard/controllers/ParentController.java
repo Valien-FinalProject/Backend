@@ -105,7 +105,7 @@ public class ParentController {
      * Parent can register their child.
      *
      * @param command holds info for the child object
-     * @param auth    auth token of the parent
+     * @param auth auth token of the parent
      * @return
      */
     @RequestMapping(path = "/child", method = RequestMethod.POST)
@@ -304,8 +304,8 @@ public class ParentController {
         //Find parent via token
         Parent parent = authService.getParentFromAuth(parentToken);
 
-        //
-        Collection<Chore> uaChore = null;
+        //Create a Collection of Chores that are unassigned. --that's right..it uses a stream! boom!
+        Collection<Chore> uaChore = Collections.emptyList();
         parent.getChoreCollection().stream().filter(c -> c.getChildAssigned() == null).forEach(c -> uaChore.add(c));
 
         //give the chore collection
