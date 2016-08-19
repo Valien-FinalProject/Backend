@@ -46,7 +46,17 @@ public class TwilioNotifications {
         params.add(new BasicNameValuePair("From", TWILIO_NUMBER));
         params.add(new BasicNameValuePair("Body", "You have a chore pending that is waiting for your approval!"));
         System.out.println("Pending chore notification sent!");
+        smsFactory.create(params);
+    }
 
+    public void parentRegister(Parent parent) throws TwilioRestException {
+        String phone = parent.getPhone();
+        String message = String.format("Thank you %s for signing up!\n", parent.getName());
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("To", phone));
+        params.add(new BasicNameValuePair("From", TWILIO_NUMBER));
+        params.add(new BasicNameValuePair("Body", message));
+        System.out.println("Register notification sent!");
         smsFactory.create(params);
     }
 
