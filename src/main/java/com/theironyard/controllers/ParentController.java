@@ -189,6 +189,7 @@ public class ParentController {
         //Save the chore object to the Parent Collection & Repository
         parent.addChore(chore);
         chores.save(chore);
+        parents.save(parent);
 
         //Send the chore object.
         return chore;
