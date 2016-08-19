@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -90,7 +89,6 @@ public class ParentController {
 
         //Parent is logged in?
         Parent parent = authService.getParentFromAuth(parentToken);
-
 
         //kill session
         session.invalidate();
@@ -388,7 +386,6 @@ public class ParentController {
     @RequestMapping(path = "/token", method = RequestMethod.POST)
     public Map getToken(@RequestBody ParentCommand command) throws Exception {
         Parent parent = authService.checkParentLogin(command);
-
 
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("id", String.valueOf(parent.getId()));
