@@ -180,6 +180,7 @@ public class ChildController {
     public Chore setPendingChore(@RequestHeader (value = "Authorization") String childToken, @PathVariable int id) throws TwilioRestException {
 
         Child child = authService.getChildFromAuth(childToken);
+        Parent parent = child.getParent();
 
         Collection<Chore> childChores = child.getChoreCollection();
 
@@ -187,7 +188,10 @@ public class ChildController {
         pendingChore.setPending(true);
         choreRepository.save(pendingChore);
         childChores.add(pendingChore);
-        twilioNotifications.chorePending(child.getParent());
+
+        if(parent.isPhoneOptIn()) {
+            twilioNotifications.chorePending(child.getParent());
+        }
         return pendingChore;
     }
 

@@ -73,7 +73,9 @@ public class ParentController {
         parents.save(parent);
 
         //Send new parent object
-        twilioNotifications.parentRegister(parent);
+        if(parent.isPhoneOptIn()) {
+            twilioNotifications.parentRegister(parent);
+        }
         return parent;
     }
 
@@ -160,6 +162,8 @@ public class ParentController {
         }
 
         //Send the assigned chore object
+        parent.addChore(chore);
+        parents.save(parent);
         return chore;
     }
 
@@ -406,7 +410,7 @@ public class ParentController {
      * @return the modified parent
      */
     @RequestMapping(path = "/profile", method = RequestMethod.PUT)
-    public Parent modifyParent(@RequestBody ParentCommand command, @RequestHeader(value = "Authorization") String auth) {
+    public Parent modifyParent(@RequestBody ParentCommand command, @RequestHeader(value = "Authorization") String auth) throws PasswordStorage.CannotPerformOperationException, TwilioRestException {
 
         //Find the parent via their token
         Parent parent = authService.getParentFromAuth(auth);
@@ -414,9 +418,15 @@ public class ParentController {
         //Modify the parent;
         parent.setName(command.getName());
         parent.setEmail(command.getEmail());
+        parent.setPhone(command.getPhone());
+        parent.setPassword(PasswordStorage.createHash(command.getPassword()));
         parent.setEmailOptIn(command.isEmailOptIn());
         parent.setPhoneOptIn(command.isPhoneOptIn());
+        parents.save(parent);
 
+        if(parent.isPhoneOptIn()){
+            twilioNotifications.updateProfile(parent);
+        }
         return parent;
     }
 

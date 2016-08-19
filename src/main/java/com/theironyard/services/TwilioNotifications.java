@@ -60,4 +60,15 @@ public class TwilioNotifications {
         smsFactory.create(params);
     }
 
+    public void updateProfile(Parent parent) throws TwilioRestException {
+        String phone = parent.getPhone();
+        String message = String.format("Hello %s, we are notifying you that you have successfully updated your profile\n", parent.getName());
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("To", phone));
+        params.add(new BasicNameValuePair("From", TWILIO_NUMBER));
+        params.add(new BasicNameValuePair("Body", message));
+        System.out.println("Parent's profile has been updated");
+        smsFactory.create(params);
+    }
+
 }
