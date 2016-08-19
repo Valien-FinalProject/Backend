@@ -306,7 +306,8 @@ public class ParentController {
 
         //Create a Collection of Chores that are unassigned. --that's right..it uses a stream! boom!
         Collection<Chore> uaChore = Collections.emptyList();
-        parent.getChoreCollection().stream().filter(c -> c.getChildAssigned() == null).forEach(c -> uaChore.add(c));
+        Collection<Chore> parentCollection = parent.getChoreCollection();
+        parentCollection.stream().filter(c -> c.getChildAssigned() == null).forEach(c -> uaChore.add(c));
 
         //give the chore collection
         return uaChore;
