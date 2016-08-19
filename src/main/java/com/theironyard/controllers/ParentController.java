@@ -305,11 +305,11 @@ public class ParentController {
         Parent parent = authService.getParentFromAuth(parentToken);
 
         //Create a Collection of Chores that are unassigned. --that's right..it uses a stream! boom!
-        Collection<Chore> uaChore = Collections.emptyList();
         Collection<Chore> parentCollection = parent.getChoreCollection();
+        Collection<Chore> uaChore = new ArrayList<>();
         parentCollection.stream().filter(c -> c.getChildAssigned() == null).forEach(c -> uaChore.add(c));
 
-        //give the chore collection
+        //Send Collection of chores that are unassigned.
         return uaChore;
     }
 
