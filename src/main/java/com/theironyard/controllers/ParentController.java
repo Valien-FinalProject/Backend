@@ -3,7 +3,7 @@ package com.theironyard.controllers;
 import com.theironyard.command.RewardCommand;
 import com.theironyard.entities.*;
 import com.theironyard.services.*;
-import org.springframework.format.datetime.standard.DateTimeContext;
+import com.twilio.sdk.TwilioRestException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +14,6 @@ import com.theironyard.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.PreUpdate;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -47,6 +46,9 @@ public class ParentController {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    TwilioNotifications twilioNotifications;
+
 
     /*==========================================================
     ***************** 'LOGIN & LOGOUT' ENDPOINTS ***************
@@ -59,18 +61,19 @@ public class ParentController {
      * @return newly saved parent object.
      */
     @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public Parent registerParent(@RequestBody ParentCommand command) throws PasswordStorage.CannotPerformOperationException, IOException {
+    public Parent registerParent(@RequestBody ParentCommand command) throws PasswordStorage.CannotPerformOperationException, IOException, TwilioRestException {
 
         //Create the new Parent.
         Parent parent = new Parent(command.getName(), command.getEmail(), command.getPhone(), command.getUsername(), PasswordStorage.createHash(command.getPassword()));
 
-        parent.setEmailOptIn(command.isEmailOptin());
+        parent.setEmailOptIn(command.isEmailOptIn());
         parent.setPhoneOptIn(command.isPhoneOptIn());
 
         //Save parent to the 'parents' repository.
         parents.save(parent);
 
         //Send new parent object
+        twilioNotifications.parentRegister(parent);
         return parent;
     }
 
@@ -116,6 +119,7 @@ public class ParentController {
         child.setParent(parent);
         //Add child to Parent's child Collection & Save the child to 'children' repository.
         parent.addChild(child);
+        child.setParent(parent);
         children.save(child);
         parents.save(parent);
         //return saved object
@@ -410,7 +414,7 @@ public class ParentController {
         //Modify the parent;
         parent.setName(command.getName());
         parent.setEmail(command.getEmail());
-        parent.setEmailOptIn(command.isEmailOptin());
+        parent.setEmailOptIn(command.isEmailOptIn());
         parent.setPhoneOptIn(command.isPhoneOptIn());
 
         return parent;

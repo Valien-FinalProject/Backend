@@ -1,6 +1,5 @@
-package com.theironyard.utilities;
+package com.theironyard.services;
 
-import com.theironyard.entities.Child;
 import com.theironyard.entities.Parent;
 import com.theironyard.services.ChildRepository;
 import com.theironyard.services.ParentRepository;
@@ -22,7 +21,7 @@ import java.util.List;
 @Service
 public class TwilioNotifications {
 
-    public static final String TWILIO_NUMBER = "7026080979";
+    public static final String TWILIO_NUMBER = "+17026080979";
 
     @Autowired
     Account twilioAccount;
@@ -41,14 +40,24 @@ public class TwilioNotifications {
     }
 
     public void chorePending(Parent parent) throws TwilioRestException {
-//        String phone = parent.getPhone();
-        String phone = "7023434471";
+        String phone = parent.getPhone();
         List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("From", "7026080979"));
         params.add(new BasicNameValuePair("To", phone));
-        params.add(new BasicNameValuePair("Body", "You have have a chore pending that is waiting for your approval!"));
+        params.add(new BasicNameValuePair("From", TWILIO_NUMBER));
+        params.add(new BasicNameValuePair("Body", "You have a chore pending that is waiting for your approval!"));
         System.out.println("Pending chore notification sent!");
-
         smsFactory.create(params);
     }
+
+    public void parentRegister(Parent parent) throws TwilioRestException {
+        String phone = parent.getPhone();
+        String message = String.format("Thank you %s for signing up!\n", parent.getName());
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("To", phone));
+        params.add(new BasicNameValuePair("From", TWILIO_NUMBER));
+        params.add(new BasicNameValuePair("Body", message));
+        System.out.println("Register notification sent!");
+        smsFactory.create(params);
+    }
+
 }

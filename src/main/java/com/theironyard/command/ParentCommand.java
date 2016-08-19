@@ -1,9 +1,5 @@
 package com.theironyard.command;
 
-import org.hibernate.annotations.ColumnDefault;
-
-import javax.persistence.Column;
-
 /**
  * Created by Nigel on 8/13/16.
  */
@@ -19,7 +15,7 @@ public class ParentCommand {
 
     private String password;
 
-    private boolean emailOptin;
+    private boolean emailOptIn;
 
     private boolean phoneOptIn;
 
@@ -71,12 +67,12 @@ public class ParentCommand {
         this.password = password;
     }
 
-    public boolean isEmailOptin() {
-        return emailOptin;
+    public boolean isEmailOptIn() {
+        return emailOptIn;
     }
 
-    public void setEmailOptin(boolean emailOptin) {
-        this.emailOptin = emailOptin;
+    public void setEmailOptIn(boolean emailOptIn) {
+        this.emailOptIn = emailOptIn;
     }
 
     public boolean isPhoneOptIn() {
