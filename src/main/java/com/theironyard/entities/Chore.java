@@ -1,11 +1,11 @@
 package com.theironyard.entities;
 
-import com.theironyard.utilities.LocalDateTimeConverter;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.ManyToAny;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by EddyJ on 8/13/16.
@@ -21,13 +21,11 @@ public class Chore {
     @Column(nullable = false)
     private String name;
 
-    @Column
-    @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime startDate;
+    @Column(updatable = false, insertable = false)
+    private Timestamp startDate;
 
-    @Column
-    @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime endDate;
+    @Column(updatable = false, insertable = false)
+    private Timestamp endDate;
 
     //frequency
     /*I think this is going to be an enum of the days of the week.*/
@@ -101,19 +99,19 @@ public class Chore {
         this.name = name;
     }
 
-    public LocalDateTime getStartDate() {
+    public Timestamp getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public Timestamp getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
     }
 
@@ -139,5 +137,17 @@ public class Chore {
 
     public void setCreator(Parent creator) {
         this.creator = creator;
+    }
+
+    public Date createNewStartDate(long date){
+        Date newDate = new Date(date);
+
+        return newDate;
+    }
+
+    public Date createNewEndDate(long date){
+        Date newDate = new Date(date);
+
+        return newDate;
     }
 }

@@ -3,6 +3,7 @@ package com.theironyard.controllers;
 import com.theironyard.command.RewardCommand;
 import com.theironyard.entities.*;
 import com.theironyard.services.*;
+import org.springframework.format.datetime.standard.DateTimeContext;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,10 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.PreUpdate;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
 
 /**
@@ -162,7 +161,6 @@ public class ParentController {
 
     /**
      * Allows a parent to create a new chore.
-     *
      * @param command - hold the info for the chore command.
      * @param auth    - the parent's token.
      * @return the new chore created
@@ -175,14 +173,16 @@ public class ParentController {
 
         //Make new chore object
         Chore chore = new Chore(command.getName(), command.getDescription(), command.getValue());
+
+        //Take Long and Make it a date & save those dates into the chore object.
         chore.setStartDate(command.getStartDate());
         chore.setEndDate(command.getEndDate());
 
-        //Make parent the creator
-        chore.setCreator(parent);
-
-        //Save the chore object to the Repository
+        //Save the chore object to the Parent Collection & Repository
+        parent.addChore(chore);
         chores.save(chore);
+
+        //Send the chore object.
         return chore;
     }
 

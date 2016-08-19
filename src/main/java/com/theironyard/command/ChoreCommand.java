@@ -1,15 +1,17 @@
 package com.theironyard.command;
 
-import java.time.LocalDateTime;
+
+import java.sql.Time;
+import java.sql.Timestamp;
 
 /**
  * Created by chocodonis on 8/14/16.
  */
 public class ChoreCommand {
 
-    LocalDateTime startDate;
+    private Timestamp startDate;
 
-    LocalDateTime endDate;
+    private Timestamp endDate;
 
     private String name;
 
@@ -42,19 +44,19 @@ public class ChoreCommand {
         this.value = value;
     }
 
-    public LocalDateTime getStartDate() {
+    public Timestamp getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public Timestamp getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
     }
 
