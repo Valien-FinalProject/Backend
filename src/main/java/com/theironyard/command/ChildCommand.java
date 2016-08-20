@@ -12,7 +12,7 @@ public class ChildCommand {
     private String password;
 
     private int age;
-    
+
     public ChildCommand() {
     }
 
