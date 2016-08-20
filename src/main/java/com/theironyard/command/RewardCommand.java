@@ -9,14 +9,14 @@ public class RewardCommand {
 
     private String description;
 
-    private File url;
+    private String url;
 
     private int points;
 
     public RewardCommand() {
     }
 
-    public RewardCommand(String description, File url, int points) {
+    public RewardCommand(String description, String url, int points) {
         this.description = description;
         this.url = url;
         this.points = points;
@@ -30,11 +30,11 @@ public class RewardCommand {
         this.description = description;
     }
 
-    public File getUrl() {
+    public String getUrl() {
         return url;
     }
 
-    public void setUrl(File url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
