@@ -11,6 +11,6 @@ public interface ParentRepository extends JpaRepository<Parent, Integer> {
 
     Parent findFirstByToken(String parentToken);
 
-    Parent findFirstByUsername(String name);
+    Parent findFirstByUsername(String username);
 
 }

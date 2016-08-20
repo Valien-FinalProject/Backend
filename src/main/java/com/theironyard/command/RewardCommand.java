@@ -1,46 +1,25 @@
-package com.theironyard.entities;
+package com.theironyard.command;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
 import java.io.File;
 
 /**
- * Created by Nigel on 8/13/16.
+ * Created by EddyJ on 8/15/16.
  */
-@Entity
-@Table(name = "rewards")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Reward {
+public class RewardCommand {
 
-    @Id
-    @GeneratedValue
-    private int id;
-
-    @Column(nullable = false)
     private String description;
 
-    @Column
     private String url;
 
-    @Column
     private int points;
 
-    public Reward() {
+    public RewardCommand() {
     }
 
-    public Reward(String description, String url, int points) {
+    public RewardCommand(String description, String url, int points) {
         this.description = description;
         this.url = url;
         this.points = points;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getDescription() {
