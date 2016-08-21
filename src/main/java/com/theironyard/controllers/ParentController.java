@@ -602,6 +602,7 @@ public class ParentController {
         //Add points to child's point
         int modifiedPointValue = child.getChildPoint() + newPoint;
         child.setChildPoint(modifiedPointValue);
+        children.save(child);
 
         //Send the
         return child.getChildPoint();
@@ -622,6 +623,7 @@ public class ParentController {
         //Get chore and set pending to false
         Chore chore = chores.getOne(id);
         chore.setPending(false);
+        chores.save(chore);
 
         //save chore
         chores.save(chore);
