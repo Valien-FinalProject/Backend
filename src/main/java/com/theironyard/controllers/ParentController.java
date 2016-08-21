@@ -143,6 +143,9 @@ public class ParentController {
 
         //Create chore
         Chore chore = new Chore(command.getName(), command.getDescription(), command.getValue());
+        chore.setStartDate(command.getStartDate());
+        chore.setEndDate(command.getEndDate());
+        chore.setCreator(parent);
 
         //Assign chore to child
         if (!child.getChoreCollection().contains(chore)) {
@@ -183,6 +186,7 @@ public class ParentController {
         //Take Long and Make it a date & save those dates into the chore object.
         chore.setStartDate(command.getStartDate());
         chore.setEndDate(command.getEndDate());
+        chore.setCreator(parent);
 
         //Save the chore object to the Parent Collection & Repository
         parent.addChore(chore);
