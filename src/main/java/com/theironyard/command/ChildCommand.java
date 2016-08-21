@@ -13,12 +13,13 @@ public class ChildCommand {
 
     private String password;
 
-
     private String phone;
 
     private File childPicture;
 
     private String email;
+
+    private int childPoint;
 
     public ChildCommand() {
     }
@@ -74,5 +75,14 @@ public class ChildCommand {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getChildPoint() {
+
+        return childPoint;
+    }
+
+    public void setChildPoint(int childPoint) {
+        this.childPoint = childPoint;
     }
 }

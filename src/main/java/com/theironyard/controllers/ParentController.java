@@ -548,6 +548,8 @@ public class ParentController {
 
         //Remove the chore from the child's chore Collection
         childChores.remove(choreToApprove);
+        chores.save(choreToApprove);
+        children.save(child);
 
         //Build a string stating what we have done.
         String success = child.getName() + "'s points have been updated and " + choreToApprove.getDescription() + " has been removed from their list.";
