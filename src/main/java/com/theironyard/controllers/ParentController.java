@@ -536,7 +536,8 @@ public class ParentController {
         Collection<Chore> childChores = child.getChoreCollection();
 
         //Add point value of the chore to the child's points.
-        int point = child.getChildPoint() + choreToApprove.getValue();
+        child.setChildPoint(child.getChildPoint() + choreToApprove.getValue());
+
 
         //Mark chore as complete
         choreToApprove.setComplete(true);
@@ -546,9 +547,6 @@ public class ParentController {
 
         //Build a string stating what we have done.
         String success = child.getName() + "'s points have been updated and " + choreToApprove.getDescription() + " has been removed from their list.";
-
-        //Remove the chore from the database
-        chores.delete(choreToApprove.getId());
 
         return success;
     }

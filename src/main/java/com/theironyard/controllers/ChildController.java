@@ -213,7 +213,7 @@ public class ChildController {
         return pendingChore;
     }
 
-    /***************************
+    /****************************
         Delete Endpoints
      ***************************/
 
