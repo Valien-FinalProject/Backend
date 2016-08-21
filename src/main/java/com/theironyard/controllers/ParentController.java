@@ -576,6 +576,7 @@ public class ParentController {
         //Add points to child's point
         int modifiedPointValue = child.getChildPoint() - newPoint;
         child.setChildPoint(modifiedPointValue);
+        children.save(child);
 
         //Send the
         return child.getChildPoint();
