@@ -225,6 +225,75 @@ public class ParentController {
 
 
     /**
+     * Get a Collection of chores that have not been approved, are not pending and are assigned to a given child.
+     * @param id child's unique id
+     * @param token parent's token
+     * @return Collection of chores
+     */
+    @RequestMapping(path = "/child/{id}/current", method = RequestMethod.GET)
+    public Collection<Chore> getCurrentChore(@PathVariable int id, @RequestHeader(value = "Authorization") String token){
+        //Get the parent from and the child from id.
+        Parent parent = authService.getParentFromAuth(token);
+        Child child = children.findOne(id);
+
+        //Get the parent chore Collection & Create List to return
+        Collection<Chore> parentCollection = parent.getChoreCollection();
+        Collection<Chore> currentChoreList = new ArrayList<>();
+
+        //Stream through Collection to find chore that are not pending, are not complete, and are assigned to child.
+        parentCollection.stream().filter(chore -> chore.isPending() == false && chore.isComplete() == false && chore.getChildAssigned() == child).forEach(chore -> currentChoreList.add(chore));
+
+        //Give List of Current Chores
+        return currentChoreList;
+    }
+
+    /**
+     * Get a list of chores that are pending and assigned to a given child.
+     * @param id - child's id
+     * @param token -parent's token
+     * @return List of the chores that are pending
+     */
+    @RequestMapping(path = "child/{id}/pending", method = RequestMethod.GET)
+    public Collection<Chore> getPendingChores(@PathVariable int id, @RequestHeader(value = "Authorization") String token){
+        //Get the parent from and the child from id.
+        Parent parent = authService.getParentFromAuth(token);
+        Child child = children.findOne(id);
+
+        //Get the parent chore Collection & Create List to return
+        Collection<Chore> parentCollection = parent.getChoreCollection();
+        Collection<Chore> pendingChoreList = new ArrayList<>();
+
+        //Stream through Collection to find chores that are pending and assigned to child.
+        parentCollection.stream().filter(chore -> chore.isPending() && chore.getChildAssigned() == child).forEach(chore -> pendingChoreList.add(chore));
+
+        //Give List of Current Chores
+        return pendingChoreList;
+    }
+
+    /**
+     * Get a list of chores that are complete and assigned to a given child.
+     * @param id child's id
+     * @param token parent's token
+     * @return list of chores
+     */
+    @RequestMapping(path = "child/{id}/complete", method = RequestMethod.GET)
+    public Collection<Chore> getCompleteChores(@PathVariable int id, @RequestHeader(value = "Authorization") String token){
+        //Get the parent from and the child from id.
+        Parent parent = authService.getParentFromAuth(token);
+        Child child = children.findOne(id);
+
+        //Get the parent chore Collection & Create List to return
+        Collection<Chore> parentCollection = parent.getChoreCollection();
+        Collection<Chore> completeChoreList = new ArrayList<>();
+
+        //Stream through collection to find chores that are complete and assigned to child.
+        parentCollection.stream().filter(chore -> chore.isComplete() && chore.getChildAssigned() == child).forEach(chore -> completeChoreList.add(chore));
+
+        //Give List of Current Chores
+        return completeChoreList;
+    }
+
+    /**
      * Gets a parent's info.
      *
      * @param id - the parent's id is passed.
@@ -305,11 +374,11 @@ public class ParentController {
 
         //Create a Collection of Chores that are unassigned. --that's right..it uses a stream! boom!
         Collection<Chore> parentCollection = parent.getChoreCollection();
-        Collection<Chore> uaChore = new ArrayList<>();
-        parentCollection.stream().filter(c -> c.getChildAssigned() == null).forEach(c -> uaChore.add(c));
+        Collection<Chore> unassignedChoreList = new ArrayList<>();
+        parentCollection.stream().filter(c -> c.getChildAssigned() == null).forEach(c -> unassignedChoreList.add(c));
 
         //Send Collection of chores that are unassigned.
-        return uaChore;
+        return unassignedChoreList;
     }
 
     /**
