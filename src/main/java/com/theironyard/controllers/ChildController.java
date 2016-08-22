@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Nigel on 8/13/16.
@@ -76,6 +74,22 @@ public class ChildController {
     public Collection<Chore> showAllChores(@RequestHeader (value = "Authorization") String childToken){
         Child child = authService.getChildFromAuth(childToken);
         return child.getChoreCollection();
+    }
+
+    /**
+     * Gets all chores that are not assigned to any children and returns a pool of chores
+     * @param childToken child's token to be authorized for the account signed in
+     * @return a collection of chores that are not assigned to any children
+     */
+    @RequestMapping(path = "/chores/pool", method = RequestMethod.GET)
+    public Collection<Chore> showPoolChores(@RequestHeader (value = "Authorization") String childToken){
+        Child child = authService.getChildFromAuth(childToken);
+        Parent parent = child.getParent();
+
+        Collection<Chore> pool = new ArrayList<>();
+        Collection<Chore> parentCollection = parent.getChoreCollection();
+        parentCollection.stream().filter(c -> c.getChildAssigned() == null).forEach(c -> pool.add(c));
+        return pool;
     }
 
     /**
@@ -144,10 +158,14 @@ public class ChildController {
      * @return the new collection of the child's wishlist with the new reward that was added to the collection
      */
     @RequestMapping(path = "/wishlist", method = RequestMethod.POST)
-    public Collection<Reward> createWishlistItem(@RequestHeader (value = "Authorization") String childToken, @RequestBody RewardCommand rewardCommand){
+    public Collection<Reward> createWishlistItem(@RequestHeader (value = "Authorization") String childToken, @RequestBody RewardCommand rewardCommand) throws IllegalAccessException, InstantiationException {
         Child child = authService.getChildFromAuth(childToken);
 
         Reward reward = new Reward(rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPoints());
+
+//      String url = WalmartSearchAPI.class.newInstance().searchUrl(reward);
+//      WalmartSearchAPI.class.newInstance().getSearchItem(url);
+
         rewardRepository.save(reward);
         child.addWishlistItem(reward);
         childRepository.save(child);
@@ -195,7 +213,7 @@ public class ChildController {
         return pendingChore;
     }
 
-    /***************************
+    /****************************
         Delete Endpoints
      ***************************/
 

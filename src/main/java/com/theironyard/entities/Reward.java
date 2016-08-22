@@ -21,7 +21,7 @@ public class Reward {
     private String description;
 
     @Column
-    private File url;
+    private String url;
 
     @Column
     private int points;
@@ -29,7 +29,7 @@ public class Reward {
     public Reward() {
     }
 
-    public Reward(String description, File url, int points) {
+    public Reward(String description, String url, int points) {
         this.description = description;
         this.url = url;
         this.points = points;
@@ -51,11 +51,11 @@ public class Reward {
         this.description = description;
     }
 
-    public File getUrl() {
+    public String getUrl() {
         return url;
     }
 
-    public void setUrl(File url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
