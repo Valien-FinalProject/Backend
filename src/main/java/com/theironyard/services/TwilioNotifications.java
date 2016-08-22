@@ -71,4 +71,14 @@ public class TwilioNotifications {
         smsFactory.create(params);
     }
 
+//    public void wishlistItemAdded(Parent parent) throws TwilioRestException {
+//        String phone = parent.getPhone();
+//        List<NameValuePair> params = new ArrayList<>();
+//        params.add(new BasicNameValuePair("To", phone));
+//        params.add(new BasicNameValuePair("From", TWILIO_NUMBER));
+//        params.add(new BasicNameValuePair("Body", ));
+//        System.out.println("Child has added an item to their wishlist");
+//        smsFactory.create(params);
+//    }
+
 }

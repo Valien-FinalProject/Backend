@@ -226,8 +226,8 @@ public class ParentController {
         chore.setCreator(parent);
 
         //Save the chore object to the Parent Collection & Repository
-        parent.addChore(chore);
         chores.save(chore);
+        parent.addChore(chore);
         parents.save(parent);
 
         //Send the chore object.
@@ -249,7 +249,7 @@ public class ParentController {
         Parent parent = authService.getParentFromAuth(parentToken);
 
         //Create a new Reward
-        Reward reward = new Reward(command.getDescription(), command.getUrl(), command.getPoints());
+        Reward reward = new Reward(command.getName(),command.getDescription(), command.getUrl(), command.getPoints());
 
         //Save Reward to the Collections in Parent & Child. Also to the 'rewards' repository.
         rewards.save(reward);

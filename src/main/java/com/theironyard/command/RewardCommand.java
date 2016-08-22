@@ -7,6 +7,8 @@ import java.io.File;
  */
 public class RewardCommand {
 
+    private String name;
+
     private String description;
 
     private String url;
@@ -16,10 +18,19 @@ public class RewardCommand {
     public RewardCommand() {
     }
 
-    public RewardCommand(String description, String url, int points) {
+    public RewardCommand(String name,String description, String url, int points) {
+        this.name = name;
         this.description = description;
         this.url = url;
         this.points = points;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

@@ -162,7 +162,7 @@ public class ChildController {
     public Collection<Reward> createWishlistItem(@RequestHeader (value = "Authorization") String childToken, @RequestBody RewardCommand rewardCommand) throws IllegalAccessException, InstantiationException {
         Child child = authService.getChildFromAuth(childToken);
 
-        Reward reward = new Reward(rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPoints());
+        Reward reward = new Reward(rewardCommand.getName() ,rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPoints());
 
 //      String url = WalmartSearchAPI.class.newInstance().searchUrl(reward);
 //      WalmartSearchAPI.class.newInstance().getSearchItem(url);

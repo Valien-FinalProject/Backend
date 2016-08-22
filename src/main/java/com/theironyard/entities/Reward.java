@@ -17,6 +17,9 @@ public class Reward {
     @GeneratedValue
     private int id;
 
+    @Column
+    private String name;
+
     @Column(nullable = false)
     private String description;
 
@@ -29,7 +32,8 @@ public class Reward {
     public Reward() {
     }
 
-    public Reward(String description, String url, int points) {
+    public Reward(String name,String description, String url, int points) {
+        this.name = name;
         this.description = description;
         this.url = url;
         this.points = points;
@@ -41,6 +45,14 @@ public class Reward {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
