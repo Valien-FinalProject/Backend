@@ -566,7 +566,7 @@ public class ParentController {
      * @return a string stating that we have removed the chore and added points to the child.
      */
     @RequestMapping(path = "/child/{childId}/approve/{choreId}", method = RequestMethod.POST)
-    public String approveChore(@PathVariable int childId, @PathVariable int choreId, @RequestHeader(value = "Authorization") String auth) {
+    public Chore approveChore(@PathVariable int childId, @PathVariable int choreId, @RequestHeader(value = "Authorization") String auth) {
 
         //Find the parent via their token
         Parent parent = authService.getParentFromAuth(auth);
@@ -588,12 +588,8 @@ public class ParentController {
         chores.save(choreToApprove);
         children.save(child);
 
-        //Update the repositories
 
-        //Build a string stating what we have done.
-        String success = child.getName() + "'s points have been updated and " + choreToApprove.getDescription() + " has been removed from their list.";
-
-        return success;
+        return choreToApprove;
     }
 
     /**
