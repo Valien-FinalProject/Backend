@@ -46,13 +46,14 @@ public class FinalProjectApplicationTests {
 	MockMvc mockMvc;
 
 	@Before
-	public void before(){
+	public void before() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 
 	@Test
 	public void contextLoads() {
 	}
+}
 //
 //	/***** POST & PUT Endpoints *****/
 //
