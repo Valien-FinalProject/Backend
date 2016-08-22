@@ -30,6 +30,9 @@ public class AuthService {
 
     public Parent getParentFromAuth(String auth) {
         Parent parent = parents.findFirstByToken(auth.split(" ")[1]);
+        if(parent == null){
+            throw new UserNotFoundException();
+        }
         if (!parent.isTokenValid()) {
             throw new TokenExpiredException();
         }
@@ -38,6 +41,9 @@ public class AuthService {
 
     public Child getChildFromAuth(String auth) {
         Child child = children.findFirstByToken(auth.split(" ")[1]);
+        if(child == null){
+            throw new UserNotFoundException();
+        }
         if (!child.isTokenValid()) {
             throw new TokenExpiredException();
         }
