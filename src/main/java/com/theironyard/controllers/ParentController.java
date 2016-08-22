@@ -63,8 +63,10 @@ public class ParentController {
     public Parent registerParent(@RequestBody ParentCommand command) throws PasswordStorage.CannotPerformOperationException, IOException, TwilioRestException {
 
         //Create the new Parent.
-        Parent parent = new Parent(command.getName(), command.getEmail(), command.getPhone(), command.getUsername(), PasswordStorage.createHash(command.getPassword()));
+        Parent parent = new Parent(command.getName(), command.getUsername(), PasswordStorage.createHash(command.getPassword()));
 
+        parent.setEmail(command.getEmail());
+        parent.setPhone(command.getPhone());
         parent.setEmailOptIn(command.isEmailOptIn());
         parent.setPhoneOptIn(command.isPhoneOptIn());
 
@@ -115,8 +117,10 @@ public class ParentController {
 
         //Create new Child object.
 
-        Child child = new Child(command.getName(), command.getUsername(), PasswordStorage.createHash(command.getPassword()), command.getEmail(), command.getPhone());
+        Child child = new Child(command.getName(), command.getUsername(), PasswordStorage.createHash(command.getPassword()));
         child.setParent(parent);
+        child.setPhone(command.getPhone());
+        child.setEmail(command.getEmail());
         //Add child to Parent's child Collection & Save the child to 'children' repository.
         parent.addChild(child);
         child.setParent(parent);

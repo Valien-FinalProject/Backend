@@ -41,12 +41,10 @@ public class Child extends User{
         setTokenAndExpiration();
     }
 
-    public Child(String name, String username,String password, String email, String phone) {
+    public Child(String name, String username,String password) {
         this.name = name;
         this.username = username;
         this.password = password;
-        this.email = email;
-        this.phone = phone;
         setTokenAndExpiration();
     }
 
