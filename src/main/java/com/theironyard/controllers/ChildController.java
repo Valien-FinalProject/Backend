@@ -207,6 +207,7 @@ public class ChildController {
         choreRepository.save(pendingChore);
         childChores.add(pendingChore);
         childRepository.save(child);
+        
 
         if(parent.isPhoneOptIn()) {
             twilioNotifications.chorePending(child.getParent());
