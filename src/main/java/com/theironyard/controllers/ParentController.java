@@ -143,6 +143,9 @@ public class ParentController {
 
         //Create chore
         Chore chore = new Chore(command.getName(), command.getDescription(), command.getValue());
+        chore.setStartDate(command.getStartDate());
+        chore.setEndDate(command.getEndDate());
+        chore.setCreator(parent);
 
         //Assign chore to child
         if (!child.getChoreCollection().contains(chore)) {
@@ -183,6 +186,7 @@ public class ParentController {
         //Take Long and Make it a date & save those dates into the chore object.
         chore.setStartDate(command.getStartDate());
         chore.setEndDate(command.getEndDate());
+        chore.setCreator(parent);
 
         //Save the chore object to the Parent Collection & Repository
         parent.addChore(chore);
@@ -223,6 +227,75 @@ public class ParentController {
     ***************** 'READ' ENDPOINTS ***************
     ===================================================*/
 
+
+    /**
+     * Get a Collection of chores that have not been approved, are not pending and are assigned to a given child.
+     * @param id child's unique id
+     * @param token parent's token
+     * @return Collection of chores
+     */
+    @RequestMapping(path = "/child/{id}/current", method = RequestMethod.GET)
+    public Collection<Chore> getCurrentChore(@PathVariable int id, @RequestHeader(value = "Authorization") String token){
+        //Get the parent from and the child from id.
+        Parent parent = authService.getParentFromAuth(token);
+        Child child = children.findOne(id);
+
+        //Get the parent chore Collection & Create List to return
+        Collection<Chore> parentCollection = parent.getChoreCollection();
+        Collection<Chore> currentChoreList = new ArrayList<>();
+
+        //Stream through Collection to find chore that are not pending, are not complete, and are assigned to child.
+        parentCollection.stream().filter(chore -> chore.isPending() == false && chore.isComplete() == false && chore.getChildAssigned() == child).forEach(chore -> currentChoreList.add(chore));
+
+        //Give List of Current Chores
+        return currentChoreList;
+    }
+
+    /**
+     * Get a list of chores that are pending and assigned to a given child.
+     * @param id - child's id
+     * @param token -parent's token
+     * @return List of the chores that are pending
+     */
+    @RequestMapping(path = "child/{id}/pending", method = RequestMethod.GET)
+    public Collection<Chore> getPendingChores(@PathVariable int id, @RequestHeader(value = "Authorization") String token){
+        //Get the parent from and the child from id.
+        Parent parent = authService.getParentFromAuth(token);
+        Child child = children.findOne(id);
+
+        //Get the parent chore Collection & Create List to return
+        Collection<Chore> parentCollection = parent.getChoreCollection();
+        Collection<Chore> pendingChoreList = new ArrayList<>();
+
+        //Stream through Collection to find chores that are pending and assigned to child.
+        parentCollection.stream().filter(chore -> chore.isPending() && chore.getChildAssigned() == child).forEach(chore -> pendingChoreList.add(chore));
+
+        //Give List of Current Chores
+        return pendingChoreList;
+    }
+
+    /**
+     * Get a list of chores that are complete and assigned to a given child.
+     * @param id child's id
+     * @param token parent's token
+     * @return list of chores
+     */
+    @RequestMapping(path = "child/{id}/complete", method = RequestMethod.GET)
+    public Collection<Chore> getCompleteChores(@PathVariable int id, @RequestHeader(value = "Authorization") String token){
+        //Get the parent from and the child from id.
+        Parent parent = authService.getParentFromAuth(token);
+        Child child = children.findOne(id);
+
+        //Get the parent chore Collection & Create List to return
+        Collection<Chore> parentCollection = parent.getChoreCollection();
+        Collection<Chore> completeChoreList = new ArrayList<>();
+
+        //Stream through collection to find chores that are complete and assigned to child.
+        parentCollection.stream().filter(chore -> chore.isComplete() && chore.getChildAssigned() == child).forEach(chore -> completeChoreList.add(chore));
+
+        //Give List of Current Chores
+        return completeChoreList;
+    }
 
     /**
      * Gets a parent's info.
@@ -305,11 +378,11 @@ public class ParentController {
 
         //Create a Collection of Chores that are unassigned. --that's right..it uses a stream! boom!
         Collection<Chore> parentCollection = parent.getChoreCollection();
-        Collection<Chore> uaChore = new ArrayList<>();
-        parentCollection.stream().filter(c -> c.getChildAssigned() == null).forEach(c -> uaChore.add(c));
+        Collection<Chore> unassignedChoreList = new ArrayList<>();
+        parentCollection.stream().filter(c -> c.getChildAssigned() == null).forEach(c -> unassignedChoreList.add(c));
 
         //Send Collection of chores that are unassigned.
-        return uaChore;
+        return unassignedChoreList;
     }
 
     /**
@@ -467,19 +540,19 @@ public class ParentController {
         Collection<Chore> childChores = child.getChoreCollection();
 
         //Add point value of the chore to the child's points.
-        int point = child.getChildPoint() + choreToApprove.getValue();
+        child.setChildPoint(child.getChildPoint() + choreToApprove.getValue());
+
 
         //Mark chore as complete
         choreToApprove.setComplete(true);
 
         //Remove the chore from the child's chore Collection
         childChores.remove(choreToApprove);
+        chores.save(choreToApprove);
+        children.save(child);
 
         //Build a string stating what we have done.
         String success = child.getName() + "'s points have been updated and " + choreToApprove.getDescription() + " has been removed from their list.";
-
-        //Remove the chore from the database
-        chores.delete(choreToApprove.getId());
 
         return success;
     }
@@ -503,6 +576,7 @@ public class ParentController {
         //Add points to child's point
         int modifiedPointValue = child.getChildPoint() - newPoint;
         child.setChildPoint(modifiedPointValue);
+        children.save(child);
 
         //Send the
         return child.getChildPoint();
@@ -528,6 +602,7 @@ public class ParentController {
         //Add points to child's point
         int modifiedPointValue = child.getChildPoint() + newPoint;
         child.setChildPoint(modifiedPointValue);
+        children.save(child);
 
         //Send the
         return child.getChildPoint();
@@ -548,6 +623,7 @@ public class ParentController {
         //Get chore and set pending to false
         Chore chore = chores.getOne(id);
         chore.setPending(false);
+        chores.save(chore);
 
         //save chore
         chores.save(chore);
