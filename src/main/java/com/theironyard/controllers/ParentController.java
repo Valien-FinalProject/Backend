@@ -581,6 +581,7 @@ public class ParentController {
 
         //Mark chore as complete
         choreToApprove.setComplete(true);
+        choreToApprove.setPending(false);
 
         //Remove the chore from the child's chore Collection
         childChores.remove(choreToApprove);
