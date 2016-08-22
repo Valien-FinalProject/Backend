@@ -265,7 +265,7 @@ public class ChildController {
         
         pendingChore.setPending(true);
         choreRepository.save(pendingChore);
-        childChores.add(pendingChore);
+        childChores.remove(pendingChore);
         childRepository.save(child);
 
         if(parent.isPhoneOptIn()) {
