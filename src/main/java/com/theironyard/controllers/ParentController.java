@@ -137,7 +137,7 @@ public class ParentController {
      * @return
      */
     @RequestMapping(path = "/child/{id}/chore", method = RequestMethod.POST)
-    public Chore assignChore(@PathVariable int id, @RequestBody ChoreCommand command, @RequestHeader(value = "Authorization") String auth){
+    public Chore assignAndCreateChore(@PathVariable int id, @RequestBody ChoreCommand command, @RequestHeader(value = "Authorization") String auth){
 
         //Find the parent via their token
         Parent parent = authService.getParentFromAuth(auth);
@@ -163,12 +163,45 @@ public class ParentController {
 
             //Update the child
             children.save(child);
-
         }
 
         //Send the assigned chore object
         parent.addChore(chore);
         parents.save(parent);
+        return chore;
+    }
+
+    @RequestMapping(path = "/child/{childId}/chore/{choreId}", method = RequestMethod.POST)
+    public Chore assignChore(@PathVariable int childId, @PathVariable int choreId, @RequestHeader(value = "Authorization") String auth){
+
+        //Find the parent via their token
+        Parent parent = authService.getParentFromAuth(auth);
+
+        //Find child via id
+        Child child = children.findOne(childId);
+
+        //Find chore via id
+        Chore chore = chores.findOne(choreId);
+
+        //Assign chore to child if the chore is not already assigned.
+        if (chore.getChildAssigned() == null) {
+            chore.setChildAssigned(child);
+
+            //Save chore to 'chores' repository
+            chores.save(chore);
+
+            //Add chore to the child's chore Collection
+            child.addChore(chore);
+
+            //Update the child
+            children.save(child);
+        }
+
+        //Update Parent and parents repository
+        parent.addChore(chore);
+        parents.save(parent);
+
+        //Send the assigned chore object
         return chore;
     }
 
@@ -546,12 +579,15 @@ public class ParentController {
         //Add point value of the chore to the child's points.
         child.setChildPoint(child.getChildPoint() + choreToApprove.getValue());
 
-
         //Mark chore as complete
         choreToApprove.setComplete(true);
 
         //Remove the chore from the child's chore Collection
         childChores.remove(choreToApprove);
+        chores.save(choreToApprove);
+        children.save(child);
+
+        //Update the repositories
         chores.save(choreToApprove);
         children.save(child);
 
