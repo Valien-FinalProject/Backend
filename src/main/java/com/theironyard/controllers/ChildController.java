@@ -3,6 +3,7 @@ package com.theironyard.controllers;
 import com.theironyard.command.ChildCommand;
 import com.theironyard.command.RewardCommand;
 import com.theironyard.entities.*;
+import com.theironyard.exceptions.ChoreNotFoundException;
 import com.theironyard.services.*;
 import com.theironyard.services.TwilioNotifications;
 import com.twilio.sdk.TwilioRestException;
@@ -201,8 +202,11 @@ public class ChildController {
         Parent parent = child.getParent();
 
         Collection<Chore> childChores = child.getChoreCollection();
-
         Chore pendingChore = choreRepository.findOne(id);
+        if (pendingChore == null){
+            throw new ChoreNotFoundException();
+        }
+        
         pendingChore.setPending(true);
         choreRepository.save(pendingChore);
         childChores.add(pendingChore);
