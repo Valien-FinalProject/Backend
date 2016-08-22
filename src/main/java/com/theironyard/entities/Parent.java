@@ -1,5 +1,6 @@
 package com.theironyard.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.Collection;
 public class Parent extends User{
 
     @OneToMany
+    @JsonIgnore
     private Collection<Child> childCollection;
 
     //Add total point of all children

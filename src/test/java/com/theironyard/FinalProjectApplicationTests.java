@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theironyard.command.ChildCommand;
 import com.theironyard.entities.Child;
 import com.theironyard.entities.Parent;
+import com.theironyard.entities.Reward;
 import com.theironyard.services.*;
 import com.theironyard.utilities.PasswordStorage;
 import org.junit.Before;
@@ -16,6 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -60,23 +64,71 @@ public class FinalProjectApplicationTests {
 
 //	@Test
 //	public void getChildToken() throws Exception {
-//		Parent parent = new Parent("TestName", "TestUsername", PasswordStorage.createHash("password"));
-//		parents.save(parent);
-//		authService.getParentFromAuth(parent.getToken());
 //		Child child = new Child("TestName", "TestChildUsername", PasswordStorage.createHash("password"));
 //		children.save(child);
-//		ChildCommand command = new ChildCommand(child.getUsername(), child.getPassword());
-//		authService.checkChildLogin(command);
+//		ChildCommand command = new ChildCommand("TestChildUsername", PasswordStorage.createHash("password"));
+//
 //
 //		ObjectMapper objectMapper = new ObjectMapper();
 //		String json = objectMapper.writeValueAsString(child);
 //
 //		mockMvc.perform(
-//				MockMvcRequestBuilders.post("/child/token").content(json).contentType("application/json").sessionAttr("child", child)
+//				MockMvcRequestBuilders.post("/child/token").content(json).contentType("application/json").requestAttr("child", PasswordStorage.verifyPassword(command.getPassword(),child.getPassword()))
 //		);
 //
 //	}
 
+	@Test
+	public void testChildLogout() throws Exception {
+		Child child = new Child("Name", "ChildUsername", PasswordStorage.createHash("password"));
+		children.save(child);
 
+		mockMvc.perform(
+				MockMvcRequestBuilders.post("/child/logout").requestAttr("token", child.getToken())
+		).andReturn().getRequest().close();
+	}
+
+	@Test
+	public void testCreateWishlistItem() throws Exception {
+		Child child = new Child("Test1", "Test1", PasswordStorage.createHash("password"));
+		children.save(child);
+		Reward reward = new Reward("testReward", "testDescrip", 0);
+		rewards.save(reward);
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		String json = objectMapper.writeValueAsString(reward);
+
+		mockMvc.perform(
+				MockMvcRequestBuilders.post("/child/wishlist").content(json).contentType("application/json").requestAttr("token", child.getToken())
+		);
+
+		assertTrue(rewards.count() == 1);
+	}
+
+	/***** GET Endpoints *****/
+
+	@Test
+	public void testGetOneChild() throws Exception {
+		Child child = new Child("Test2", "Test2", PasswordStorage.createHash("password"));
+		children.save(child);
+
+		mockMvc.perform(
+				MockMvcRequestBuilders.get("/child/").requestAttr("id", child.getId())
+		);
+
+		assertEquals(child, child);
+	}
+
+	@Test
+	public void testGetChildWishlist() throws Exception {
+		Child child = new Child("Test2", "Test2", PasswordStorage.createHash("password"));
+		Reward reward = new Reward("testReward", "testDescrip", 0);
+		rewards.save(reward);
+		children.save(child);
+
+		mockMvc.perform(
+				MockMvcRequestBuilders.get("/child/wishlist").requestAttr("token", child.getToken())
+		);
+	}
 
 }
