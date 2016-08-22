@@ -233,6 +233,12 @@ public class ChildController {
         Update/PUT Endpoints
      ***************************/
 
+    /**
+     * Allows child to change its email, phone number, password, and name.
+     * @param childToken
+     * @param childCommand
+     * @return
+     */
     @RequestMapping(path = "/profile", method = RequestMethod.PUT)
     public Child updateProfile(@RequestHeader (value = "Authorization") String childToken, @RequestBody ChildCommand childCommand){
         Child child = authService.getChildFromAuth(childToken);
@@ -265,7 +271,6 @@ public class ChildController {
         
         pendingChore.setPending(true);
         choreRepository.save(pendingChore);
-        childChores.remove(pendingChore);
         childRepository.save(child);
 
         if(parent.isPhoneOptIn()) {
