@@ -151,7 +151,7 @@ public class ChildController {
         Collection<Chore> parentChoreCollection = parent.getChoreCollection();
         Collection<Chore> currentChoreList = new ArrayList<>();
 
-        parentChoreCollection.stream().filter(chore -> chore.isPending() == false && chore.isComplete() == false && chore.getChildAssigned() == null).forEach(chore -> currentChoreList.add(chore));
+        parentChoreCollection.stream().filter(chore -> chore.isPending() == false && chore.isComplete() == false && chore.getChildAssigned() == child).forEach(chore -> currentChoreList.add(chore));
 
         return currentChoreList;
     }
