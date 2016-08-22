@@ -167,7 +167,7 @@ public class ParentController {
         return chore;
     }
 
-    @RequestMapping(path = "/child/{childId}/chore{choreId}", method = RequestMethod.POST)
+    @RequestMapping(path = "/child/{childId}/chore/{choreId}", method = RequestMethod.POST)
     public Chore assignChore(@PathVariable int childId, @PathVariable int choreId, @RequestHeader(value = "Authorization") String auth){
 
         //Find the parent via their token
@@ -580,6 +580,8 @@ public class ParentController {
 
         //Remove the chore from the child's chore Collection
         childChores.remove(choreToApprove);
+        chores.save(choreToApprove);
+        children.save(child);
 
         //Update the repositories
         chores.save(choreToApprove);
