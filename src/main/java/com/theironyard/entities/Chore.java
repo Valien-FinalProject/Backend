@@ -21,10 +21,10 @@ public class Chore {
     @Column(nullable = false)
     private String name;
 
-    @Column(updatable = false, insertable = false)
+    @Column(updatable = true, insertable = true)
     private Timestamp startDate;
 
-    @Column(updatable = false, insertable = false)
+    @Column(updatable = true, insertable = true)
     private Timestamp endDate;
 
     //frequency
@@ -150,4 +150,6 @@ public class Chore {
 
         return newDate;
     }
+
+
 }
