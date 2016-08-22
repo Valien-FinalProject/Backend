@@ -267,12 +267,31 @@ public class ChildController {
         choreRepository.save(pendingChore);
         childChores.add(pendingChore);
         childRepository.save(child);
-        
 
         if(parent.isPhoneOptIn()) {
             twilioNotifications.chorePending(child.getParent());
         }
         return pendingChore;
+    }
+
+    /**
+     * Allows the child to grab a chore from the pool of chores and assign it to himself/herself
+     * @param childToken child's token to be authorized
+     * @param id chore's id the child is trying to get
+     * @return the chore that the child assigned to himself/herself
+     */
+    @RequestMapping(value = "/chore/{id}", method = RequestMethod.PUT)
+    public Chore assignChoreToChild(@RequestHeader (value = "Authorization") String childToken, @PathVariable int id){
+        Child child = authService.getChildFromAuth(childToken);
+        Chore chore = choreRepository.findOne(id);
+
+        if(chore.getChildAssigned() == null){
+            chore.setChildAssigned(child);
+            child.addChore(chore);
+            choreRepository.save(chore);
+            childRepository.save(child);
+        }
+        return chore;
     }
 
     /****************************
