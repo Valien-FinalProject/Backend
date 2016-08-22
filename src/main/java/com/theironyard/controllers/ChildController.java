@@ -112,7 +112,8 @@ public class ChildController {
     @RequestMapping(path = "/rewards", method = RequestMethod.GET)
     public Collection<Reward> getChildRewards(@RequestHeader (value = "Authorization") String childToken){
         Child child = authService.getChildFromAuth(childToken);
-        return child.getRewardCollection();
+        Parent parent = child.getParent();
+        return parent.getRewardCollection();
     }
 
     /**
