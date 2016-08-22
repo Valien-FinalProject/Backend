@@ -137,6 +137,61 @@ public class ChildController {
         return child.getPhone();
     }
 
+    /**
+     * Get a Collection of chores that have not been approved, are not pending and are assigned to a given child.
+     * @param token child's token
+     * @return Collection of chores
+     */
+    @RequestMapping(path = "/current", method = RequestMethod.GET)
+    public Collection<Chore> getCurrentChore(@RequestHeader(value = "Authorization") String token){
+        Child child = authService.getChildFromAuth(token);
+        Parent parent = child.getParent();
+
+        Collection<Chore> parentChoreCollection = parent.getChoreCollection();
+        Collection<Chore> currentChoreList = new ArrayList<>();
+
+        parentChoreCollection.stream().filter(chore -> chore.isPending() == false && chore.isComplete() == false && chore.getChildAssigned() == null).forEach(chore -> currentChoreList.add(chore));
+
+        return currentChoreList;
+    }
+
+
+    /**
+     * Get a list of chores that are pending and assigned to a given child.
+     * @param token -child's token
+     * @return List of the chores that are pending
+     */
+    @RequestMapping(path = "/pending", method = RequestMethod.GET)
+    public Collection<Chore> getPendingChores(@RequestHeader(value = "Authorization") String token){
+        Child child = authService.getChildFromAuth(token);
+
+        Collection<Chore> childChoreCollection = child.getChoreCollection();
+        Collection<Chore> pendingChoreList = new ArrayList<>();
+
+        childChoreCollection.stream().filter(chore -> chore.isPending() == true).forEach(chore -> pendingChoreList.add(chore));
+
+        return pendingChoreList;
+    }
+
+
+    /**
+     * Get a list of chores that are complete and assigned to a given child.
+     * @param token child's token
+     * @return list of chores
+     */
+    @RequestMapping(path = "/complete", method = RequestMethod.GET)
+    public Collection<Chore> getCompleteChores(@RequestHeader(value = "Authorization") String token){
+        Child child = authService.getChildFromAuth(token);
+        Parent parent = child.getParent();
+
+        Collection<Chore> parentChoreCollection = parent.getChoreCollection();
+        Collection<Chore> completeChoreList = new ArrayList<>();
+
+        parentChoreCollection.stream().filter(chore -> chore.isComplete() && chore.getChildAssigned() == child).forEach(chore -> completeChoreList.add(chore));
+
+        return completeChoreList;
+    }
+
     /***************************
         Create/Post Endpoints
      ***************************/
