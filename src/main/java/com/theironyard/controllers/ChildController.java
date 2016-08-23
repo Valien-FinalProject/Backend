@@ -4,6 +4,7 @@ import com.theironyard.command.ChildCommand;
 import com.theironyard.command.RewardCommand;
 import com.theironyard.entities.*;
 import com.theironyard.exceptions.ChoreNotFoundException;
+import com.theironyard.exceptions.NotEnoughPointsException;
 import com.theironyard.services.*;
 import com.theironyard.services.TwilioNotifications;
 import com.twilio.sdk.TwilioRestException;
@@ -297,6 +298,24 @@ public class ChildController {
             childRepository.save(child);
         }
         return chore;
+    }
+
+    /**
+     * Allows the child to cash in his or her points for a reward if they
+     * @param childToken child's token to be authorized
+     * @param points reward's points that is going to be passed in and deducted from the child's points if there are enough
+     * @return
+     */
+    @RequestMapping(value = "/deduct", method = RequestMethod.PUT)
+    public Child cashInPoints(@RequestHeader (value = "Authorization") String childToken, int points){
+        Child child = authService.getChildFromAuth(childToken);
+
+        child.setChildPoint(child.getChildPoint() - points);
+        if(child.getChildPoint() < 0){
+            throw new NotEnoughPointsException();
+        }
+        childRepository.save(child);
+        return child;
     }
 
     /****************************
