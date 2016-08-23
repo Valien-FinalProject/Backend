@@ -9,7 +9,9 @@ import com.theironyard.services.*;
 import com.theironyard.services.TwilioNotifications;
 import com.twilio.sdk.TwilioRestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -39,6 +41,15 @@ public class ChildController {
 
     @Autowired
     TwilioNotifications twilioNotifications;
+
+    @Autowired
+    RestTemplate restTemplate;
+
+    @Value("${walmart.api.key}")
+    private String walmartKey;
+
+    private String BASE_URL = "http://api.walmartlabs.com/v1/search?format=json&apiKey=" + walmartKey + "query=";
+
 
     /***************************
         Read/Get Endpoints
@@ -221,8 +232,8 @@ public class ChildController {
 
         Reward reward = new Reward(rewardCommand.getName() ,rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPoints());
 
-//      String url = WalmartSearchAPI.class.newInstance().searchUrl(reward);
-//      WalmartSearchAPI.class.newInstance().getSearchItem(url);
+        Map product = restTemplate.getForObject(BASE_URL + rewardCommand.getDescription(), HashMap.class);
+        reward.setUrl((String)product.get("productUrl"));
 
         rewardRepository.save(reward);
         child.addWishlistItem(reward);
