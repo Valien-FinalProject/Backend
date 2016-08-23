@@ -46,9 +46,9 @@ public class ChildController {
     RestTemplate restTemplate;
 
     @Value("${walmart.api.key}")
-    private String walmartKey;
+    public String walmartKey;
 
-    private String BASE_URL = "http://api.walmartlabs.com/v1/search?format=json&apiKey=" + walmartKey + "query=";
+    private String BASE_URL = "http://api.walmartlabs.com/v1/search?format=json&apiKey=" + System.getenv("walmartKey") /**walmartKey**/ + "&numItems=1&query=";
 
 
     /***************************
@@ -232,9 +232,9 @@ public class ChildController {
 
         Reward reward = new Reward(rewardCommand.getName() ,rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPoints());
 
-        Map product = restTemplate.getForObject(BASE_URL + rewardCommand.getDescription(), HashMap.class);
-        reward.setUrl((String)product.get("productUrl"));
-
+        Map product = restTemplate.getForObject(BASE_URL + rewardCommand.getName(), HashMap.class);
+        List<Map> item = ((List<Map>) product.get("items"));
+        reward.setUrl((String)item.get(0).get("productUrl"));
         rewardRepository.save(reward);
         child.addWishlistItem(reward);
         childRepository.save(child);
