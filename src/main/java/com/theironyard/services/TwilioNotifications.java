@@ -1,5 +1,6 @@
 package com.theironyard.services;
 
+import com.theironyard.entities.Child;
 import com.theironyard.entities.Parent;
 import com.theironyard.services.ChildRepository;
 import com.theironyard.services.ParentRepository;
@@ -71,15 +72,15 @@ public class TwilioNotifications {
         smsFactory.create(params);
     }
 
-//    public void wishlistItemAdded(Parent parent) throws TwilioRestException {
-//        String phone = parent.getPhone();
-//        String message = String.format("")
-//        List<NameValuePair> params = new ArrayList<>();
-//        params.add(new BasicNameValuePair("To", phone));
-//        params.add(new BasicNameValuePair("From", TWILIO_NUMBER));
-//        params.add(new BasicNameValuePair("Body", ));
-//        System.out.println("Child has added an item to their wishlist");
-//        smsFactory.create(params);
-//    }
+    public void wishlistItemAdded(Parent parent, Child child) throws TwilioRestException {
+        String phone = parent.getPhone();
+        String message = String.format("Hello %s, we are informing you that there is a new item in %s's wishlist!\n", parent.getName(), child.getName());
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("To", phone));
+        params.add(new BasicNameValuePair("From", TWILIO_NUMBER));
+        params.add(new BasicNameValuePair("Body", message));
+        System.out.println("Child has added an item to their wishlist");
+        smsFactory.create(params);
+    }
 
 }

@@ -227,17 +227,24 @@ public class ChildController {
      * @return the new collection of the child's wishlist with the new reward that was added to the collection
      */
     @RequestMapping(path = "/wishlist", method = RequestMethod.POST)
-    public Reward createWishlistItem(@RequestHeader (value = "Authorization") String childToken, @RequestBody RewardCommand rewardCommand) throws IllegalAccessException, InstantiationException {
+    public Reward createWishlistItem(@RequestHeader (value = "Authorization") String childToken, @RequestBody RewardCommand rewardCommand) throws IllegalAccessException, InstantiationException, TwilioRestException {
         Child child = authService.getChildFromAuth(childToken);
+        Parent parent = child.getParent();
 
         Reward reward = new Reward(rewardCommand.getName() ,rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPoints());
 
         Map product = restTemplate.getForObject(BASE_URL + rewardCommand.getName(), HashMap.class);
         List<Map> item = ((List<Map>) product.get("items"));
         reward.setUrl((String)item.get(0).get("productUrl"));
+        reward.setImageUrl((String) item.get(0).get("mediumImage"));
         rewardRepository.save(reward);
         child.addWishlistItem(reward);
         childRepository.save(child);
+
+        if (parent.isPhoneOptIn() == true){
+            twilioNotifications.wishlistItemAdded(parent, child);
+        }
+
         return reward;
     }
 
