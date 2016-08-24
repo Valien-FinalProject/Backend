@@ -227,7 +227,7 @@ public class ChildController {
      * @return the new collection of the child's wishlist with the new reward that was added to the collection
      */
     @RequestMapping(path = "/wishlist", method = RequestMethod.POST)
-    public Collection<Reward> createWishlistItem(@RequestHeader (value = "Authorization") String childToken, @RequestBody RewardCommand rewardCommand) throws IllegalAccessException, InstantiationException {
+    public Reward createWishlistItem(@RequestHeader (value = "Authorization") String childToken, @RequestBody RewardCommand rewardCommand) throws IllegalAccessException, InstantiationException {
         Child child = authService.getChildFromAuth(childToken);
 
         Reward reward = new Reward(rewardCommand.getName() ,rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPoints());
@@ -238,7 +238,7 @@ public class ChildController {
         rewardRepository.save(reward);
         child.addWishlistItem(reward);
         childRepository.save(child);
-        return child.getWishlistCollection();
+        return reward;
     }
 
     /***************************

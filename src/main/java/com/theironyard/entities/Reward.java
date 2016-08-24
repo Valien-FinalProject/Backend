@@ -24,6 +24,8 @@ public class Reward {
     @Column
     private String description;
 
+//    @Column()
+
     @Column(length = 10000)
     private String url;
 
