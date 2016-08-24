@@ -36,7 +36,7 @@ public class TwilioNotifications {
     SmsFactory smsFactory;
 
     @PostConstruct
-    public void setup(){
+    public void setup() {
         smsFactory = twilioAccount.getSmsFactory();
     }
 
@@ -83,4 +83,14 @@ public class TwilioNotifications {
         smsFactory.create(params);
     }
 
+    public void childCashedInPoints(Parent parent, Child child) throws TwilioRestException {
+        String phone = parent.getPhone();
+        String message = String.format("Hello %s,%s has cashed in some of their points for a reward!\n", parent.getName(), child.getName());
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("To", phone));
+        params.add(new BasicNameValuePair("From", TWILIO_NUMBER));
+        params.add(new BasicNameValuePair("Body", message));
+        System.out.println("Child has added an item to their wishlist");
+        smsFactory.create(params);
+    }
 }

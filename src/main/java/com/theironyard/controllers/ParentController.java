@@ -657,7 +657,7 @@ public class ParentController {
      * @param auth the parent's token
      */
     @RequestMapping(path = "/chore/{id}/deny", method = RequestMethod.PUT)
-    public void denyChore(@PathVariable int id, @RequestHeader(value = "Authorization") String auth) {
+    public Chore denyChore(@PathVariable int id, @RequestHeader(value = "Authorization") String auth) {
 
         //Find the parent via their token
         Parent parent = authService.getParentFromAuth(auth);
@@ -669,6 +669,7 @@ public class ParentController {
 
         //save chore
         chores.save(chore);
+        return chore;
     }
 
     @RequestMapping(path = "/child/{id}", method = RequestMethod.PUT)

@@ -294,6 +294,7 @@ public class ChildController {
         choreRepository.save(pendingChore);
         childRepository.save(child);
 
+        // If parent's phone Opt-in is true then send a text
         if(parent.isPhoneOptIn()) {
             twilioNotifications.chorePending(child.getParent());
         }
@@ -327,7 +328,7 @@ public class ChildController {
      * @return
      */
     @RequestMapping(value = "/deduct", method = RequestMethod.PUT)
-    public Child cashInPoints(@RequestHeader (value = "Authorization") String childToken, int points) throws IOException {
+    public Child cashInPoints(@RequestHeader (value = "Authorization") String childToken, int points) throws IOException, TwilioRestException {
         Child child = authService.getChildFromAuth(childToken);
 
         child.setChildPoint(child.getChildPoint() - points);
@@ -335,11 +336,15 @@ public class ChildController {
             throw new NotEnoughPointsException();
         }
 
-        //If email Opt-in is true, send an email:
+        // If email Opt-in is true, send an email:
         Parent parent = child.getParent();
         String body = "Hello, " + parent.getName() + ". We are just letting you know that, " + child.getName() + " has cashed in " + points + " points.";
-        if (parent.isEmailOptIn()) emailService.sendEmail(parent.getEmail(), body);
 
+        if (parent.isEmailOptIn()) emailService.sendEmail(parent.getEmail(), body);
+        // If phone Opt-in is true, send a texr
+        if (parent.isPhoneOptIn()){
+            twilioNotifications.childCashedInPoints(parent, child);
+        }
         childRepository.save(child);
         return child;
     }

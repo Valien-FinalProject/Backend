@@ -53,7 +53,6 @@ public class FinalProjectApplicationTests {
 	@Test
 	public void contextLoads() {
 	}
-}
 //
 //	/***** POST & PUT Endpoints *****/
 //
@@ -63,21 +62,21 @@ public class FinalProjectApplicationTests {
 //
 //	/***** POST Endpoints *****/
 //
-////	@Test
-////	public void getChildToken() throws Exception {
-////		Child child = new Child("TestName", "TestChildUsername", PasswordStorage.createHash("password"));
-////		children.save(child);
-////		ChildCommand command = new ChildCommand("TestChildUsername", PasswordStorage.createHash("password"));
-////
-////
-////		ObjectMapper objectMapper = new ObjectMapper();
-////		String json = objectMapper.writeValueAsString(child);
-////
-////		mockMvc.perform(
-////				MockMvcRequestBuilders.post("/child/token").content(json).contentType("application/json").requestAttr("child", PasswordStorage.verifyPassword(command.getPassword(),child.getPassword()))
-////		);
-////
-////	}
+//	@Test
+//	public void getChildToken() throws Exception {
+//		Child child = new Child("TestName", "TestChildUsername", PasswordStorage.createHash("password"));
+//		children.save(child);
+//		ChildCommand command = new ChildCommand("TestChildUsername", PasswordStorage.createHash("password"));
+//
+//
+//		ObjectMapper objectMapper = new ObjectMapper();
+//		String json = objectMapper.writeValueAsString(child);
+//
+//		mockMvc.perform(
+//				MockMvcRequestBuilders.post("/child/token").content(json).contentType("application/json").requestAttr("child", PasswordStorage.verifyPassword(command.getPassword(),child.getPassword()))
+//		);
+//
+//	}
 //
 //	@Test
 //	public void testChildLogout() throws Exception {
@@ -133,3 +132,4 @@ public class FinalProjectApplicationTests {
 //	}
 //
 //}
+}
