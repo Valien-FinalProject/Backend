@@ -77,7 +77,13 @@ public class ParentController {
         if(parent.isPhoneOptIn()) {
             twilioNotifications.parentRegister(parent);
         }
+
+        //If email Opt-in is true, send an email:
+        String body = "Hello " + parent.getName() + ". Thank you for registering with us. We hope you enjoy our app.";
+        if (parent.isEmailOptIn()) emailService.sendEmail(parent.getEmail(), body);
+
         return parent;
+
     }
 
     /**
@@ -94,6 +100,7 @@ public class ParentController {
 
         //kill session
         session.invalidate();
+
     }
 
 

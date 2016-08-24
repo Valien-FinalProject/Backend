@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -43,13 +44,14 @@ public class ChildController {
     TwilioNotifications twilioNotifications;
 
     @Autowired
+    EmailService emailService;
+
     RestTemplate restTemplate;
 
     @Value("${walmart.api.key}")
     public String walmartKey;
 
     private String BASE_URL = "http://api.walmartlabs.com/v1/search?format=json&apiKey=" + System.getenv("walmartKey") /**walmartKey**/ + "&numItems=1&query=";
-
 
     /***************************
         Read/Get Endpoints
@@ -325,13 +327,19 @@ public class ChildController {
      * @return
      */
     @RequestMapping(value = "/deduct", method = RequestMethod.PUT)
-    public Child cashInPoints(@RequestHeader (value = "Authorization") String childToken, int points){
+    public Child cashInPoints(@RequestHeader (value = "Authorization") String childToken, int points) throws IOException {
         Child child = authService.getChildFromAuth(childToken);
 
         child.setChildPoint(child.getChildPoint() - points);
         if(child.getChildPoint() < 0){
             throw new NotEnoughPointsException();
         }
+
+        //If email Opt-in is true, send an email:
+        Parent parent = child.getParent();
+        String body = "Hello, " + parent.getName() + ". We are just letting you know that, " + child.getName() + " has cashed in " + points + " points.";
+        if (parent.isEmailOptIn()) emailService.sendEmail(parent.getEmail(), body);
+
         childRepository.save(child);
         return child;
     }
