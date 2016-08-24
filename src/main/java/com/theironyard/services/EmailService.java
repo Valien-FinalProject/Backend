@@ -24,11 +24,11 @@ public class EmailService {
         sendGrid = new SendGrid(sendgridKey);
     }
 
-    public void sendEmail(String name, String email) throws IOException {
+    public void sendEmail(String email, String body) throws IOException {
         Email from = new Email("Valien.webapp@gmail.com");
         String subject = "New Notification from Valien Inc.";
         Email to = new Email(email);
-        Content content = new Content("text/plain", "Valien salutes you, " + name);
+        Content content = new Content("text/plain", body);
         Mail mail = new Mail(from, subject, to, content);
 
         //System.out.println(System.getenv())
