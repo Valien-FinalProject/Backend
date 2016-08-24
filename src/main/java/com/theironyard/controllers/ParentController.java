@@ -535,6 +535,11 @@ public class ParentController {
         return tokenMap;
     }
 
+    /**
+     * Endpoint that puts each child in a map as the key and each of their total points as the value
+     * @param parentToken parent's token to be authorized
+     * @return a map of each child's name and the total points they have
+     */
     @RequestMapping(path = "/child/points", method = RequestMethod.GET)
     public Map getAllPoints(@RequestHeader (value = "Authorization") String parentToken){
         Parent parent = authService.getParentFromAuth(parentToken);
