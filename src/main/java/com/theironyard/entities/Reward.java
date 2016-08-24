@@ -3,6 +3,7 @@ package com.theironyard.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.File;
 
 /**
@@ -17,13 +18,15 @@ public class Reward {
     @GeneratedValue
     private int id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column
     private String description;
 
-    @Column
+//    @Column()
+
+    @Column(length = 10000)
     private String url;
 
     @Column

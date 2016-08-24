@@ -9,7 +9,9 @@ import com.theironyard.services.*;
 import com.theironyard.services.TwilioNotifications;
 import com.twilio.sdk.TwilioRestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -43,6 +45,13 @@ public class ChildController {
 
     @Autowired
     EmailService emailService;
+
+    RestTemplate restTemplate;
+
+    @Value("${walmart.api.key}")
+    public String walmartKey;
+
+    private String BASE_URL = "http://api.walmartlabs.com/v1/search?format=json&apiKey=" + System.getenv("walmartKey") /**walmartKey**/ + "&numItems=1&query=";
 
     /***************************
         Read/Get Endpoints
@@ -220,18 +229,18 @@ public class ChildController {
      * @return the new collection of the child's wishlist with the new reward that was added to the collection
      */
     @RequestMapping(path = "/wishlist", method = RequestMethod.POST)
-    public Collection<Reward> createWishlistItem(@RequestHeader (value = "Authorization") String childToken, @RequestBody RewardCommand rewardCommand) throws IllegalAccessException, InstantiationException {
+    public Reward createWishlistItem(@RequestHeader (value = "Authorization") String childToken, @RequestBody RewardCommand rewardCommand) throws IllegalAccessException, InstantiationException {
         Child child = authService.getChildFromAuth(childToken);
 
         Reward reward = new Reward(rewardCommand.getName() ,rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPoints());
 
-//      String url = WalmartSearchAPI.class.newInstance().searchUrl(reward);
-//      WalmartSearchAPI.class.newInstance().getSearchItem(url);
-
+        Map product = restTemplate.getForObject(BASE_URL + rewardCommand.getName(), HashMap.class);
+        List<Map> item = ((List<Map>) product.get("items"));
+        reward.setUrl((String)item.get(0).get("productUrl"));
         rewardRepository.save(reward);
         child.addWishlistItem(reward);
         childRepository.save(child);
-        return child.getWishlistCollection();
+        return reward;
     }
 
     /***************************
