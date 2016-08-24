@@ -36,11 +36,8 @@ public class Reward {
     public Reward() {
     }
 
-    public Reward(String name,String description, String url, int points) {
+    public Reward(String name) {
         this.name = name;
-        this.description = description;
-        this.url = url;
-        this.points = points;
     }
 
     public int getId() {

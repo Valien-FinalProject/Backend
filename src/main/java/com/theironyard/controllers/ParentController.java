@@ -256,7 +256,10 @@ public class ParentController {
         Parent parent = authService.getParentFromAuth(parentToken);
 
         //Create a new Reward
-        Reward reward = new Reward(command.getName(),command.getDescription(), command.getUrl(), command.getPoints());
+        Reward reward = new Reward(command.getName());
+        reward.setDescription(command.getDescription());
+        reward.setUrl(command.getUrl());
+        reward.setPoints(command.getPoints());
 
         //Save Reward to the Collections in Parent & Child. Also to the 'rewards' repository.
         rewards.save(reward);
@@ -530,6 +533,18 @@ public class ParentController {
         tokenMap.put("username", command.getUsername());
         tokenMap.put("id", String.valueOf(parent.getId()));
         return tokenMap;
+    }
+
+    @RequestMapping(path = "/child/points", method = RequestMethod.GET)
+    public Map getAllPoints(@RequestHeader (value = "Authorization") String parentToken){
+        Parent parent = authService.getParentFromAuth(parentToken);
+
+        Map<String, Integer> pointsMap = new HashMap<>();
+        Collection<Child> children = parent.getChildCollection();
+
+        children.stream().forEach(child -> pointsMap.put(child.getName(), child.getChildPoint()));
+        return pointsMap;
+
     }
 
 

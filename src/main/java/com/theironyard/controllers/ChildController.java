@@ -233,7 +233,7 @@ public class ChildController {
         Child child = authService.getChildFromAuth(childToken);
         Parent parent = child.getParent();
 
-        Reward reward = new Reward(rewardCommand.getName() ,rewardCommand.getDescription(),rewardCommand.getUrl() ,rewardCommand.getPoints());
+        Reward reward = new Reward(rewardCommand.getName());
 
         Map product = restTemplate.getForObject(BASE_URL + rewardCommand.getName(), HashMap.class);
         List<Map> item = ((List<Map>) product.get("items"));
