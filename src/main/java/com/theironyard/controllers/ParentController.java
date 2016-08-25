@@ -482,8 +482,6 @@ public class ParentController {
     public Collection<Reward> getWishlist(@PathVariable int id, @RequestHeader(value = "Authorization") String parentToken) {
 
         //Find parent via token
-        AuthService authService = new AuthService();
-
         Parent parent = authService.getParentFromAuth(parentToken);
 
         //Find child via id
@@ -623,7 +621,7 @@ public class ParentController {
      * @param auth the parent's token
      * @return the child's points
      */
-    @RequestMapping(path = "/deduct/{newPoint}/child/{id}", method = RequestMethod.PUT)
+    @RequestMapping(path = "/deduct/{newPoint-}/child/{id}", method = RequestMethod.PUT)
     public int deductPoints(@PathVariable int id, @PathVariable int newPoint, @RequestHeader(value = "Authorization") String auth) {
 
         //Find the parent via their token

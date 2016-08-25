@@ -3,6 +3,7 @@ package com.theironyard;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theironyard.command.ChildCommand;
 import com.theironyard.entities.Child;
+import com.theironyard.entities.Chore;
 import com.theironyard.entities.Parent;
 import com.theironyard.entities.Reward;
 import com.theironyard.services.*;
@@ -53,7 +54,7 @@ public class FinalProjectApplicationTests {
 	@Test
 	public void contextLoads() {
 	}
-//
+
 //	/***** POST & PUT Endpoints *****/
 //
 //	/***************************
@@ -92,7 +93,7 @@ public class FinalProjectApplicationTests {
 //	public void testCreateWishlistItem() throws Exception {
 //		Child child = new Child("Test1", "Test1", PasswordStorage.createHash("password"));
 //		children.save(child);
-//		Reward reward = new Reward("testReward", "testDescrip", 0);
+//		Reward reward = new Reward("testReward");
 //		rewards.save(reward);
 //
 //		ObjectMapper objectMapper = new ObjectMapper();
@@ -122,14 +123,28 @@ public class FinalProjectApplicationTests {
 //	@Test
 //	public void testGetChildWishlist() throws Exception {
 //		Child child = new Child("Test2", "Test2", PasswordStorage.createHash("password"));
-//		Reward reward = new Reward("testReward", "testDescrip", 0);
+//		Reward reward = new Reward("testReward");
 //		rewards.save(reward);
 //		children.save(child);
 //
 //		mockMvc.perform(
 //				MockMvcRequestBuilders.get("/child/wishlist").requestAttr("token", child.getToken())
 //		);
+//
 //	}
 //
-//}
+//	@Test
+//	public void testGetChoresForChild() throws Exception {
+//		Child child = new Child("Test2", "Test2", PasswordStorage.createHash("password"));
+//		Chore chore = new Chore("TestChore", "description", 10);
+//		children.save(child);
+//		chores.save(chore);
+//
+//		mockMvc.perform(
+//				MockMvcRequestBuilders.get("/child/chores").requestAttr("token", child.getToken())
+//		);
+//	}
+
+
+
 }
