@@ -20,12 +20,8 @@ public class RewardCommand {
     public RewardCommand() {
     }
 
-    public RewardCommand(String name,String description, String url, String imageUrl ,int points) {
+    public RewardCommand(String name) {
         this.name = name;
-        this.description = description;
-        this.url = url;
-        this.imageUrl = imageUrl;
-        this.points = points;
     }
 
     public String getName() {
