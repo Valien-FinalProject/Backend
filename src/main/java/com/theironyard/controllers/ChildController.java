@@ -330,7 +330,7 @@ public class ChildController {
      * @throws IOException
      * @throws TwilioRestException
      */
-    @RequestMapping(value = "/reward/{id}deduct", method = RequestMethod.PUT)
+    @RequestMapping(value = "/reward/{id}/deduct", method = RequestMethod.PUT)
     public Child cashInPoints(@RequestHeader (value = "Authorization") String childToken, @PathVariable int id) throws IOException, TwilioRestException {
         Child child = authService.getChildFromAuth(childToken);
         Reward reward = rewardRepository.getOne(id);
