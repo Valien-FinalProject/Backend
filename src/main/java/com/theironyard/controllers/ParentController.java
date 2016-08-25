@@ -758,7 +758,7 @@ public class ParentController {
         child.getWishlistCollection().remove(reward);
 
         //add to reward list
-        child.getRewardCollection().add(reward);
+        parent.getRewardCollection().add(reward);
         children.save(child);
         rewards.save(reward);
         return reward;
