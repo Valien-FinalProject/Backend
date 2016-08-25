@@ -11,6 +11,7 @@ import com.twilio.sdk.resource.instance.Account;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -23,8 +24,6 @@ import java.util.List;
 @Service
 public class TwilioNotifications {
 
-    public static final String TWILIO_NUMBER = "+17026080979";
-
     @Autowired
     Account twilioAccount;
 
@@ -33,6 +32,9 @@ public class TwilioNotifications {
 
     @Autowired
     ChildRepository childRepository;
+
+    @Value("${twilio.number}")
+    public String twilioNumber;
 
     SmsFactory smsFactory;
 
@@ -45,7 +47,7 @@ public class TwilioNotifications {
         String phone = parent.getPhone();
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("To", phone));
-        params.add(new BasicNameValuePair("From", TWILIO_NUMBER));
+        params.add(new BasicNameValuePair("From", twilioNumber));
         params.add(new BasicNameValuePair("Body", "You have a chore pending that is waiting for your approval!"));
         System.out.println("Pending chore notification sent!");
         smsFactory.create(params);
@@ -56,7 +58,7 @@ public class TwilioNotifications {
         String message = String.format("Thank you %s for signing up!\n", parent.getName());
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("To", phone));
-        params.add(new BasicNameValuePair("From", TWILIO_NUMBER));
+        params.add(new BasicNameValuePair("From", twilioNumber));
         params.add(new BasicNameValuePair("Body", message));
         System.out.println("Register notification sent!");
         smsFactory.create(params);
@@ -67,7 +69,7 @@ public class TwilioNotifications {
         String message = String.format("Hello %s, we are informing you that there is a new item in %s's wishlist!\n", parent.getName(), child.getName());
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("To", phone));
-        params.add(new BasicNameValuePair("From", TWILIO_NUMBER));
+        params.add(new BasicNameValuePair("From", twilioNumber));
         params.add(new BasicNameValuePair("Body", message));
         System.out.println("Child has added an item to their wishlist");
         smsFactory.create(params);
@@ -78,7 +80,7 @@ public class TwilioNotifications {
         String message = String.format("Hello %s,%s has cashed in some of their points for the reward, %s!\n", parent.getName(), child.getName(), reward.getName());
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("To", phone));
-        params.add(new BasicNameValuePair("From", TWILIO_NUMBER));
+        params.add(new BasicNameValuePair("From", twilioNumber));
         params.add(new BasicNameValuePair("Body", message));
         System.out.println("Child has added an item to their wishlist");
         smsFactory.create(params);
