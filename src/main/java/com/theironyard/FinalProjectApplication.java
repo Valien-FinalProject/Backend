@@ -12,8 +12,4 @@ public class FinalProjectApplication {
 		SpringApplication.run(FinalProjectApplication.class, args);
 	}
 
-	@Bean
-	public RestTemplate restTemplate(){
-		return new RestTemplate();
-	}
 }
