@@ -243,7 +243,7 @@ public class ChildController {
         child.addWishlistItem(reward);
         childRepository.save(child);
 
-        if (parent.isPhoneOptIn() == true){
+        if (parent.isPhoneOptIn() == true && parent.getPhone() != null){
             twilioNotifications.wishlistItemAdded(parent, child);
         }
 
