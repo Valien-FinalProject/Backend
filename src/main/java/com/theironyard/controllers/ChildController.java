@@ -46,6 +46,7 @@ public class ChildController {
     @Autowired
     EmailService emailService;
 
+    @Autowired
     RestTemplate restTemplate;
 
     @Value("${walmart.api.key}")
