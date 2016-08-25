@@ -820,4 +820,23 @@ public class ParentController {
         //Return the new Collection
         return parent.getChildCollection();
     }
+
+    /**
+     * Allows the parent to deny and remove a wishlist item from a child's list
+     * @param childId child's id that the parent is deleting the item from
+     * @param rewardId the id of the wishlist item the parent is deleting
+     * @param auth parent's token that needs to be authorized first
+     */
+    @RequestMapping(path = "/child/{childId}/wishlist/{rewardId}", method = RequestMethod.DELETE)
+    public void denyWishlistItem(@PathVariable int childId, @PathVariable int rewardId, @RequestHeader(value = "Authorization") String auth) {
+        authService.getParentFromAuth(auth);
+
+        Child child = children.getOne(childId);
+        Reward reward = rewards.getOne(rewardId);
+
+        child.getWishlistCollection().remove(reward);
+        children.save(child);
+        rewards.delete(reward);
+    }
+    
 }
