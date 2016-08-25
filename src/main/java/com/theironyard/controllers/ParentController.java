@@ -623,8 +623,8 @@ public class ParentController {
      * @param auth the parent's token
      * @return the child's points
      */
-    @RequestMapping(path = "/deduct/child/{id}", method = RequestMethod.PUT)
-    public int deductPoints(@PathVariable int id, int newPoint, @RequestHeader(value = "Authorization") String auth) {
+    @RequestMapping(path = "/deduct/{newPoint}/child/{id}", method = RequestMethod.PUT)
+    public int deductPoints(@PathVariable int id, @PathVariable int newPoint, @RequestHeader(value = "Authorization") String auth) {
 
         //Find the parent via their token
         Parent parent = authService.getParentFromAuth(auth);
@@ -649,8 +649,8 @@ public class ParentController {
      * @param auth     parent token
      * @return new point value
      */
-    @RequestMapping(path = "/add/child/{id}", method = RequestMethod.PUT)
-    public int addPoints(@PathVariable int id, int newPoint, @RequestHeader(value = "Authorization") String auth) {
+    @RequestMapping(path = "/add/{newPoint}/child/{id}", method = RequestMethod.PUT)
+    public int addPoints(@PathVariable int id, @PathVariable int newPoint, @RequestHeader(value = "Authorization") String auth) {
 
         //Find the parent via their token
         Parent parent = authService.getParentFromAuth(auth);
