@@ -579,9 +579,6 @@ public class ParentController {
         parent.setPhoneOptIn(command.isPhoneOptIn());
         parents.save(parent);
 
-        if(parent.isPhoneOptIn()){
-            twilioNotifications.updateProfile(parent);
-        }
         return parent;
     }
 

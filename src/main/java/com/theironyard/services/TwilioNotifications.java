@@ -2,6 +2,7 @@ package com.theironyard.services;
 
 import com.theironyard.entities.Child;
 import com.theironyard.entities.Parent;
+import com.theironyard.entities.Reward;
 import com.theironyard.services.ChildRepository;
 import com.theironyard.services.ParentRepository;
 import com.twilio.sdk.TwilioRestException;
@@ -61,17 +62,6 @@ public class TwilioNotifications {
         smsFactory.create(params);
     }
 
-    public void updateProfile(Parent parent) throws TwilioRestException {
-        String phone = parent.getPhone();
-        String message = String.format("Hello %s, we are notifying you that you have successfully updated your profile\n", parent.getName());
-        List<NameValuePair> params = new ArrayList<>();
-        params.add(new BasicNameValuePair("To", phone));
-        params.add(new BasicNameValuePair("From", TWILIO_NUMBER));
-        params.add(new BasicNameValuePair("Body", message));
-        System.out.println("Parent's profile has been updated");
-        smsFactory.create(params);
-    }
-
     public void wishlistItemAdded(Parent parent, Child child) throws TwilioRestException {
         String phone = parent.getPhone();
         String message = String.format("Hello %s, we are informing you that there is a new item in %s's wishlist!\n", parent.getName(), child.getName());
@@ -83,9 +73,9 @@ public class TwilioNotifications {
         smsFactory.create(params);
     }
 
-    public void childCashedInPoints(Parent parent, Child child) throws TwilioRestException {
+    public void childCashedInPoints(Parent parent, Child child, Reward reward) throws TwilioRestException {
         String phone = parent.getPhone();
-        String message = String.format("Hello %s,%s has cashed in some of their points for a reward!\n", parent.getName(), child.getName());
+        String message = String.format("Hello %s,%s has cashed in some of their points for the reward, %s!\n", parent.getName(), child.getName(), reward.getName());
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("To", phone));
         params.add(new BasicNameValuePair("From", TWILIO_NUMBER));

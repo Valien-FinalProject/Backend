@@ -189,7 +189,6 @@ public class ChildController {
         return pendingChoreList;
     }
 
-
     /**
      * Get a list of chores that are complete and assigned to a given child.
      * @param token child's token
@@ -244,7 +243,7 @@ public class ChildController {
         child.addWishlistItem(reward);
         childRepository.save(child);
 
-        if (parent.isPhoneOptIn() == true && parent.getPhone() != null){
+        if (parent.isPhoneOptIn() && parent.getPhone() != null){
             twilioNotifications.wishlistItemAdded(parent, child);
         }
 
@@ -296,7 +295,7 @@ public class ChildController {
         childRepository.save(child);
 
         // If parent's phone Opt-in is true then send a text
-        if(parent.isPhoneOptIn()) {
+        if(parent.isPhoneOptIn() && parent.getPhone() != null) {
             twilioNotifications.chorePending(child.getParent());
         }
         return pendingChore;
@@ -323,28 +322,32 @@ public class ChildController {
     }
 
     /**
-     * Allows the child to cash in his or her points for a reward if they
-     * @param childToken child's token to be authorized
-     * @param points reward's points that is going to be passed in and deducted from the child's points if there are enough
+     * Allows the child to cash in their points for a reward, once completed it will send a notification to the parent
+     * if they have an email or phone number available and is has the opt-in field set to true
+     * @param childToken child's token that is need to be authorized
+     * @param id id of the reward the child is trying to cash in their points for
      * @return
+     * @throws IOException
+     * @throws TwilioRestException
      */
-    @RequestMapping(value = "/deduct", method = RequestMethod.PUT)
-    public Child cashInPoints(@RequestHeader (value = "Authorization") String childToken, int points) throws IOException, TwilioRestException {
+    @RequestMapping(value = "/reward/{id}deduct", method = RequestMethod.PUT)
+    public Child cashInPoints(@RequestHeader (value = "Authorization") String childToken, @PathVariable int id) throws IOException, TwilioRestException {
         Child child = authService.getChildFromAuth(childToken);
+        Reward reward = rewardRepository.getOne(id);
 
-        child.setChildPoint(child.getChildPoint() - points);
+        child.setChildPoint(child.getChildPoint() - reward.getPoints());
         if(child.getChildPoint() < 0){
             throw new NotEnoughPointsException();
         }
 
         // If email Opt-in is true, send an email:
         Parent parent = child.getParent();
-        String body = "Hello, " + parent.getName() + ". We are just letting you know that, " + child.getName() + " has cashed in " + points + " points.";
+        String body = "Hello, " + parent.getName() + ". We are just letting you know that, " + child.getName() + " has cashed in " + reward.getPoints() + " points.";
 
         if (parent.isEmailOptIn()) emailService.sendEmail(parent.getEmail(), body);
-        // If phone Opt-in is true, send a texr
+        // If phone Opt-in is true, send a text
         if (parent.isPhoneOptIn()){
-            twilioNotifications.childCashedInPoints(parent, child);
+            twilioNotifications.childCashedInPoints(parent, child, reward);
         }
         childRepository.save(child);
         return child;
