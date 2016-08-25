@@ -621,7 +621,7 @@ public class ParentController {
      * @param auth the parent's token
      * @return the child's points
      */
-    @RequestMapping(path = "/deduct/{newPoint-}/child/{id}", method = RequestMethod.PUT)
+    @RequestMapping(path = "/deduct/{newPoint}/child/{id}", method = RequestMethod.PUT)
     public int deductPoints(@PathVariable int id, @PathVariable int newPoint, @RequestHeader(value = "Authorization") String auth) {
 
         //Find the parent via their token
