@@ -743,7 +743,7 @@ public class ParentController {
      * @param auth     parent's token
      */
     @RequestMapping(path = "/child/{childId}/wishlist/{rewardId}", method = RequestMethod.PUT)
-    public void modifyWishlist(@PathVariable int childId, @PathVariable int rewardId, @RequestBody RewardCommand command, @RequestHeader(value = "Authorization") String auth) {
+    public Reward modifyWishlist(@PathVariable int childId, @PathVariable int rewardId, @RequestBody RewardCommand command, @RequestHeader(value = "Authorization") String auth) {
 
         //Find the parent via their token
         Parent parent = authService.getParentFromAuth(auth);
@@ -761,6 +761,9 @@ public class ParentController {
 
         //add to reward list
         child.getRewardCollection().add(reward);
+        children.save(child);
+        rewards.save(reward);
+        return reward;
     }
 
 
