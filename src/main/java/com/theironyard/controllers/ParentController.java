@@ -295,6 +295,7 @@ public class ParentController {
 
         //Remove the chore from the child's chore Collection
         childChores.remove(choreToApprove);
+        parent.getChoreCollection().add(choreToApprove);
         chores.save(choreToApprove);
         children.save(child);
 
@@ -326,7 +327,7 @@ public class ParentController {
         Collection<Chore> currentChoreList = new ArrayList<>();
 
         //Stream through Collection to find chore that are not pending, are not complete, and are assigned to child.
-        parentCollection.stream().filter(chore -> chore.isPending() == false && chore.isComplete() == false && chore.getChildAssigned() == child).forEach(chore -> currentChoreList.add(chore));
+        parentCollection.stream().filter(chore -> !chore.isPending() && !chore.isComplete() && chore.getChildAssigned() == child).forEach(currentChoreList::add);
 
         //Give List of Current Chores
         return currentChoreList;
@@ -349,7 +350,7 @@ public class ParentController {
         Collection<Chore> pendingChoreList = new ArrayList<>();
 
         //Stream through Collection to find chores that are pending and assigned to child.
-        parentCollection.stream().filter(chore -> chore.isPending() && chore.getChildAssigned() == child).forEach(chore -> pendingChoreList.add(chore));
+        parentCollection.stream().filter(chore -> chore.isPending() && chore.getChildAssigned() == child).forEach(pendingChoreList::add);
 
         //Give List of Current Chores
         return pendingChoreList;
@@ -361,7 +362,7 @@ public class ParentController {
      * @param token parent's token
      * @return list of chores
      */
-    @RequestMapping(path = "child/{id}/complete", method = RequestMethod.GET)
+    @RequestMapping(path = "/child/{id}/complete", method = RequestMethod.GET)
     public Collection<Chore> getCompleteChores(@PathVariable int id, @RequestHeader(value = "Authorization") String token){
         //Get the parent from and the child from id.
         Parent parent = authService.getParentFromAuth(token);
@@ -550,7 +551,6 @@ public class ParentController {
 
     /**
      * Gets the token of the Parent that is currently logged in.
-     *
      * @param command
      * @return token of the current parent
      * @throws Exception
@@ -693,7 +693,6 @@ public class ParentController {
         //Get chore and set pending to false
         Chore chore = chores.getOne(id);
         chore.setPending(false);
-        chores.save(chore);
 
         //save chore
         chores.save(chore);
@@ -730,7 +729,7 @@ public class ParentController {
         //Find the parent via their token
         AuthService getAuthService = new AuthService();
 
-        Parent parent = authService.getParentFromAuth(auth);
+        authService.getParentFromAuth(auth);
 
         //Get the reward via it's id
         Reward reward = rewards.getOne(id);

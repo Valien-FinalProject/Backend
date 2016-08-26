@@ -135,7 +135,7 @@ public class FinalProjectApplicationTests {
 //
 //	@Test
 //	public void testGetChoresForChild() throws Exception {
-//		Child child = new Child("Test2", "Test2", PasswordStorage.createHash("password"));
+//		Child child = new Child("Test3", "Test3", PasswordStorage.createHash("password"));
 //		Chore chore = new Chore("TestChore", "description", 10);
 //		children.save(child);
 //		chores.save(chore);
@@ -145,6 +145,9 @@ public class FinalProjectApplicationTests {
 //		);
 //	}
 //
-//
+//	@Test
+//	public void testGetPoolOfChores() throws Exception {
+//		Child child = new Child("Test4", "Test4", PasswordStorage.createHash("password"));
+//	}
 
 }
