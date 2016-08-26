@@ -15,7 +15,6 @@ import java.util.Collection;
 @Entity
 @Table(name = "children")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-
 public class Child extends User{
 
     @Column
