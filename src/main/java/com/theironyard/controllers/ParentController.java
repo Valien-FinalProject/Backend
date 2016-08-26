@@ -249,7 +249,6 @@ public class ParentController {
      * @return the new reward created
      */
     @RequestMapping(path = "/reward", method = RequestMethod.POST)
-
     public Reward createReward(@RequestHeader(value = "Authorization") String parentToken, @RequestBody RewardCommand command) {
 
         //Find parent via token
@@ -268,6 +267,41 @@ public class ParentController {
 
         return reward;
     }
+
+    /**
+     * Child has completed a chore and the parent will approve. We need to add those point to the child and remove the chore from the child's list.
+     *
+     * @param childId id of the child
+     * @param choreId id of the chore to be approved
+     * @return a string stating that we have removed the chore and added points to the child.
+     */
+    @RequestMapping(path = "/child/{childId}/approve/{choreId}", method = RequestMethod.POST)
+    public Chore approveChore(@PathVariable int childId, @PathVariable int choreId, @RequestHeader(value = "Authorization") String auth) {
+
+        //Find the parent via their token
+        Parent parent = authService.getParentFromAuth(auth);
+
+        //Get the chore to be approved and the child that the chore belongs to
+        Chore choreToApprove = chores.findOne(choreId);
+        Child child = children.findOne(childId);
+        Collection<Chore> childChores = child.getChoreCollection();
+
+        //Add point value of the chore to the child's points.
+        child.setChildPoint(child.getChildPoint() + choreToApprove.getValue());
+
+        //Mark chore as complete
+        choreToApprove.setComplete(true);
+        choreToApprove.setPending(false);
+
+        //Remove the chore from the child's chore Collection
+        childChores.remove(choreToApprove);
+        chores.save(choreToApprove);
+        children.save(child);
+
+
+        return choreToApprove;
+    }
+
 
 
     /*==================================================
@@ -338,7 +372,7 @@ public class ParentController {
         Collection<Chore> completeChoreList = new ArrayList<>();
 
         //Stream through collection to find chores that are complete and assigned to child.
-        parentCollection.stream().filter(chore -> chore.isComplete() && chore.getChildAssigned() == child).forEach(chore -> completeChoreList.add(chore));
+        parentCollection.stream().filter(chore -> chore.isComplete() && chore.getChildAssigned() == child).forEach(completeChoreList::add);
 
         //Give List of Current Chores
         return completeChoreList;
@@ -426,7 +460,7 @@ public class ParentController {
         //Create a Collection of Chores that are unassigned. --that's right..it uses a stream! boom!
         Collection<Chore> parentCollection = parent.getChoreCollection();
         Collection<Chore> unassignedChoreList = new ArrayList<>();
-        parentCollection.stream().filter(c -> c.getChildAssigned() == null).forEach(c -> unassignedChoreList.add(c));
+        parentCollection.stream().filter(c -> c.getChildAssigned() == null).forEach(unassignedChoreList::add);
 
         //Send Collection of chores that are unassigned.
         return unassignedChoreList;
@@ -434,8 +468,8 @@ public class ParentController {
 
     /**
      * Finds all chores that are pending in the parent's repository
-     * @param parentToken
-     * @return
+     * @param parentToken parent's token that is need to authorize parent
+     * @return a list of all pending chores
      */
     @RequestMapping(path = "/chores/pending", method = RequestMethod.GET)
     public List<Chore> getPendingChores(@RequestHeader(value = "Authorization") String parentToken) {
@@ -449,7 +483,7 @@ public class ParentController {
 
     /**
      * Sends all rewards created by the parent, that's logged in.
-     * @param parentToken
+     * @param parentToken parent's token needed to be authorized
      * @return Collection of Reward Collection.
      */
     @RequestMapping(path = "/rewards", method = RequestMethod.GET)
@@ -547,7 +581,20 @@ public class ParentController {
 
         children.stream().forEach(child -> pointsMap.put(child.getName(), child.getChildPoint()));
         return pointsMap;
+    }
 
+    /**
+     * Endpoint that gets a child's points by their id as long as their parent is authorized by their token
+     * @param parentToken parent's token that is required to author the request
+     * @param id id of the child that the endpoint will use to get their points
+     * @return points of one child
+     */
+    @RequestMapping(path = "/child/{id}/points", method = RequestMethod.GET)
+    public int getOneChildsPoitns(@RequestHeader (value = "Authorization") String parentToken, @PathVariable int id){
+        authService.getParentFromAuth(parentToken);
+        Child child = children.getOne(id);
+
+        return child.getChildPoint();
     }
 
 
@@ -578,40 +625,6 @@ public class ParentController {
         parents.save(parent);
 
         return parent;
-    }
-
-    /**
-     * Child has completed a chore and the parent will approve. We need to add those point to the child and remove the chore from the child's list.
-     *
-     * @param childId id of the child
-     * @param choreId id of the chore to be approved
-     * @return a string stating that we have removed the chore and added points to the child.
-     */
-    @RequestMapping(path = "/child/{childId}/approve/{choreId}", method = RequestMethod.POST)
-    public Chore approveChore(@PathVariable int childId, @PathVariable int choreId, @RequestHeader(value = "Authorization") String auth) {
-
-        //Find the parent via their token
-        Parent parent = authService.getParentFromAuth(auth);
-
-        //Get the chore to be approved and the child that the chore belongs to
-        Chore choreToApprove = chores.findOne(choreId);
-        Child child = children.findOne(childId);
-        Collection<Chore> childChores = child.getChoreCollection();
-
-        //Add point value of the chore to the child's points.
-        child.setChildPoint(child.getChildPoint() + choreToApprove.getValue());
-
-        //Mark chore as complete
-        choreToApprove.setComplete(true);
-        choreToApprove.setPending(false);
-
-        //Remove the chore from the child's chore Collection
-        childChores.remove(choreToApprove);
-        chores.save(choreToApprove);
-        children.save(child);
-
-
-        return choreToApprove;
     }
 
     /**
