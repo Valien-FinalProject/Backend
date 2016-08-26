@@ -296,7 +296,6 @@ public class ParentController {
 
         //Remove the chore from the child's chore Collection
         childChores.remove(choreToApprove);
-        parentChores.remove(choreToApprove);
         chores.save(choreToApprove);
         children.save(child);
 

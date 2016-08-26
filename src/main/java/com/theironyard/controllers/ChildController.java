@@ -184,7 +184,7 @@ public class ChildController {
         Collection<Chore> childChoreCollection = child.getChoreCollection();
         Collection<Chore> pendingChoreList = new ArrayList<>();
 
-        childChoreCollection.stream().filter(chore -> chore.isPending() == true).forEach(chore -> pendingChoreList.add(chore));
+        childChoreCollection.stream().filter(chore -> chore.isPending()).forEach(chore -> pendingChoreList.add(chore));
 
         return pendingChoreList;
     }
