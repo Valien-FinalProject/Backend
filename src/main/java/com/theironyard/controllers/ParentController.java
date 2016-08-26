@@ -285,6 +285,7 @@ public class ParentController {
         Chore choreToApprove = chores.findOne(choreId);
         Child child = children.findOne(childId);
         Collection<Chore> childChores = child.getChoreCollection();
+        Collection<Chore> parentChores = parent.getChoreCollection();
 
         //Add point value of the chore to the child's points.
         child.setChildPoint(child.getChildPoint() + choreToApprove.getValue());
@@ -295,7 +296,7 @@ public class ParentController {
 
         //Remove the chore from the child's chore Collection
         childChores.remove(choreToApprove);
-        parent.getChoreCollection().add(choreToApprove);
+        parentChores.remove(choreToApprove);
         chores.save(choreToApprove);
         children.save(child);
 
