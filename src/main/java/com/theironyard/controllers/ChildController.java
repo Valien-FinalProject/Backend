@@ -160,12 +160,10 @@ public class ChildController {
     @RequestMapping(path = "/current", method = RequestMethod.GET)
     public Collection<Chore> getCurrentChore(@RequestHeader(value = "Authorization") String token){
         Child child = authService.getChildFromAuth(token);
-        Parent parent = child.getParent();
 
-        Collection<Chore> parentChoreCollection = parent.getChoreCollection();
         Collection<Chore> currentChoreList = new ArrayList<>();
 
-        parentChoreCollection.stream().filter(chore -> chore.isPending() == false && chore.isComplete() == false && chore.getChildAssigned() == child).forEach(chore -> currentChoreList.add(chore));
+        child.getChoreCollection().stream().filter(chore -> !chore.isPending()&& !chore.isComplete() && chore.getChildAssigned() == child).forEach(chore -> currentChoreList.add(chore));
 
         return currentChoreList;
     }
