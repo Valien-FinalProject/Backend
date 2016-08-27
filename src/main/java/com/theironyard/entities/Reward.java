@@ -24,9 +24,10 @@ public class Reward {
     @Column
     private String description;
 
-//    @Column()
+    @Column(length = 5000)
+    private String imageUrl;
 
-    @Column(length = 10000)
+    @Column(length = 5000)
     private String url;
 
     @Column
@@ -35,11 +36,8 @@ public class Reward {
     public Reward() {
     }
 
-    public Reward(String name,String description, String url, int points) {
+    public Reward(String name) {
         this.name = name;
-        this.description = description;
-        this.url = url;
-        this.points = points;
     }
 
     public int getId() {
@@ -64,6 +62,14 @@ public class Reward {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getUrl() {

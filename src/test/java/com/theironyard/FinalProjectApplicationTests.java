@@ -3,6 +3,7 @@ package com.theironyard;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theironyard.command.ChildCommand;
 import com.theironyard.entities.Child;
+import com.theironyard.entities.Chore;
 import com.theironyard.entities.Parent;
 import com.theironyard.entities.Reward;
 import com.theironyard.services.*;
@@ -53,8 +54,7 @@ public class FinalProjectApplicationTests {
 	@Test
 	public void contextLoads() {
 	}
-}
-//
+
 //	/***** POST & PUT Endpoints *****/
 //
 //	/***************************
@@ -63,21 +63,21 @@ public class FinalProjectApplicationTests {
 //
 //	/***** POST Endpoints *****/
 //
-////	@Test
-////	public void getChildToken() throws Exception {
-////		Child child = new Child("TestName", "TestChildUsername", PasswordStorage.createHash("password"));
-////		children.save(child);
-////		ChildCommand command = new ChildCommand("TestChildUsername", PasswordStorage.createHash("password"));
-////
-////
-////		ObjectMapper objectMapper = new ObjectMapper();
-////		String json = objectMapper.writeValueAsString(child);
-////
-////		mockMvc.perform(
-////				MockMvcRequestBuilders.post("/child/token").content(json).contentType("application/json").requestAttr("child", PasswordStorage.verifyPassword(command.getPassword(),child.getPassword()))
-////		);
-////
-////	}
+//	@Test
+//	public void getChildToken() throws Exception {
+//		Child child = new Child("TestName", "TestChildUsername", PasswordStorage.createHash("password"));
+//		children.save(child);
+//		ChildCommand command = new ChildCommand("TestChildUsername", PasswordStorage.createHash("password"));
+//
+//
+//		ObjectMapper objectMapper = new ObjectMapper();
+//		String json = objectMapper.writeValueAsString(child);
+//
+//		mockMvc.perform(
+//				MockMvcRequestBuilders.post("/child/token").content(json).contentType("application/json").requestAttr("child", PasswordStorage.verifyPassword(command.getPassword(),child.getPassword()))
+//		);
+//
+//	}
 //
 //	@Test
 //	public void testChildLogout() throws Exception {
@@ -93,7 +93,7 @@ public class FinalProjectApplicationTests {
 //	public void testCreateWishlistItem() throws Exception {
 //		Child child = new Child("Test1", "Test1", PasswordStorage.createHash("password"));
 //		children.save(child);
-//		Reward reward = new Reward("testReward", "testDescrip", 0);
+//		Reward reward = new Reward("testReward");
 //		rewards.save(reward);
 //
 //		ObjectMapper objectMapper = new ObjectMapper();
@@ -123,13 +123,31 @@ public class FinalProjectApplicationTests {
 //	@Test
 //	public void testGetChildWishlist() throws Exception {
 //		Child child = new Child("Test2", "Test2", PasswordStorage.createHash("password"));
-//		Reward reward = new Reward("testReward", "testDescrip", 0);
+//		Reward reward = new Reward("testReward");
 //		rewards.save(reward);
 //		children.save(child);
 //
 //		mockMvc.perform(
 //				MockMvcRequestBuilders.get("/child/wishlist").requestAttr("token", child.getToken())
 //		);
+//
 //	}
 //
-//}
+//	@Test
+//	public void testGetChoresForChild() throws Exception {
+//		Child child = new Child("Test3", "Test3", PasswordStorage.createHash("password"));
+//		Chore chore = new Chore("TestChore", "description", 10);
+//		children.save(child);
+//		chores.save(chore);
+//
+//		mockMvc.perform(
+//				MockMvcRequestBuilders.get("/child/chores").requestAttr("token", child.getToken())
+//		);
+//	}
+//
+//	@Test
+//	public void testGetPoolOfChores() throws Exception {
+//		Child child = new Child("Test4", "Test4", PasswordStorage.createHash("password"));
+//	}
+
+}

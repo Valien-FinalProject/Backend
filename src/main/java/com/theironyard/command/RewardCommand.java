@@ -11,6 +11,8 @@ public class RewardCommand {
 
     private String description;
 
+    private String imageUrl;
+
     private String url;
 
     private int points;
@@ -18,11 +20,8 @@ public class RewardCommand {
     public RewardCommand() {
     }
 
-    public RewardCommand(String name,String description, String url, int points) {
+    public RewardCommand(String name) {
         this.name = name;
-        this.description = description;
-        this.url = url;
-        this.points = points;
     }
 
     public String getName() {
@@ -39,6 +38,14 @@ public class RewardCommand {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getUrl() {

@@ -1,5 +1,6 @@
 package com.theironyard.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -12,6 +13,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "chores")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Chore {
 
     @Id
