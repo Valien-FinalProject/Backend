@@ -499,7 +499,7 @@ public class ParentController {
 
     /**
      * Get reward from repository via Id.
-     * @param id          - the reward id
+     * @param id the reward id
      * @param parentToken parent's unique token
      * @return
      */
@@ -513,6 +513,12 @@ public class ParentController {
         return rewards.findOne(id);
     }
 
+    /**
+     *
+     * @param id
+     * @param parentToken
+     * @return
+     */
     @RequestMapping(path = "/child/{id}/wishlist", method = RequestMethod.GET)
     public Collection<Reward> getWishlist(@PathVariable int id, @RequestHeader(value = "Authorization") String parentToken) {
 
@@ -616,10 +622,10 @@ public class ParentController {
         Parent parent = authService.getParentFromAuth(auth);
 
         //Modify the parent;
-        parent.setName(command.getName());
-        parent.setEmail(command.getEmail());
-        parent.setPhone(command.getPhone());
-        parent.setPassword(PasswordStorage.createHash(command.getPassword()));
+        if(command.getName() != null){parent.setName(command.getName());}
+        if(command.getEmail() != null ){parent.setEmail(command.getEmail());}
+        if(command.getPhone() != null){ parent.setPhone(command.getPhone());}
+        if(command.getPassword() != null) {parent.setPassword(PasswordStorage.createHash(command.getPassword()));}
         parent.setEmailOptIn(command.isEmailOptIn());
         parent.setPhoneOptIn(command.isPhoneOptIn());
         parents.save(parent);
