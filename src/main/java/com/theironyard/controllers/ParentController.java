@@ -826,7 +826,6 @@ public class ParentController {
 
         //Find the child and delete it fromt he Collection and Repository.
         parentChildCollection.remove(children.findOne(id));
-        children.delete(id);
 
         //Return the new Collection
         return parent.getChildCollection();
