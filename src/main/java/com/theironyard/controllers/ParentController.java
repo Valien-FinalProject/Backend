@@ -74,13 +74,13 @@ public class ParentController {
         parents.save(parent);
 
         //Send new parent object
-        if(parent.isPhoneOptIn()) {
+        if(parent.isPhoneOptIn() && parent.getPhone() != null) {
             twilioNotifications.parentRegister(parent);
         }
 
         //If email Opt-in is true, send an email:
         String body = "Hello " + parent.getName() + ". Thank you for registering with us. We hope you enjoy our app.";
-        if (parent.isEmailOptIn()) emailService.sendEmail(parent.getEmail(), body);
+        if (parent.isEmailOptIn() && parent.getEmail() != null) emailService.sendEmail(parent.getEmail(), body);
 
         return parent;
 
@@ -616,7 +616,7 @@ public class ParentController {
      * @return the modified parent
      */
     @RequestMapping(path = "/profile", method = RequestMethod.PUT)
-    public Parent modifyParent(@RequestBody ParentCommand command, @RequestHeader(value = "Authorization") String auth) throws PasswordStorage.CannotPerformOperationException, TwilioRestException {
+    public Parent modifyParent(@RequestBody ParentCommand command, @RequestHeader(value = "Authorization") String auth) throws PasswordStorage.CannotPerformOperationException, TwilioRestException, PasswordStorage.InvalidHashException {
 
         //Find the parent via their token
         Parent parent = authService.getParentFromAuth(auth);
@@ -625,7 +625,9 @@ public class ParentController {
         if(command.getName() != null){parent.setName(command.getName());}
         if(command.getEmail() != null ){parent.setEmail(command.getEmail());}
         if(command.getPhone() != null){ parent.setPhone(command.getPhone());}
-        if(command.getPassword() != null) {parent.setPassword(PasswordStorage.createHash(command.getPassword()));}
+        if(command.getPassword() != null && PasswordStorage.verifyPassword(command.getPassword(), parent.getPassword())) {
+            parent.setPassword(PasswordStorage.createHash(command.getPassword()));
+        }
         parent.setEmailOptIn(command.isEmailOptIn());
         parent.setPhoneOptIn(command.isPhoneOptIn());
         parents.save(parent);
