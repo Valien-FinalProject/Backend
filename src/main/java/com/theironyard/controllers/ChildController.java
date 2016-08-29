@@ -254,9 +254,9 @@ public class ChildController {
 
     /**
      * Allows child to change its email, phone number, password, and name.
-     * @param childToken
-     * @param childCommand
-     * @return
+     * @param childToken child's token that is need to be authorized before method can be used
+     * @param childCommand holds child's info that is being passed in to change the old info of the child object
+     * @return new child object with updated information
      */
     @RequestMapping(path = "/profile", method = RequestMethod.PUT)
     public Child updateProfile(@RequestHeader (value = "Authorization") String childToken, @RequestBody ChildCommand childCommand){
@@ -337,6 +337,9 @@ public class ChildController {
         if(child.getChildPoint() < 0){
             throw new NotEnoughPointsException();
         }
+        ArrayList<Reward> cashedIn = (ArrayList<Reward>) child.getCashedInRewards();
+        cashedIn.add(reward);
+
 
         // If email Opt-in is true, send an email:
         Parent parent = child.getParent();

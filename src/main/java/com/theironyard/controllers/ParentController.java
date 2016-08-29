@@ -603,6 +603,19 @@ public class ParentController {
         return child.getChildPoint();
     }
 
+    /**
+     * Allows the parent to see all the rewards that each child has used their points to cash in for
+     * @param parentToken parent's token currently logged in that is needed to be authorized
+     * @param id id of the child that is trying to be accessed
+     * @return a collection of all the rewards the child has cashed their points in for
+     */
+    @RequestMapping(path = "/child/{id}/rewards", method = RequestMethod.GET)
+    public Collection<Reward> getChildCashedInRewards(@RequestHeader (value = "Authorization") String parentToken, @PathVariable int id){
+        authService.getParentFromAuth(parentToken);
+        Child child = children.getOne(id);
+        return child.getCashedInRewards();
+    }
+
 
     /*==================================================
     ***************** 'UPDATE' ENDPOINTS ***************

@@ -1,10 +1,12 @@
 package com.theironyard.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.File;
+import java.util.Collection;
 
 /**
  * Created by Nigel on 8/13/16.
@@ -32,6 +34,10 @@ public class Reward {
 
     @Column
     private int points;
+
+    @ManyToMany
+    @JsonIgnore
+    private Collection<Child> rewardsCashed;
 
     public Reward() {
     }
@@ -86,5 +92,13 @@ public class Reward {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public Collection<Child> getRewardsCashed() {
+        return rewardsCashed;
+    }
+
+    public void setRewardsCashed(Collection<Child> rewardsCashed) {
+        this.rewardsCashed = rewardsCashed;
     }
 }

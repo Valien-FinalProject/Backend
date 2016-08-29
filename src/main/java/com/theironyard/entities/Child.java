@@ -7,6 +7,7 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -31,6 +32,10 @@ public class Child extends User{
 
     @Column
     private int childPoint;
+
+    @ManyToMany
+    @JsonIgnore
+    private Collection<Reward> cashedInRewards;
 
 //    @Column
 //    @JsonIgnore
@@ -79,7 +84,15 @@ public class Child extends User{
         this.childPoint = childPoint;
     }
 
-    //    public Collect<Log> getPointLog() {
+    public Collection<Reward> getCashedInRewards() {
+        return cashedInRewards;
+    }
+
+    public void setCashedInRewards(Collection<Reward> cashedInRewards) {
+        this.cashedInRewards = cashedInRewards;
+    }
+
+//    public Collect<Log> getPointLog() {
 //        return pointLog;
 //    }
 //
