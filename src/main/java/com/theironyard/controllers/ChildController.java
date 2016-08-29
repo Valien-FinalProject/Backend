@@ -104,7 +104,7 @@ public class ChildController {
 
         Collection<Chore> pool = new ArrayList<>();
         Collection<Chore> parentCollection = parent.getChoreCollection();
-        parentCollection.stream().filter(c -> c.getChildAssigned() == null).forEach(c -> pool.add(c));
+        parentCollection.stream().filter(c -> c.getChildAssigned() == null).forEach(pool::add);
         return pool;
     }
 

@@ -148,6 +148,105 @@ public class FinalProjectApplicationTests {
 //	@Test
 //	public void testGetPoolOfChores() throws Exception {
 //		Child child = new Child("Test4", "Test4", PasswordStorage.createHash("password"));
+//		Chore chore = new Chore("TestChore4", "TestDesc4", 10);
+//		Parent parent = new Parent("TestParent4", "TestUserParent4", PasswordStorage.createHash("password"));
+//
+//	}
+//
+//	@Test
+//	public void testGetChildPoints() throws Exception {
+//		Child child = new Child("TestChild5", "TestChild5", PasswordStorage.createHash("password"));
+//		child.setChildPoint(10);
+//
+//		mockMvc.perform(
+//				MockMvcRequestBuilders.get("/child/points").requestAttr("token", child.getToken())
+//		);
+//	}
+//
+//	@Test
+//	public void testGetChildRewards() throws Exception {
+//		Child child = new Child("TestChild6", "TestChild6", PasswordStorage.createHash("password"));
+//		Parent parent = new Parent("TestParent6", "TestParent6", PasswordStorage.createHash("password"));
+//		Reward reward = new Reward("Dog");
+//		rewards.save(reward);
+//
+//		mockMvc.perform(
+//				MockMvcRequestBuilders.get("/child/rewards").requestAttr("token", child.getToken())
+//		);
+//
+//	}
+//
+//	@Test
+//	public void testGetChildPhone() throws Exception {
+//		Child child = new Child("TestChild7", "TestChild7", PasswordStorage.createHash("password"));
+//		child.setPhone("7021112222");
+//
+//		mockMvc.perform(
+//				MockMvcRequestBuilders.get("/child/phone").requestAttr("token", child.getToken())
+//		);
+//	}
+//
+//	@Test
+//	public void testChildProfileUpdate() throws Exception {
+//		Child child = new Child("TestChild8", "TestChild8", PasswordStorage.createHash("password"));
+//		child.setEmail("Test@test.com");
+//		child.setPhone("7021234567");
+//
+//		mockMvc.perform(
+//				MockMvcRequestBuilders.put("/child/profile").requestAttr("token", child.getToken())
+//		);
+//	}
+//
+//	@Test
+//	public void testChildSetChoreToPending() throws Exception {
+//		Child child = new Child("TestChild9", "TestChild9", PasswordStorage.createHash("password"));
+//		Chore chore = new Chore("TestChore9", "TestDesc9", 10);
+//		children.save(child);
+//		chore.setPending(true);
+//		chores.save(chore);
+//
+//		mockMvc.perform(
+//				MockMvcRequestBuilders.put("/child/chore/pending").requestAttr("token", child.getToken())
+//		);
+//	}
+//
+//	@Test
+//	public void testAssigningChildToChore() throws Exception {
+//		Child child = new Child("TestChild10", "TestChild10", PasswordStorage.createHash("password"));
+//		Chore chore = new Chore("TestChore10", "TestDesc10", 10);
+//		chore.setChildAssigned(child);
+//		children.save(child);
+//		chores.save(chore);
+//
+//		mockMvc.perform(
+//				MockMvcRequestBuilders.put("/child/chore").requestAttr("token", child.getToken())
+//		);
+//	}
+//
+//	@Test
+//	public void testChildCashingInPoints() throws Exception {
+//		Child child = new Child("TestChild11", "TestChild11", PasswordStorage.createHash("password"));
+//		child.setChildPoint(10);
+//		Reward reward = new Reward("Dog");
+//		reward.setPoints(5);
+//		child.setChildPoint(child.getChildPoint() - reward.getPoints());
+//		children.save(child);
+//
+//		mockMvc.perform(
+//				MockMvcRequestBuilders.put("/child/reward/deduct").requestAttr("token", child.getToken())
+//		);
+//	}
+//
+//	@Test
+//	public void testChildDeleteWishlistItem() throws Exception {
+//		Child child = new Child("TestChild12", "TestChild12", PasswordStorage.createHash("password"));
+//		Reward reward = new Reward("Dog");
+//		rewards.save(reward);
+//
+//		mockMvc.perform(
+//				MockMvcRequestBuilders.delete("/child/wishlist").requestAttr("token", child.getToken())
+//		);
 //	}
 
+	
 }
