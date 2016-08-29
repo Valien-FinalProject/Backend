@@ -36,7 +36,7 @@ public class TwilioNotifications {
     @Value("${twilio.number}")
     public String twilioNumber;
 
-    SmsFactory smsFactory;
+    public SmsFactory smsFactory;
 
     @PostConstruct
     public void setup() {
