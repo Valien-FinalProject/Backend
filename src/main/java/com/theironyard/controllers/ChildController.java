@@ -337,7 +337,7 @@ public class ChildController {
         if(child.getChildPoint() < 0){
             throw new NotEnoughPointsException();
         }
-        ArrayList<Reward> cashedIn = (ArrayList<Reward>) child.getCashedInRewards();
+        Collection<Reward> cashedIn = child.getCashedInRewards();
         cashedIn.add(reward);
 
 
