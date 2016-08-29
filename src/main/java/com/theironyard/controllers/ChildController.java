@@ -52,7 +52,7 @@ public class ChildController {
     @Value("${walmart.api.key}")
     public String walmartKey;
 
-    private String BASE_URL = "http://api.walmartlabs.com/v1/search?format=json&apiKey=" + System.getenv("walmartKey") /**walmartKey**/ + "&numItems=1&query=";
+    private String BASE_URL = "http://api.walmartlabs.com/v1/search?format=json&apiKey=" + System.getenv("walmartKey")+ "&numItems=1&query=";
 
     /***************************
         Read/Get Endpoints
@@ -164,7 +164,7 @@ public class ChildController {
 
         Collection<Chore> currentChoreList = new ArrayList<>();
         
-        child.getChoreCollection().stream().filter(chore -> !chore.isPending()&& !chore.isComplete() && chore.getChildAssigned() == child).forEach(chore -> currentChoreList.add(chore));
+        child.getChoreCollection().stream().filter(chore -> !chore.isPending()&& !chore.isComplete() && chore.getChildAssigned() == child).forEach(currentChoreList::add);
 
         return currentChoreList;
     }
@@ -182,7 +182,7 @@ public class ChildController {
         Collection<Chore> childChoreCollection = child.getChoreCollection();
         Collection<Chore> pendingChoreList = new ArrayList<>();
 
-        childChoreCollection.stream().filter(chore -> chore.isPending()).forEach(chore -> pendingChoreList.add(chore));
+        childChoreCollection.stream().filter(chore -> chore.isPending()).forEach(pendingChoreList::add);
 
         return pendingChoreList;
     }

@@ -95,7 +95,7 @@ public class ParentController {
     @RequestMapping(path = "/logout", method = RequestMethod.POST)
     public void parentLogout(@RequestHeader(value = "Authorization") String parentToken, HttpSession session) {
 
-        //Parent is logged in?
+        //Parent is logged in
         Parent parent = authService.getParentFromAuth(parentToken);
 
         //kill session
@@ -832,8 +832,11 @@ public class ParentController {
         //Get the Collection of Children from the parent
         Collection<Child> parentChildCollection = parent.getChildCollection();
 
-        //Find the child and delete it fromt he Collection and Repository.
-        parentChildCollection.remove(children.findOne(id));
+        //Find the child and delete it from the Collection and Repository.
+        Child child = children.getOne(id);
+        parentChildCollection.remove(child);
+        children.delete(child);
+
 
         //Return the new Collection
         return parent.getChildCollection();
