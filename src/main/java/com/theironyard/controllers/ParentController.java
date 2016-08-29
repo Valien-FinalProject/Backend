@@ -846,7 +846,7 @@ public class ParentController {
      * @param auth parent's token that needs to be authorized first
      */
     @RequestMapping(path = "/child/{childId}/wishlist/{rewardId}", method = RequestMethod.DELETE)
-    public void denyWishlistItem(@PathVariable int childId, @PathVariable int rewardId, @RequestHeader(value = "Authorization") String auth) {
+    public Child denyWishlistItem(@PathVariable int childId, @PathVariable int rewardId, @RequestHeader(value = "Authorization") String auth) {
         authService.getParentFromAuth(auth);
 
         Child child = children.getOne(childId);
@@ -855,6 +855,7 @@ public class ParentController {
         child.getWishlistCollection().remove(reward);
         children.save(child);
         rewards.delete(reward);
+        return child;
     }
     
 }
