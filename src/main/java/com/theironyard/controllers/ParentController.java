@@ -79,8 +79,8 @@ public class ParentController {
         }
 
         //If email Opt-in is true, send an email:
-        String body = "Hello " + parent.getName() + ". Thank you for registering with us. We hope you enjoy our app.";
-        if (parent.isEmailOptIn() && parent.getEmail() != null) emailService.sendEmail(parent.getEmail(), body);
+//        String body = "Hello " + parent.getName() + ". Thank you for registering with us. We hope you enjoy our app.";
+//        if (parent.isEmailOptIn() && parent.getEmail() != null) emailService.sendEmail(parent.getEmail(), body);
 
         return parent;
 

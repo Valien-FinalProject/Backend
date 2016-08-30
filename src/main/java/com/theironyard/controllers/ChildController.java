@@ -343,11 +343,11 @@ public class ChildController {
 
         // If email Opt-in is true, send an email:
         Parent parent = child.getParent();
-        String body = "Hello, " + parent.getName() + ". We are just letting you know that, " + child.getName() + " has cashed in " + reward.getPoints() + " points.";
+//        String body = "Hello, " + parent.getName() + ". We are just letting you know that, " + child.getName() + " has cashed in " + reward.getPoints() + " points.";
 
-        if (parent.isEmailOptIn()) emailService.sendEmail(parent.getEmail(), body);
+//        if (parent.isEmailOptIn()) emailService.sendEmail(parent.getEmail(), body);
         // If phone Opt-in is true, send a text
-        if (parent.isPhoneOptIn()){
+        if (parent.isPhoneOptIn() && parent.getPhone() != null){
             twilioNotifications.childCashedInPoints(parent, child, reward);
         }
         childRepository.save(child);
