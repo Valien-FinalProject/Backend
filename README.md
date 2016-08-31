@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/Valien-FinalProject/Backend.svg?branch=master)](https://travis-ci.org/Valien-FinalProject/Backend)
 <img src="icon.png" align="right" />
-[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)]
+![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)
 # Back End Final Project
 
 ## Description
