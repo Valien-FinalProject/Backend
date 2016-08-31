@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/Valien-FinalProject/Backend.svg?branch=master)](https://travis-ci.org/Valien-FinalProject/Backend)
 <img src="icon.png" align="right" />
- Back End Final Project
+# Back End Final Project
 
 ## Description
 This project will be a culmination of skills from 3 Junior Back End Developers. One of us will be almost completely dedicated to Andriod. In the end we hope to build an app that allows parents to build a system to incentivize their children to do more work around the house.
